@@ -24,14 +24,14 @@ export const createNotification = async (req: Request, res: Response) => {
             .status(HttpStatusCode.BadRequest)
             .json(GENERICS.INVALID_PROPS);
 
-    const notificationId = (user.notifications.size + 1).toString();
+    const notificationId = parseInt([...user.notifications.keys()][user.notifications.size - 1]) + 1;
 
-    user.notifications.set(notificationId, {
+    user.notifications.set(`${notificationId}`, {
         ...body,
         sent_at: Date.now(),
     } as NotificationBody);
 
     await user.save();
 
-    return res.status(HttpStatusCode.NoContent).json(null);
+    return res.status(HttpStatusCode.NoContent).json(user.notifications);
 };
