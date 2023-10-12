@@ -84,5 +84,5 @@ export enum APIScopes {
 
 export interface NotificationBody {
     content: string;
-    sent_at: number;
+    sent_at: string;
 }

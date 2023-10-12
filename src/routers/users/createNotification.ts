@@ -32,7 +32,7 @@ export const createNotification = async (req: Request, res: Response) => {
             : `${Math.max(...notificationsId.map(Number)) + 1}`,
         {
             ...body,
-            sent_at: Date.now(),
+            sent_at: new Date().toISOString(),
         } as NotificationBody
     );
 
