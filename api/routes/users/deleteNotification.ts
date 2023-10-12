@@ -1,7 +1,7 @@
 import { HttpStatusCode } from "axios";
-import { userSchema } from "../../schemas/User";
+import { userSchema } from "../../models/User";
 import type { Request, Response } from "express";
-import { GENERICS, USER } from "../helpers/errors.json";
+import { GENERICS, USER } from "../../helpers/errors.json";
 
 export const deleteNotification = async (req: Request, res: Response) => {
     if (req.params.method !== "notifications")

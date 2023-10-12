@@ -1,9 +1,9 @@
 import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
+import { guildSchema } from "../../models/Guild";
 import { verify, JwtPayload } from "jsonwebtoken";
-import { guildSchema } from "../../schemas/Guild";
-import type { Snowflake } from "../../types/types";
-import { GENERICS, GUILD } from "../helpers/errors.json";
+import type { Snowflake } from "../../typings/types";
+import { GENERICS, GUILD } from "../../helpers/errors.json";
 import { patchGuildValidator } from "../../validators/guild";
 
 /**

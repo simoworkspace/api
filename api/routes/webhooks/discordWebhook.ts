@@ -1,6 +1,6 @@
 import axios, { HttpStatusCode } from "axios";
 import type { Request, Response } from "express";
-import { GENERICS as GenericErrors } from "../helpers/errors.json";
+import { GENERICS as GenericErrors } from "../../helpers/errors.json";
 
 export const discordWebhook = async (req: Request, res: Response) => {
     if (Object.keys(req.body).length < 1)

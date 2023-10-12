@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import { MODELS_NAME } from "../../constants.json";
-import type { UserStructure } from "../types/types";
+import type { UserStructure } from "../typings/types";
 
 const rawUserSchema = new Schema<UserStructure>({
     _id: {

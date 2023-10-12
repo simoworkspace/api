@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import { MODELS_NAME } from "../../constants.json";
-import type { GuildStructure } from "../types/types";
+import type { GuildStructure } from "../typings/types";
 
 const rawGuildSchema = new Schema<GuildStructure>({
     _id: {

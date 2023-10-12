@@ -1,7 +1,7 @@
 import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
-import { USER } from "../helpers/errors.json";
-import { userSchema } from "../../schemas/User";
+import { userSchema } from "../../models/User";
+import { USER } from "../../helpers/errors.json";
 
 /**
  * Gets a user notifications or a user from Discord API

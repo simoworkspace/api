@@ -1,8 +1,8 @@
 import { HttpStatusCode } from "axios";
-import { userSchema } from "../../schemas/User";
+import { userSchema } from "../../models/User";
 import type { Request, Response } from "express";
-import { GENERICS, USER } from "../helpers/errors.json";
-import type { NotificationBody } from "../../types/types";
+import { GENERICS, USER } from "../../helpers/errors.json";
+import type { NotificationBody } from "../../typings/types";
 import { createNotificationValidator } from "../../validators/user";
 
 export const createNotification = async (req: Request, res: Response) => {

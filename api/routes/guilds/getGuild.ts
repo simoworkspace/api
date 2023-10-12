@@ -1,7 +1,7 @@
 import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
-import { GUILD } from "../helpers/errors.json";
-import { guildSchema } from "../../schemas/Guild";
+import { guildSchema } from "../../models/Guild";
+import { GUILD } from "../../helpers/errors.json";
 
 /**
  * Gets a guild in the database

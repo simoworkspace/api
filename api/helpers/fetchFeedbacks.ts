@@ -1,7 +1,7 @@
 import { HttpStatusCode } from "axios";
 import { FEEDBACK } from "./errors.json";
 import { Request, Response } from "express";
-import { feedbackSchema } from "../../schemas/Feedback";
+import { feedbackSchema } from "../models/Feedback";
 
 /**
  * Fetches all feedbacks from a bot

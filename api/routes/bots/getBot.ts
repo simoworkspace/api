@@ -1,9 +1,9 @@
 import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
-import { BOT } from "../helpers/errors.json";
-import { botSchema } from "../../schemas/Bot";
-import { fetchFeedbacks } from "../helpers/fetchFeedbacks";
-import { fetchVoteStatus } from "../helpers/fetchVoteStatus";
+import { botSchema } from "../../models/Bot";
+import { BOT } from "../../helpers/errors.json";
+import { fetchFeedbacks } from "../../helpers/fetchFeedbacks";
+import { fetchVoteStatus } from "../../helpers/fetchVoteStatus";
 
 /**
  * Gets a bot from Discord API or from the database

@@ -1,9 +1,9 @@
 import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
-import { guildSchema } from "../../schemas/Guild";
+import { guildSchema } from "../../models/Guild";
 import { guildValidator } from "../../validators/guild";
-import { GENERICS, GUILD } from "../helpers/errors.json";
 import { REQUIRED_PROPS } from "../../../constants.json";
+import { GENERICS, GUILD } from "../../helpers/errors.json";
 
 /**
  * Creates a guild

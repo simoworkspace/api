@@ -1,9 +1,9 @@
 import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
-import { botSchema } from "../../schemas/Bot";
+import { botSchema } from "../../models/Bot";
 import { JwtPayload, verify } from "jsonwebtoken";
-import { feedbackSchema } from "../../schemas/Feedback";
-import { BOT, FEEDBACK, GENERICS } from "../helpers/errors.json";
+import { feedbackSchema } from "../../models/Feedback";
+import { BOT, FEEDBACK, GENERICS } from "../../helpers/errors.json";
 
 /**
  * Deletes a bot or feedback

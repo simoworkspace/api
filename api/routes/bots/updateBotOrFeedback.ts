@@ -1,11 +1,11 @@
 import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
-import { botSchema } from "../../schemas/Bot";
+import { botSchema } from "../../models/Bot";
 import { verify, JwtPayload } from "jsonwebtoken";
-import { feedbackSchema } from "../../schemas/Feedback";
+import { feedbackSchema } from "../../models/Feedback";
 import { patchBotValidator } from "../../validators/bots";
-import { GENERICS, BOT, FEEDBACK } from "../helpers/errors.json";
 import { patchFeedbackValidator } from "../../validators/feedback";
+import { GENERICS, BOT, FEEDBACK } from "../../helpers/errors.json";
 
 /**
  * Updates a bot or feedback

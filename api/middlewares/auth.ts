@@ -1,6 +1,6 @@
 import { verify } from "jsonwebtoken";
 import { HttpStatusCode } from "axios";
-import { GENERICS } from "../routes/helpers/errors.json";
+import { GENERICS } from "../helpers/errors.json";
 import { Request, Response, NextFunction } from "express";
 
 export const auth = (req: Request, res: Response, next: NextFunction) => {

@@ -1,5 +1,5 @@
 import { number, object, string } from "yup";
-import { NotificationType } from "../types/types";
+import { NotificationType } from "../typings/types";
 
 export const createNotificationValidator = object({
     content: string().required(),

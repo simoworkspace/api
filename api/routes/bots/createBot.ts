@@ -1,13 +1,13 @@
 import parseMs from "ms";
 import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
-import { botSchema } from "../../schemas/Bot";
+import { botSchema } from "../../models/Bot";
 import { verify, JwtPayload } from "jsonwebtoken";
-import { feedbackSchema } from "../../schemas/Feedback";
+import { feedbackSchema } from "../../models/Feedback";
 import { REQUIRED_PROPS } from "../../../constants.json";
 import { botSchemaValidator } from "../../validators/bots";
 import { feedbackValidator } from "../../validators/feedback";
-import { GENERICS, BOT, FEEDBACK } from "../helpers/errors.json";
+import { GENERICS, BOT, FEEDBACK } from "../../helpers/errors.json";
 
 /**
  * Creates a bot, vote, or submit a feedback

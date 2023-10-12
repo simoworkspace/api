@@ -1,9 +1,9 @@
 import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
-import { GUILD } from "../helpers/errors.json";
+import { guildSchema } from "../../models/Guild";
+import { GUILD } from "../../helpers/errors.json";
 import { verify, JwtPayload } from "jsonwebtoken";
-import { guildSchema } from "../../schemas/Guild";
-import type { Snowflake } from "../../types/types";
+import type { Snowflake } from "../../typings/types";
 
 /**
  * Deletes a guild
