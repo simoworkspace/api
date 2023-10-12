@@ -1,0 +1,33 @@
+{
+    "env": {
+        "es2021": true,
+        "node": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "eslint-config-prettier"
+    ],
+    "overrides": [],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": ["@typescript-eslint"],
+    "rules": {
+        "indent": ["error", 4],
+        "linebreak-style": ["off"],
+        "quotes": ["error", "double"],
+        "semi": ["error", "always"],
+        "use-isnan": "error",
+        "spaced-comment": "error",
+        "space-infix-ops": "error",
+        "eqeqeq": "error",
+        "capitalized-comments": "error",
+        "dot-notation": "error",
+        "require-await": "error",
+        "yoda": "error",
+        "no-unneeded-ternary": "error"
+    }
+}

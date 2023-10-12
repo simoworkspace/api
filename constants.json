@@ -1,0 +1,34 @@
+{
+    "MODELS_NAME": {
+        "Bots": "addbots",
+        "Users": "User",
+        "Guilds": "Guilds",
+        "Feedbacks": "Feedbacks"
+    },
+    "PORT": 80,
+    "ROUTES": {
+        "BOTS": "/api/bots/:id(\\d{16,21})?(/:method(vote-status|votes?|feedbacks))?(/:user(\\d{16,21}))?",
+        "USER": "/api/users/:userId(\\d{16,21})",
+        "AUTH": "/api/auth/(:method(callback|user|logout))",
+        "GUILD": "/api/guilds/:guildId(\\d{16,21})/(:method(bots))?",
+        "TOKEN": "/api/auth/token",
+        "WEBHOOK": "/api/webhook/(:method(login|raw|addbot|bot))"
+    },
+    "REQUIRED_PROPS": {
+        "FEEDBACK": ["stars", "content"],
+        "BOT": [
+            "name",
+            "short_description",
+            "long_description",
+            "created_at",
+            "approved",
+            "avatar",
+            "invite_url",
+            "prefixes",
+            "owners",
+            "verified",
+            "tags"
+        ],
+        "GUILD": ["verification_channel_id", "logs_channel_id", "owners"]
+    }
+}

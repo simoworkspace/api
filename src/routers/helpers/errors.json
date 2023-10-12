@@ -1,0 +1,94 @@
+{
+    "BOT": {
+        "UNKNOWN_BOT": {
+            "message": "Unknown bot",
+            "code": 1001
+        },
+        "BOT_ALREADY_EXISTS": {
+            "message": "The bot already exists",
+            "code": 1002
+        },
+        "CANNOT_GET_BOT_VOTES": {
+            "message": "Could not get bot votes",
+            "code": 1003
+        },
+        "USER_IS_NOT_A_BOT": {
+            "message": "The user is not a bot",
+            "code": 1004
+        },
+        "BOT_CANNOT_VOTE_IN_A_BOT": {
+            "message": "A bot cannot vote for a bot or itself",
+            "code": 1004
+        },
+        "COOLDOWN_VOTE": {
+            "message": "You are on cooldown, wait {ms}",
+            "code": 1006
+        },
+        "NOT_BOT_OWNER": {
+            "message": "You are not this bot owner",
+            "code": 1007
+        }
+    },
+    "GENERICS": {
+        "INVALID_AUTH": {
+            "message": "Invalid authenticator",
+            "code": 2001
+        },
+        "SOME_PROPERTIES_IS_MISSING": {
+            "message": "Some properties is missing",
+            "code": 2002
+        },
+        "MANY_REQUEST": {
+            "message": "Many requests made in less than 1 minute",
+            "code": 2003
+        },
+        "DISCORD_AUTH_ERROR": {
+            "message": "Authentication error with Discord",
+            "code": 2004
+        },
+        "NO_QUERY_IN_BODY": {
+            "message": "No query was provided in body",
+            "code": 2005
+        },
+        "INTERNAL_SERVER_ERROR": {
+            "message": "An internal server error ocurred, try again",
+            "code": 2006
+        },
+        "SUCCESS": { "message": "Success!", "code": 2050 },
+        "MISSING_USER": { "message": "Missing user property", "code": 2007 },
+        "INVALID_PROPS": {
+            "message": "Some properties are wrong",
+            "code": 2008
+        },
+        "MISSING_BODY": {
+            "message": "Missing body",
+            "code": 2009
+        }
+    },
+    "GUILD": {
+        "GUILD_NOT_FOUND": { "message": "Unknown guild", "code": 3001 },
+        "GUILD_ALREADY_EXISTS": {
+            "message": "The guild already exists",
+            "code": 3002
+        },
+        "NOT_GUILD_OWNER": {
+            "message": "You are not this guild owner",
+            "code": 3003
+        }
+    },
+    "FEEDBACK": {
+        "THE_USER_ALREADY_SENT": {
+            "message": "The user has already sent the feedback",
+            "code": 4001
+        },
+        "UNKNOWN_FEEDBACK": { "message": "Unknown feedback", "code": 4002 },
+        "UNKNOWN_USER": {
+            "message": "Cannot send a feedback without user",
+            "code": 4003
+        },
+        "NO_FEEDBACKS": { "message": "This bot has no feedbacks", "code": 4050 }
+    },
+    "USER": {
+        "UNKNOWN_USER": { "message": "Unknown user", "code": 5001 }
+    }
+}
