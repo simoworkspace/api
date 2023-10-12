@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { sign, verify } from "jsonwebtoken";
 import axios, { HttpStatusCode } from "axios";
 import { GENERICS } from "../helpers/errors.json";
+import { userSchema } from "../../schemas/User";
 
 /** Website callback */
 export const callback = async (req: Request, res: Response) => {
@@ -85,7 +86,12 @@ export const callback = async (req: Request, res: Response) => {
             const { username, id, avatar } = await request.json();
             const sevenDays = 604800000;
 
-            const token = sign({ username, id, avatar, signed: true }, JWT_SECRET as string);
+            const token = sign(
+                { username, id, avatar, signed: true },
+                JWT_SECRET as string
+            );
+
+            await userSchema.create({ username, avatar, _id: id });
 
             res.cookie("discordUser", token, { maxAge: sevenDays });
 
@@ -123,13 +129,13 @@ export const callback = async (req: Request, res: Response) => {
                             },
                         },
                     ],
-                }, {
+                },
+                {
                     headers: {
-                        Authorization: token
-                    }
+                        Authorization: token,
+                    },
                 }
             );
-
         } catch {
             res.status(HttpStatusCode.BadRequest).json(
                 GENERICS.DISCORD_AUTH_ERROR
