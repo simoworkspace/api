@@ -85,4 +85,12 @@ export enum APIScopes {
 export interface NotificationBody {
     content: string;
     sent_at: string;
+    type: NotificationType;
+}
+
+export enum NotificationType {
+    Comment,
+    ApprovedBot,
+    RefusedBot,
+    Mixed,
 }
