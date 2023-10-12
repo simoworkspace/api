@@ -15,6 +15,11 @@ const rawUserSchema = new Schema<UserStructure>({
         type: String,
         required: true,
     },
+    notifications: {
+        type: Map,
+        of: Object,
+        default: new Map(),
+    },
 });
 
 export const userSchema = model(MODELS_NAME.Users, rawUserSchema);

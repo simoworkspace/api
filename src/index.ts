@@ -15,6 +15,8 @@ import { createGuild } from "./routers/guilds/createGuild";
 import { updateGuild } from "./routers/guilds/updateGuild";
 import { deleteGuild } from "./routers/guilds/deleteGuild";
 import { discordWebhook } from "./routers/webhooks/discordWebhook";
+import { createNotification } from "./routers/users/createNotification";
+import { deleteNotification } from "./routers/users/deleteNotification";
 import { updateBotOrFeedback } from "./routers/bots/updateBotOrFeedback";
 import { deleteBotOrFeedback } from "./routers/bots/deleteBotOrFeedback";
 
@@ -32,7 +34,10 @@ app.use(
     cookieParser()
 );
 
-app.route(ROUTES.USER).get(getUser);
+app.route(ROUTES.USER)
+    .get(getUser)
+    .post(createNotification)
+    .delete(deleteNotification);
 app.route(ROUTES.AUTH).get(callback);
 app.route(ROUTES.TOKEN).get(getToken);
 app.route(ROUTES.WEBHOOK).post(auth, discordWebhook);

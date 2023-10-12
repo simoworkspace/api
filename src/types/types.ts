@@ -32,6 +32,7 @@ export interface UserStructure {
     _id: Snowflake;
     username: string;
     avatar: string;
+    notifications: Map<string, NotificationBody>;
 }
 
 /**
@@ -78,4 +79,21 @@ export interface FeedbackStructure {
 export enum APIScopes {
     Identify = "identify",
     Guilds = "guilds",
+}
+
+export interface NotificationBody {
+    content: string;
+    sent_at: number;
+    type: NotificationType;
+}
+
+export enum NotificationType {
+    /**
+     * When a feedback is sent
+     */
+    Comment,
+    /**
+     * When the state of a bot is updated (e.g. was approved)
+     */
+    BotLogs,
 }

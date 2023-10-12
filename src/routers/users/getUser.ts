@@ -1,17 +1,29 @@
 import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
 import { USER } from "../helpers/errors.json";
+import { userSchema } from "../../schemas/User";
 
 /**
- * Gets a user from Discord API
+ * Gets a user notifications or a user from Discord API
  */
 export const getUser = async (req: Request, res: Response) => {
+    const { userId } = req.params;
+
+    if (req.params.method === "notifications") {
+        const user = await userSchema.findById(userId);
+
+        if (!user)
+            return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
+
+        return res.status(HttpStatusCode.Ok).json(user.notifications);
+    }
+
     const { CLIENT_TOKEN } = process.env;
 
-    const request = await fetch(
-        `https://discord.com/api/v10/users/${req.params.userId}`,
-        { method: "GET", headers: { Authorization: `Bot ${CLIENT_TOKEN}` } }
-    );
+    const request = await fetch(`https://discord.com/api/v10/users/${userId}`, {
+        method: "GET",
+        headers: { Authorization: `Bot ${CLIENT_TOKEN}` },
+    });
 
     const userData = await request.json();
 
