@@ -63,6 +63,10 @@
         "MISSING_BODY": {
             "message": "Missing body",
             "code": 2009
+        },
+        "METHOD_NOT_ALLOWED": {
+            "message": "Method not allowed",
+            "code": 2008
         }
     },
     "GUILD": {
@@ -89,6 +93,14 @@
         "NO_FEEDBACKS": { "message": "This bot has no feedbacks", "code": 4050 }
     },
     "USER": {
-        "UNKNOWN_USER": { "message": "Unknown user", "code": 5001 }
+        "UNKNOWN_USER": { "message": "Unknown user", "code": 5001 },
+        "MISSING_NOTIFICATION_ID": {
+            "message": "Missing notification Id",
+            "code": 5002
+        },
+        "UNKNOWN_NOTIFICATION": {
+            "message": "Unknown notification",
+            "code": 5003
+        }
     }
 }
