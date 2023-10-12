@@ -132,7 +132,7 @@ Este método é usado para editar um bot, retorna uma estrutura de [bot](https:/
 
 ## Patch Feedback
 
-### PATCH `/api/bots/feedbacks/{userId}`
+### PATCH `/api/bots/{botId}/feedbacks/{userId}`
 
 Este método é usado para editar um feedback em um bot, retorna uma estrutura de [feedback](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/core/types/types.d.ts#L113)
 
