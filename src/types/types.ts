@@ -71,6 +71,7 @@ export interface FeedbackStructure {
     posted_at: string;
     content: string;
     target_bot: Snowflake;
+    edited?: boolean;
 }
 
 /**

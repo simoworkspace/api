@@ -32,7 +32,7 @@ export const updateBotOrFeedback = async (req: Request, res: Response) => {
                 .json(GENERICS.INVALID_PROPS);
 
         const updatedFeedback = await feedback.updateOne(
-            { $set: { content, stars } },
+            { $set: { content, stars, edited: true } },
             { new: true }
         );
 
