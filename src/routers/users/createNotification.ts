@@ -24,12 +24,17 @@ export const createNotification = async (req: Request, res: Response) => {
             .status(HttpStatusCode.BadRequest)
             .json(GENERICS.INVALID_PROPS);
 
-    const notificationId = parseInt([...user.notifications.keys()][user.notifications.size - 1]) + 1;
+    const notificationsId = [...user.notifications.keys()];
 
-    user.notifications.set(`${notificationId}`, {
-        ...body,
-        sent_at: Date.now(),
-    } as NotificationBody);
+    user.notifications.set(
+        notificationsId.length < 1
+            ? "1"
+            : `${Math.max(...notificationsId.map(Number)) + 1}`,
+        {
+            ...body,
+            sent_at: Date.now(),
+        } as NotificationBody
+    );
 
     await user.save();
 
