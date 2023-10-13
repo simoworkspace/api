@@ -101,6 +101,14 @@
         "UNKNOWN_NOTIFICATION": {
             "message": "Unknown notification",
             "code": 5003
+        },
+        "NO_NOTIFICATIONS": {
+            "message": "This user has no notifications",
+            "code": 5004
+        },
+        "INVALID_NOTIFICATIONS_SIZE": {
+            "message": "This user must have more than 1 notification to bulk-delete",
+            "code": 5005
         }
     }
 }
