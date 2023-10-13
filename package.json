@@ -4,8 +4,8 @@
     "description": "A REST API referenced to Simo's community",
     "main": "src/index.ts",
     "scripts": {
-        "app": "tsx src/index.ts",
-        "build": "tsc && node dist/src/index.js",
+        "app": "tsx api/index.ts",
+        "build": "tsc && node dist/api/index.js",
         "lint:fix": "eslint . --fix",
         "test": "tsx index.spec.ts",
         "prettier:fix": "prettier --write \"**/*.{js,ts}\""
