@@ -8,9 +8,15 @@ const rawFeedbackSchema = new Schema<FeedbackStructure>({
         required: true,
     },
     author: {
-        id: String,
-        username: String,
-        avatar: String,
+        id: {
+            type: String,
+        },
+        username: {
+            type: String,
+        },
+        avatar: {
+            type: String,
+        },
     },
     posted_at: {
         type: String,
