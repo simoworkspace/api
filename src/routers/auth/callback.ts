@@ -91,7 +91,11 @@ export const callback = async (req: Request, res: Response) => {
                 JWT_SECRET as string
             );
 
-            await userSchema.create({ username, avatar, _id: id });
+            if (!await userSchema.findById(id)) {
+                await userSchema.create({ username, avatar, _id: id });
+            } else {
+                await userSchema.findByIdAndUpdate(id, { username, avatar });
+            }
 
             res.cookie("discordUser", token, { maxAge: sevenDays });
 
