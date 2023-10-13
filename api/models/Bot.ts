@@ -59,7 +59,7 @@ const rawBotSchema = new Schema<BotStructure>({
         required: true,
     },
     votes: {
-        type: [Object] as unknown as VoteStructure[],
+        type: [Object],
         required: true,
         default: [],
     },
