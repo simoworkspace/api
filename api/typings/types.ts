@@ -86,6 +86,7 @@ export interface NotificationBody {
     content: string;
     sent_at: string;
     type: NotificationType;
+    url?: string;
 }
 
 export enum NotificationType {
