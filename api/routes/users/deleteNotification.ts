@@ -14,6 +14,22 @@ export const deleteNotification = async (req: Request, res: Response) => {
 
     if (!user)
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
+    if (notificationId === "bulk-delete") {
+        if (user.notifications.size < 1)
+            return res
+                .status(HttpStatusCode.BadRequest)
+                .json(USER.NO_NOTIFICATIONS);
+        if (user.notifications.size < 2)
+            return res
+                .status(HttpStatusCode.Forbidden)
+                .json(USER.INVALID_NOTIFICATIONS_SIZE);
+
+        user.notifications.clear();
+
+        await user.save();
+
+        return res.status(HttpStatusCode.Ok).json(GENERICS.SUCCESS);
+    }
     if (!notificationId)
         return res
             .status(HttpStatusCode.BadRequest)
