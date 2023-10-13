@@ -35,6 +35,12 @@ Busque por todas as notificações de um usuário
 
 Delete uma notificação de um usuário, retorna uma resposta vazia
 
+## Bulk delete all notifications
+
+### DELETE `/api/users/{userId}/notifications/bulk-delete`
+
+Delete todas as notificações de um usuário, retorna um mensagem de sucesso
+
 ## Create a notification
 
 ### POST `/api/users/{userId}/notifications`
