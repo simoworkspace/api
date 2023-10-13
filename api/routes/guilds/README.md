@@ -46,10 +46,10 @@ Este método é usado para adicionar uma guilda no banco de dados, retorna uma [
 
 #### JSON Params
 
-| FIELD                   | TYPE        | DEFAULT | DESCRIPTION                     |
-| ----------------------- | ----------- | ------- | ------------------------------- |
-| \_id                    | Snowflake   |         | O ID do servidor                |
-| verification_channel_id | Snowflake   |         |                                 |
-| logs_channel_id         | Snowflake   |         | O ID do canal de logs           |
-| add_bot_channel_id?     | Snowflake   |         | O ID do canal de adicionar bots |
-| owners                  | Snowflake[] |         | Os IDs dos donos da guilda      |
+| FIELD                   | TYPE        | DESCRIPTION                     |
+| ----------------------- | ----------- | ------------------------------- |
+| \_id                    | Snowflake   | O ID do servidor                |
+| verification_channel_id | Snowflake   | O ID do canal de verificação    |
+| logs_channel_id         | Snowflake   | O ID do canal de logs           |
+| add_bot_channel_id?     | Snowflake   | O ID do canal de adicionar bots |
+| owners                  | Snowflake[] | Os IDs dos donos da guilda      |
