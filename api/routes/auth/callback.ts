@@ -91,7 +91,7 @@ export const callback = async (req: Request, res: Response) => {
                 JWT_SECRET as string
             );
 
-            if (!await userSchema.exists(id)) {
+            if (!await userSchema.findById(id)) {
                 await userSchema.create({ username, avatar, _id: id });
             } else {
                 await userSchema.findByIdAndUpdate(id, { username, avatar });
@@ -140,7 +140,8 @@ export const callback = async (req: Request, res: Response) => {
                     },
                 }
             );
-        } catch {
+        } catch(error) {
+            console.error(error);
             res.status(HttpStatusCode.BadRequest).json(
                 GENERICS.DISCORD_AUTH_ERROR
             );
