@@ -11,6 +11,7 @@ import { getToken } from "./routes/auth/getToken";
 import { callback } from "./routes/auth/callback";
 import { createBot } from "./routes/bots/createBot";
 import { getGuild } from "./routes/guilds/getGuild";
+import { getStatus } from "./routes/status/getStatus";
 import { createGuild } from "./routes/guilds/createGuild";
 import { updateGuild } from "./routes/guilds/updateGuild";
 import { deleteGuild } from "./routes/guilds/deleteGuild";
@@ -31,7 +32,12 @@ app.use(
         credentials: true,
         origin: ["https://simo-botlist.vercel.app", "http://localhost:5173"],
     }),
-    cookieParser()
+    cookieParser(),
+    (req, res, next) => {
+        requestCount++;
+
+        next();
+    }
 );
 
 app.route(ROUTES.USER)
@@ -51,8 +57,15 @@ app.route(ROUTES.GUILD)
     .delete(auth, deleteGuild)
     .patch(auth, updateGuild)
     .post(auth, createGuild);
+app.route(ROUTES.STATUS).get(getStatus);
+
+export let requestCount = 0;
+
+export let uptime: number;
 
 app.listen(PORT, async () => {
+    uptime = Date.now();
+
     await connect(process.env.MONGOOSE_URL as string).catch(console.error);
 
     console.info(`API iniciada na porta ${PORT}`);

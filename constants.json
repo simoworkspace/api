@@ -12,7 +12,8 @@
         "AUTH": "/api/auth/(:method(callback|user|logout))",
         "GUILD": "/api/guilds/:guildId(\\d{16,21})/(:method(bots))?",
         "TOKEN": "/api/auth/token",
-        "WEBHOOK": "/api/webhook/(:method(login|raw|addbot|bot))"
+        "WEBHOOK": "/api/webhook/(:method(login|raw|addbot|bot))",
+        "STATUS": "/api/status"
     },
     "REQUIRED_PROPS": {
         "FEEDBACK": ["stars", "content"],
