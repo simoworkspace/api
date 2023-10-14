@@ -19,10 +19,6 @@ export const deleteNotification = async (req: Request, res: Response) => {
             return res
                 .status(HttpStatusCode.BadRequest)
                 .json(USER.NO_NOTIFICATIONS);
-        if (user.notifications.size < 1)
-            return res
-                .status(HttpStatusCode.Forbidden)
-                .json(USER.INVALID_NOTIFICATIONS_SIZE);
 
         user.notifications.clear();
 
