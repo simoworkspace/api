@@ -1,10 +1,10 @@
 import { verify } from "jsonwebtoken";
 import { HttpStatusCode } from "axios";
 import { GENERICS } from "../helpers/errors.json";
-import { Request, Response, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
 
 export const auth = (req: Request, res: Response, next: NextFunction) => {
-    const jwtToken = req.headers.authorization as string;
+    const jwtToken = req.headers.authorization;
 
     if (jwtToken) {
         try {

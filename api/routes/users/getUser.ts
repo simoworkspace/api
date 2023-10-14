@@ -1,6 +1,6 @@
 import { HttpStatusCode } from "axios";
-import { Request, Response } from "express";
 import { userSchema } from "../../models/User";
+import type { Request, Response } from "express";
 import { USER } from "../../helpers/errors.json";
 
 /**

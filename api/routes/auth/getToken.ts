@@ -1,5 +1,5 @@
 import { HttpStatusCode } from "axios";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 
 export const getToken = (req: Request, res: Response) => {
     return res

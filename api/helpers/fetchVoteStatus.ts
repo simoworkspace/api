@@ -1,7 +1,7 @@
 import { HttpStatusCode } from "axios";
 import { botSchema } from "../models/Bot";
-import { Request, Response } from "express";
 import { GENERICS, BOT } from "./errors.json";
+import type { Request, Response } from "express";
 
 /**
  * View information about a user vote's

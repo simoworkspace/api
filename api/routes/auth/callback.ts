@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
 import { sign, verify } from "jsonwebtoken";
 import axios, { HttpStatusCode } from "axios";
 import { userSchema } from "../../models/User";
+import type { Request, Response } from "express";
 import { GENERICS } from "../../helpers/errors.json";
 
 /** Website callback */
@@ -91,7 +91,7 @@ export const callback = async (req: Request, res: Response) => {
                 JWT_SECRET as string
             );
 
-            if (!await userSchema.findById(id)) {
+            if (!await userSchema.exists(id)) {
                 await userSchema.create({ username, avatar, _id: id });
             } else {
                 await userSchema.findByIdAndUpdate(id, { username, avatar });

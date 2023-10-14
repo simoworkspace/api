@@ -1,6 +1,6 @@
 import axios, { HttpStatusCode } from "axios";
 import { JwtPayload, verify } from "jsonwebtoken";
-import { NextFunction, Response, Request } from "express";
+import type { NextFunction, Response, Request } from "express";
 
 export const discordLog = async (
     req: Request,
