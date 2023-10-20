@@ -91,11 +91,11 @@ export const callback = async (req: Request, res: Response) => {
                 JWT_SECRET as string
             );
 
-            if (!await userSchema.findById(id)) {
-                await userSchema.create({ username, avatar, _id: id });
-            } else {
-                await userSchema.findByIdAndUpdate(id, { username, avatar });
-            }
+            await userSchema.findOneAndUpdate(
+                { _id: id },
+                { username, avatar },
+                { upsert: true, new: true }
+            );
 
             res.cookie("discordUser", token, { maxAge: sevenDays });
 
@@ -140,7 +140,7 @@ export const callback = async (req: Request, res: Response) => {
                     },
                 }
             );
-        } catch(error) {
+        } catch (error) {
             console.error(error);
             res.status(HttpStatusCode.BadRequest).json(
                 GENERICS.DISCORD_AUTH_ERROR
