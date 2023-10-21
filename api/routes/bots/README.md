@@ -26,6 +26,8 @@ Este método é usado para buscar vários bots no banco de dados, retorna uma Ar
 | short_description | string            | None    |
 | long_description  | string            | None    |
 | created_at        | ISO8601 timestamp | None    |
+| startAt           | integer           | None    |
+| endAt             | integer           | None    |
 
 ## Check If a Bot Exists
 

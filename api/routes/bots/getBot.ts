@@ -15,11 +15,23 @@ export const getBot = async (req: Request, res: Response) => {
         const queryLimit =
             typeof query.limit === "string" ? parseInt(query.limit) : 500;
 
+        const { startAt, endAt } = query;
+
+        delete query.endAt;
+        delete query.startAt;
+
         const botsFound = await botSchema.find(query, null, {
             limit: queryLimit,
         });
 
-        return res.status(HttpStatusCode.Ok).json(botsFound);
+        return res
+            .status(HttpStatusCode.Ok)
+            .json(
+                botsFound.slice(
+                    parseInt(startAt as string),
+                    parseInt(endAt as string) || botsFound.length
+                )
+            );
     }
 
     const { id: botId, method } = req.params;
