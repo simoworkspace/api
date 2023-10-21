@@ -140,8 +140,7 @@ export const callback = async (req: Request, res: Response) => {
                     },
                 }
             );
-        } catch (error) {
-            console.error(error);
+        } catch {
             res.status(HttpStatusCode.BadRequest).json(
                 GENERICS.DISCORD_AUTH_ERROR
             );

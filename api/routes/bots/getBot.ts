@@ -48,8 +48,6 @@ export const getBot = async (req: Request, res: Response) => {
 
         const botImage = await fetch(`https://cdn.discordapp.com/avatars/${targetBot?._id}/${targetBot?.avatar}.png`);
 
-        console.log(botImage.status);
-
         if (botImage.status === 404) {
             const request = await fetch(`https://discord.com/api/v10/users/${botId}`, {
                 method: "GET",
