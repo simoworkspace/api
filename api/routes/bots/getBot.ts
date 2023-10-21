@@ -43,6 +43,28 @@ export const getBot = async (req: Request, res: Response) => {
         ? botSchema.findById({ _id: botId })
         : botSchema.find({}));
 
+    if (botId) {
+        const targetBot = await botSchema.findById({ _id: botId });
+
+        const botImage = await fetch(`https://cdn.discordapp.com/avatars/${targetBot?._id}/${targetBot?.avatar}.png`);
+
+        console.log(botImage.status);
+
+        if (botImage.status === 404) {
+            const request = await fetch(`https://discord.com/api/v10/users/${botId}`, {
+                method: "GET",
+                headers: { Authorization: `Bot ${process.env.CLIENT_TOKEN}` },
+            });
+
+            const botData = await request.json();
+
+            await botSchema.findByIdAndUpdate(botId, {
+                name: botData.username,
+                avatar: botData.avatar
+            });
+        }
+    }
+
     if (!targetBot)
         return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_BOT);
     if (method === "votes") {
