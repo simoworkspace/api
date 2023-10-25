@@ -32,6 +32,7 @@ export interface UserStructure {
     _id: Snowflake;
     username: string;
     avatar: string;
+    api_key?: string;
     notifications: Map<string, NotificationBody>;
 }
 
