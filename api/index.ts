@@ -15,7 +15,6 @@ import { getStatus } from "./routes/status/getStatus";
 import { createGuild } from "./routes/guilds/createGuild";
 import { updateGuild } from "./routes/guilds/updateGuild";
 import { deleteGuild } from "./routes/guilds/deleteGuild";
-import { discordWebhook } from "./routes/webhooks/discordWebhook";
 import { createNotification } from "./routes/users/createNotification";
 import { deleteNotification } from "./routes/users/deleteNotification";
 import { updateBotOrFeedback } from "./routes/bots/updateBotOrFeedback";
@@ -46,7 +45,6 @@ app.route(ROUTES.USER)
     .delete(deleteNotification);
 app.route(ROUTES.AUTH).get(callback);
 app.route(ROUTES.TOKEN).get(getToken);
-app.route(ROUTES.WEBHOOK).post(auth, discordWebhook);
 app.route(ROUTES.BOTS)
     .get(getBot)
     .delete(auth, deleteBotOrFeedback)

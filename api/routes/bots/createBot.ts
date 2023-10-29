@@ -8,6 +8,7 @@ import { REQUIRED_PROPS } from "../../../constants.json";
 import { botSchemaValidator } from "../../validators/bots";
 import { feedbackValidator } from "../../validators/feedback";
 import { GENERICS, BOT, FEEDBACK } from "../../helpers/errors.json";
+import { webhooks } from "../../helpers/webhooks";
 
 /**
  * Creates a bot, vote, or submit a feedback
@@ -26,9 +27,9 @@ export const createBot = async (req: Request, res: Response) => {
                 .status(HttpStatusCode.NotFound)
                 .json(FEEDBACK.UNKNOWN_USER);
 
-        const exists = await feedbackSchema.exists({ 
-            "author.id": JwtPayload.id, 
-            target_bot: botId 
+        const exists = await feedbackSchema.exists({
+            "author.id": JwtPayload.id,
+            target_bot: botId
         });
 
         if (exists)
@@ -187,6 +188,12 @@ export const createBot = async (req: Request, res: Response) => {
         return res
             .status(HttpStatusCode.InternalServerError)
             .json(GENERICS.INTERNAL_SERVER_ERROR);
+
+    const createdAt: number = Math.round(new Date(parseFloat(botId) / 4194304 + 1420070400000).getTime() / 1000);
+
+    await webhooks.bot(createdBot, createdAt);
+    await webhooks.logs(createdBot);
+    await webhooks.raw(createdBot);
 
     return res.status(HttpStatusCode.Ok).json(createdBot);
 };
