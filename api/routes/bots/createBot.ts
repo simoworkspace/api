@@ -197,3 +197,4 @@ export const createBot = async (req: Request, res: Response) => {
 
     return res.status(HttpStatusCode.Ok).json(createdBot);
 };
+// Linha 200
