@@ -1,5 +1,5 @@
 import { sign, verify } from "jsonwebtoken";
-import axios, { HttpStatusCode } from "axios";
+import { HttpStatusCode } from "axios";
 import { userSchema } from "../../models/User";
 import type { Request, Response } from "express";
 import { GENERICS } from "../../helpers/errors.json";
@@ -89,13 +89,16 @@ export const callback = async (req: Request, res: Response) => {
 
             const token = sign(
                 { username, id, avatar, signed: true },
-                JWT_SECRET as string
+                JWT_SECRET as string,
+                {
+                    expiresIn: sevenDays
+                }
             );
 
             await userSchema.findOneAndUpdate(
                 { _id: id },
                 { username, avatar },
-                { upsert: true, new: true }
+                { new: true }
             );
 
             res.cookie("discordUser", token, { maxAge: sevenDays });
