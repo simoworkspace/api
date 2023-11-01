@@ -19,6 +19,9 @@ import { createNotification } from "./routes/users/createNotification";
 import { deleteNotification } from "./routes/users/deleteNotification";
 import { updateBotOrFeedback } from "./routes/bots/updateBotOrFeedback";
 import { deleteBotOrFeedback } from "./routes/bots/deleteBotOrFeedback";
+import { createToken } from "./routes/auth/createToken";
+import { getVoteStatus } from "./routes/v1/vote-status";
+import { apiKeyAuth } from "./middlewares/apiKeyAuth";
 
 load();
 
@@ -41,10 +44,12 @@ app.use(
 
 app.route(ROUTES.USER)
     .get(getUser)
-    .post(createNotification)
-    .delete(deleteNotification);
+    .post(auth, createNotification)
+    .delete(auth, deleteNotification);
 app.route(ROUTES.AUTH).get(callback);
-app.route(ROUTES.TOKEN).get(getToken);
+app.route(ROUTES.TOKEN)
+    .get(auth, getToken)
+    .post(auth, createToken);
 app.route(ROUTES.BOTS)
     .get(getBot)
     .delete(auth, deleteBotOrFeedback)
@@ -56,6 +61,7 @@ app.route(ROUTES.GUILD)
     .patch(auth, updateGuild)
     .post(auth, createGuild);
 app.route(ROUTES.STATUS).get(getStatus);
+app.route(ROUTES.V1.VOTE).get(apiKeyAuth, getVoteStatus);
 
 export let requestCount = 0;
 
