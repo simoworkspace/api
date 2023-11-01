@@ -22,6 +22,7 @@ export interface BotStructure {
     verified: boolean;
     tags: string[];
     approved: boolean;
+    api_key?: string;
     votes: VoteStructure[];
 }
 
@@ -32,7 +33,6 @@ export interface UserStructure {
     _id: Snowflake;
     username: string;
     avatar: string;
-    api_key?: string;
     notifications: Map<string, NotificationBody>;
 }
 

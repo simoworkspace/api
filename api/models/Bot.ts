@@ -58,6 +58,10 @@ const rawBotSchema = new Schema<BotStructure>({
         type: Boolean,
         required: true,
     },
+    api_key: {
+        type: String,
+        required: false
+    },
     votes: {
         type: [Object],
         required: true,
