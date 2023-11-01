@@ -9,7 +9,7 @@ export const apiKeyAuth = async (req: Request, res: Response, next: NextFunction
         api_key: key
     });
 
-    if (botData) return next();
+    if (botData && key) return next();
 
     return res
         .status(HttpStatusCode.Unauthorized)
