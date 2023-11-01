@@ -6,17 +6,20 @@ import type { Request, Response, NextFunction } from "express";
 export const auth = (req: Request, res: Response, next: NextFunction) => {
     const jwtToken = req.headers.authorization;
 
-    if (jwtToken) {
-        try {
-            const jwtSecrect = process.env.JWT_SECRET as string;
+    if (!jwtToken) return res
+        .status(HttpStatusCode.BadRequest)
+        .json(GENERICS.INVALID_AUTH);
 
-            verify(jwtToken, jwtSecrect);
+    try {
+        const jwtSecrect = process.env.JWT_SECRET as string;
 
-            next();
-        } catch {
-            return res
-                .status(HttpStatusCode.BadRequest)
-                .json(GENERICS.INVALID_AUTH);
-        }
+        verify(jwtToken, jwtSecrect);
+
+        next();
+    } catch {
+        return res
+            .status(HttpStatusCode.BadRequest)
+            .json(GENERICS.INVALID_AUTH);
     }
+
 };
