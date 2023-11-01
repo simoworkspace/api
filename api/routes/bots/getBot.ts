@@ -40,11 +40,11 @@ export const getBot = async (req: Request, res: Response) => {
     if (method === "vote-status") return fetchVoteStatus(req, res);
 
     const targetBot = await (botId
-        ? botSchema.findById({ _id: botId })
-        : botSchema.find({}));
+        ? botSchema.findById(botId).select("-api_key")
+        : botSchema.find().select("-api_key"));
 
     if (botId) {
-        const targetBot = await botSchema.findById({ _id: botId });
+        if (Array.isArray(targetBot)) return;
 
         const botImage = await fetch(`https://cdn.discordapp.com/avatars/${targetBot?._id}/${targetBot?.avatar}.png`);
 
