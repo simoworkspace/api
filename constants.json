@@ -9,11 +9,13 @@
     "ROUTES": {
         "BOTS": "/api/bots/:id(\\d{16,21})?(/:method(vote-status|votes?|feedbacks))?(/:user(\\d{16,21}))?",
         "USER": "/api/users/:userId(\\d{16,21}|@all)(/:method(notifications))?(/:notificationId(\\d+|bulk-delete))?",
-        "AUTH": "/api/auth/(:method(callback|user|logout))",
+        "AUTH": "/api/auth/:method(callback|user|logout)",
         "GUILD": "/api/guilds/:guildId(\\d{16,21})/(:method(bots))?",
-        "TOKEN": "/api/auth/(:method(generate-token|token))",
-        "WEBHOOK": "/api/webhook/(:method(login|raw|addbot|bot))",
-        "STATUS": "/api/status"
+        "TOKEN": "/api/auth/:method(api-key|token)(/:botId)?",
+        "STATUS": "/api/status",
+        "V1": {
+            "VOTE": "/api/v1/vote-status/:userId"
+        }
     },
     "REQUIRED_PROPS": {
         "FEEDBACK": ["stars", "content"],
