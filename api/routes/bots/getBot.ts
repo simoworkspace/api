@@ -22,7 +22,7 @@ export const getBot = async (req: Request, res: Response) => {
 
         const botsFound = await botSchema.find(query, null, {
             limit: queryLimit,
-        });
+        }).sort({ total_votes: -1 });
 
         return res
             .status(HttpStatusCode.Ok)
@@ -41,7 +41,7 @@ export const getBot = async (req: Request, res: Response) => {
 
     const targetBot = await (botId
         ? botSchema.findById(botId).select("-api_key")
-        : botSchema.find().select("-api_key"));
+        : botSchema.find().sort({ total_votes: -1 }).select("-api_key"));
 
     if (botId) {
         if (Array.isArray(targetBot)) return;
