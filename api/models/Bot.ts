@@ -67,6 +67,11 @@ const rawBotSchema = new Schema<BotStructure>({
         required: true,
         default: [],
     },
+    total_votes: {
+        type: Number,
+        required: true,
+        default: 0,
+    }
 });
 
 export const botSchema = model(MODELS_NAME.Bots, rawBotSchema);

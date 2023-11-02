@@ -24,6 +24,7 @@ export interface BotStructure {
     approved: boolean;
     api_key?: string;
     votes: VoteStructure[];
+    total_votes: number;
 }
 
 /**
