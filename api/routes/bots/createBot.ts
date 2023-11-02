@@ -146,7 +146,7 @@ export const createBot = async (req: Request, res: Response) => {
         const vote = await botSchema.findOneAndUpdate(
             { _id: botId, "votes.user": props.user },
             {
-                $inc: { "votes.$.votes": 1 },
+                $inc: { "votes.$.votes": 1, "total_votes": 1 },
                 $set: { "votes.$.last_vote": new Date().toISOString() },
             },
             { new: true }
