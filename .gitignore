@@ -11,3 +11,4 @@ dist/
 
 # API tests
 index.spec.ts
+src/
