@@ -22,6 +22,7 @@ import { deleteBotOrFeedback } from "./routes/bots/deleteBotOrFeedback";
 import { createToken } from "./routes/auth/createToken";
 import { getVoteStatus } from "./routes/v1/vote-status";
 import { apiKeyAuth } from "./middlewares/apiKeyAuth";
+import { updateUser } from "./routes/users/updateUser";
 
 load();
 
@@ -45,7 +46,8 @@ app.use(
 app.route(ROUTES.USER)
     .get(getUser)
     .post(auth, createNotification)
-    .delete(auth, deleteNotification);
+    .delete(auth, deleteNotification)
+    .patch(auth, updateUser);
 app.route(ROUTES.AUTH).get(callback);
 app.route(ROUTES.TOKEN)
     .get(auth, getToken)

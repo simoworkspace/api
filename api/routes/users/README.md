@@ -53,3 +53,15 @@ Crie uma nova notificação, retorna todas as notificações do usuário
 | ------- | ------- | ------------------------------- |
 | content | string  | O conteúdo/corpo da notificação |
 | type    | integer | O tipo da notificação           |
+
+## Update user
+
+### PATCH `/api/users/{userId}`
+
+Atualize um usuário, retorna o objeto do usuário desatualizado
+
+#### JSON Params
+
+| FIELD | TYPE   | DESCRIPTION                     |
+| ----- | ------ | ------------------------------- |
+| bio   | string | The new bio to the user (1-200) |

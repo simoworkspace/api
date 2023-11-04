@@ -13,7 +13,9 @@ export const botSchemaValidator = object({
     avatar: string().required(),
     invite_url: string().url().required(),
     website_url: string().url(),
-    support_server: string().matches(/^https:\/\/discord\.(gg|invite)\/[a-z0-9]+$/i),
+    support_server: string().matches(
+        /^https:\/\/discord\.(gg|invite)\/[a-z0-9]+$/i
+    ),
     source_code: string().url(),
     short_description: string().min(50).max(80),
     long_description: string().min(200).max(2048),
@@ -24,6 +26,7 @@ export const botSchemaValidator = object({
     tags: array(string()).max(5).required(),
     approved: boolean().required(),
     votes: array(voteValidator),
+    banner_url: string().max(200).min(1),
 }).strict();
 
 export const patchBotValidator = object({
@@ -31,7 +34,9 @@ export const patchBotValidator = object({
     avatar: string(),
     invite_url: string(),
     website_url: string(),
-    support_server: string().matches(/^https:\/\/discord\.(gg|invite)\/[a-z0-9]+$/i),
+    support_server: string().matches(
+        /^https:\/\/discord\.(gg|invite)\/[a-z0-9]+$/i
+    ),
     source_code: string().url(),
     short_description: string().min(50).max(80),
     long_description: string().max(500),
@@ -40,4 +45,5 @@ export const patchBotValidator = object({
     verified: boolean(),
     tags: array(string()).max(5),
     votes: array(voteValidator),
+    banner_url: string().max(200).min(1),
 }).strict();

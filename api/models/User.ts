@@ -20,6 +20,10 @@ const rawUserSchema = new Schema<UserStructure>({
         of: Object,
         default: new Map(),
     },
+    bio: {
+        type: String,
+        default: "",
+    },
 });
 
 export const userSchema = model(MODELS_NAME.Users, rawUserSchema);

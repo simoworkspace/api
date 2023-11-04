@@ -25,6 +25,7 @@ export interface BotStructure {
     api_key?: string;
     votes: VoteStructure[];
     total_votes: number;
+    banner_url: string | null;
 }
 
 /**
@@ -35,6 +36,7 @@ export interface UserStructure {
     username: string;
     avatar: string;
     notifications: Map<string, NotificationBody>;
+    bio: string;
 }
 
 /**

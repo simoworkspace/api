@@ -60,7 +60,7 @@ const rawBotSchema = new Schema<BotStructure>({
     },
     api_key: {
         type: String,
-        required: false
+        required: false,
     },
     votes: {
         type: [Object],
@@ -71,7 +71,11 @@ const rawBotSchema = new Schema<BotStructure>({
         type: Number,
         required: true,
         default: 0,
-    }
+    },
+    banner_url: {
+        type: String,
+        default: null,
+    },
 });
 
 export const botSchema = model(MODELS_NAME.Bots, rawBotSchema);

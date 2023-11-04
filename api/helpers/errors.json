@@ -105,6 +105,14 @@
         "NO_NOTIFICATIONS": {
             "message": "This user has no notifications",
             "code": 5004
+        },
+        "INVALID_BODY_TO_UPDATE": {
+            "message": "Only the 'bio' key can be updated",
+            "code": 5005
+        },
+        "INVALID_BIO_LENGTH": {
+            "message": "The bio length must be greater than 0 and less than 200 characters",
+            "code": 5006
         }
     }
 }

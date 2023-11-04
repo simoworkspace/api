@@ -58,22 +58,21 @@ export const updateBotOrFeedback = async (req: Request, res: Response) => {
     if (!bot.owners.includes(payload.id))
         return res.status(HttpStatusCode.BadRequest).json(BOT.NOT_BOT_OWNER);
 
-    if (!patchBotValidator.isValidSync(req.body))
+    if (Object.keys(req.body).length < 1)
+        return res
+            .status(HttpStatusCode.BadRequest)
+            .json(GENERICS.MISSING_BODY);
+    if (!patchBotValidator.isValidSync(req.body, { strict: true }))
         return res
             .status(HttpStatusCode.BadRequest)
             .json(GENERICS.INVALID_PROPS);
 
-    const updatedBot = await bot.updateOne(
+    await bot.updateOne(
         { $set: req.body },
         {
             new: true,
         }
     );
 
-    if (!updatedBot)
-        return res
-            .status(HttpStatusCode.InternalServerError)
-            .json(GENERICS.INTERNAL_SERVER_ERROR);
-
-    return res.status(HttpStatusCode.Ok).json(updatedBot);
+    return res.status(HttpStatusCode.Ok).json(bot);
 };

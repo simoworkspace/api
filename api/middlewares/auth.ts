@@ -6,9 +6,10 @@ import type { Request, Response, NextFunction } from "express";
 export const auth = (req: Request, res: Response, next: NextFunction) => {
     const jwtToken = req.headers.authorization;
 
-    if (!jwtToken) return res
-        .status(HttpStatusCode.BadRequest)
-        .json(GENERICS.INVALID_AUTH);
+    if (!jwtToken)
+        return res
+            .status(HttpStatusCode.BadRequest)
+            .json(GENERICS.INVALID_AUTH);
 
     try {
         const jwtSecrect = process.env.JWT_SECRET as string;
@@ -21,5 +22,4 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
             .status(HttpStatusCode.BadRequest)
             .json(GENERICS.INVALID_AUTH);
     }
-
 };
