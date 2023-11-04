@@ -1,5 +1,5 @@
 {
-    "name": "some-secret",
+    "name": "nothing-secret",
     "version": "1.0.0",
     "description": "A REST API referenced to Simo's community",
     "main": "src/index.ts",
