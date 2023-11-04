@@ -7,9 +7,9 @@ import { USER } from "../../helpers/errors.json";
  * Gets a user notifications or a user from Discord API
  */
 export const getUser = async (req: Request, res: Response) => {
-    const { userId } = req.params;
+    const { userId, method } = req.params;
 
-    if (req.params.method === "notifications") {
+    if (method === "notifications") {
         const user = await userSchema.findById(userId);
 
         if (!user)
@@ -18,20 +18,31 @@ export const getUser = async (req: Request, res: Response) => {
         return res.status(HttpStatusCode.Ok).json(user.notifications);
     }
 
-    const { CLIENT_TOKEN } = process.env;
+    if (method === "discord") {
+        const { CLIENT_TOKEN } = process.env;
 
-    const request = await fetch(`https://discord.com/api/v10/users/${userId}`, {
-        method: "GET",
-        headers: { Authorization: `Bot ${CLIENT_TOKEN}` },
-    });
+        const request = await fetch(
+            `https://discord.com/api/v10/users/${userId}`,
+            {
+                method: "GET",
+                headers: { Authorization: `Bot ${CLIENT_TOKEN}` },
+            }
+        );
 
-    const userData = await request.json();
+        const userData = await request.json();
 
-    const isDiscordError = (data: Record<string, unknown>) =>
-        "message" in data && "code" in data;
+        if ("message" in userData)
+            return res
+                .status(HttpStatusCode.BadRequest)
+                .json(USER.UNKNOWN_USER);
 
-    if (isDiscordError(userData))
-        return res.status(HttpStatusCode.BadRequest).json(USER.UNKNOWN_USER);
+        return res.status(HttpStatusCode.Ok).json(userData);
+    }
 
-    return res.status(HttpStatusCode.Ok).json(userData);
+    const user = await userSchema.findById(userId, { __v: 0 });
+
+    if (!user)
+        return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
+
+    return res.status(HttpStatusCode.Ok).json(user);
 };

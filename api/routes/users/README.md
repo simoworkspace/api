@@ -1,10 +1,26 @@
 # User Resources
 
-## Get user
+## Get discord user
 
 ### GET `/api/users/{userId}`
 
 Busque por um usuário na API do Discord, retorna uma [estrutura](https://discord.com/developers/docs/resources/user#user-object) de usuário do Discord.
+
+## Get user
+
+Busque por um usuário nada database, retorna uma estrutura de usuário
+
+### Example Response
+
+```json
+{
+    "_id": "963124227911860264",
+    "username": "meunreal",
+    "avatar": "1f42e6dc5631724994ee7ea819371036",
+    "notifications": {},
+    "bio": "some cool bio goes here ❤"
+}
+```
 
 ## Get user notifications
 
