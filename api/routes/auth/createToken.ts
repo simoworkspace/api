@@ -19,7 +19,7 @@ export const createToken = async (req: Request, res: Response) => {
 
         const bot = await botSchema.findById(botId);
 
-        if (bot && bot.owners.includes(userData.id)) {
+        if (bot && bot.owner_id === userData.id) {
             await botSchema.findByIdAndUpdate(botId, {
                 api_key: apikey
             });
