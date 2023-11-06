@@ -114,5 +114,35 @@
             "message": "The bio length must be greater than 0 and less than 200 characters",
             "code": 5006
         }
+    },
+    "TEAM": {
+        "UNKNOWN_TEAM": {
+            "message": "Unknwon team",
+            "code": 6001
+        },
+        "USER_ALREADY_HAVE_A_TEAM": {
+            "message": "The user already has a team",
+            "code": 6002
+        },
+        "BOT_ALREADY_IN_A_TEAM": {
+            "message": "The bot already belongs to a team",
+            "code": 6003
+        },
+        "BOT_ALREADY_ADDED": {
+            "message": "This bot cannot join in a team",
+            "code": 6004
+        },
+        "USER_HAS_NO_TEAM": {
+            "message": "The user does not belongs to a team",
+            "code": 6005
+        },
+        "USER_IS_NOT_A_MEMBER": {
+            "message": "You don't belong to this team",
+            "code": 6006
+        },
+        "USER_IS_READONLY": {
+            "message": "Your role is read-only",
+            "code": 6007
+        }
     }
 }
