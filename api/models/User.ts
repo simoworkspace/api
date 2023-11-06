@@ -24,6 +24,20 @@ const rawUserSchema = new Schema<UserStructure>({
         type: String,
         default: "",
     },
+    team: {
+        id: String,
+        name: String,
+        avatar_url: String,
+        description: String,
+        bot_id: String,
+        members: [
+            {
+                id: String,
+                permission: Number,
+                owner: Boolean,
+            },
+        ],
+    },
 });
 
 export const userSchema = model(MODELS_NAME.Users, rawUserSchema);

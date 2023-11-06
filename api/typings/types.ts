@@ -17,7 +17,7 @@ export interface BotStructure {
     short_description: string;
     long_description: string;
     prefixes: string[];
-    owners: Snowflake[];
+    owner_id: Snowflake;
     created_at: string;
     verified: boolean;
     tags: string[];
@@ -37,6 +37,63 @@ export interface UserStructure {
     avatar: string;
     notifications: Map<string, NotificationBody>;
     bio: string;
+    team: Team;
+}
+
+/**
+ * The team object of a user
+ */
+export interface Team {
+    /**
+     * The members in the team
+     */
+    members: TeamMember[];
+    /**
+     * The hash ID of the team
+     */
+    id: string;
+    /**
+     * The name of the team
+     */
+    name: string;
+    /**
+     * The avatar URL of the team
+     */
+    avatar_url: string;
+    /**
+     * The description of the team (5-100)
+     */
+    description: string;
+    /**
+     * The bot ID that belongs to the team
+     */
+    bot_id: Snowflake;
+}
+
+/**
+ * The object of the member
+ */
+export interface TeamMember {
+    /**
+     * The member's ID
+     */
+    id: Snowflake;
+    /**
+     * Permission of the member in the team
+     */
+    permission: TeamPermissions;
+    /**
+     * Whether the member is the owner or not
+     */
+    owner?: boolean;
+}
+
+/**
+ * The permission of the member in a team
+ */
+export enum TeamPermissions {
+    Administrator,
+    ReadOnly,
 }
 
 /**

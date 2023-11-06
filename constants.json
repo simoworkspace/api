@@ -14,7 +14,8 @@
         "STATUS": "/api/status",
         "V1": {
             "VOTE": "/api/v1/vote-status/:userId"
-        }
+        },
+        "TEAM": "/api/teams(/:teamId)?"
     },
     "REQUIRED_PROPS": {
         "FEEDBACK": ["stars", "content"],

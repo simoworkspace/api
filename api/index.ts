@@ -10,11 +10,7 @@ import { getUser } from "./routes/users/getUser";
 import { getToken } from "./routes/auth/getToken";
 import { callback } from "./routes/auth/callback";
 import { createBot } from "./routes/bots/createBot";
-import { getGuild } from "./routes/guilds/getGuild";
 import { getStatus } from "./routes/status/getStatus";
-import { createGuild } from "./routes/guilds/createGuild";
-import { updateGuild } from "./routes/guilds/updateGuild";
-import { deleteGuild } from "./routes/guilds/deleteGuild";
 import { createNotification } from "./routes/users/createNotification";
 import { deleteNotification } from "./routes/users/deleteNotification";
 import { updateBotOrFeedback } from "./routes/bots/updateBotOrFeedback";
@@ -23,6 +19,10 @@ import { createToken } from "./routes/auth/createToken";
 import { getVoteStatus } from "./routes/v1/vote-status";
 import { apiKeyAuth } from "./middlewares/apiKeyAuth";
 import { updateUser } from "./routes/users/updateUser";
+import { getTeam } from "./routes/teams/getTeam";
+import { createTeam } from "./routes/teams/createTeam";
+import { deleteTeam } from "./routes/teams/deleteTeam";
+import { updateTeam } from "./routes/teams/updateTeam";
 
 load();
 
@@ -49,21 +49,19 @@ app.route(ROUTES.USER)
     .delete(auth, deleteNotification)
     .patch(auth, updateUser);
 app.route(ROUTES.AUTH).get(callback);
-app.route(ROUTES.TOKEN)
-    .get(auth, getToken)
-    .post(auth, createToken);
+app.route(ROUTES.TOKEN).get(auth, getToken).post(auth, createToken);
 app.route(ROUTES.BOTS)
     .get(getBot)
     .delete(auth, deleteBotOrFeedback)
     .patch(auth, updateBotOrFeedback)
     .post(auth, createBot);
-app.route(ROUTES.GUILD)
-    .get(getGuild)
-    .delete(auth, deleteGuild)
-    .patch(auth, updateGuild)
-    .post(auth, createGuild);
 app.route(ROUTES.STATUS).get(getStatus);
 app.route(ROUTES.V1.VOTE).get(apiKeyAuth, getVoteStatus);
+app.route(ROUTES.TEAM)
+    .get(getTeam)
+    .post(createTeam)
+    .delete(deleteTeam)
+    .patch(updateTeam);
 
 export let requestCount = 0;
 
