@@ -32,6 +32,11 @@ const rawFeedbackSchema = new Schema<FeedbackStructure>({
         required: true,
     },
     edited: Boolean,
+    reply_message: {
+        content: String,
+        posted_at: String,
+        edited: Boolean,
+    },
 });
 
 export const feedbackSchema = model(MODELS_NAME.Feedbacks, rawFeedbackSchema);

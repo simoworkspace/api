@@ -90,7 +90,14 @@
             "message": "Cannot send a feedback without user",
             "code": 4003
         },
-        "NO_FEEDBACKS": { "message": "This bot has no feedbacks", "code": 4050 }
+        "NO_FEEDBACKS": {
+            "message": "This bot has no feedbacks",
+            "code": 4050
+        },
+        "CANNOT_REPLY_WHEN_CREATE": {
+            "message": "A reply message cannot be created when creating a feedback",
+            "code": 4003
+        }
     },
     "USER": {
         "UNKNOWN_USER": { "message": "Unknown user", "code": 5001 },

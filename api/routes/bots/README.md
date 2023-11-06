@@ -141,10 +141,11 @@ Este método é usado para editar um feedback em um bot, retorna uma estrutura d
 
 #### JSON Params
 
-| FIELD   | TYPE      | DESCRIPTION                        |
-| ------- | --------- | ---------------------------------- |
-| content | string    | O conteúdo da mensagem do feedback |
-| stars   | int (0-5) | O número de estrelas do feedback   |
+| FIELD         | TYPE                                   | DESCRIPTION                        |
+| ------------- | -------------------------------------- | ---------------------------------- |
+| content       | string                                 | O conteúdo da mensagem do feedback |
+| stars         | number (0-5)                           | O número de estrelas do feedback   |
+| reply_message | [reply_message](/api/typings/types.ts) | A mensagem replicada               |
 
 ## Create Bot
 
@@ -152,7 +153,7 @@ Este método é usado para editar um feedback em um bot, retorna uma estrutura d
 
 Este método é usado para adicionar um bot no banco de dados, retorna uma estrutura de [bot](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/typings/index.d.ts#L7)
 
-### JSON Params
+#### JSON Params
 
 | FIELD             | TYPE                                                                                                     | DEFAULT                   | DESCRIPTION                                                                                       |
 | ----------------- | -------------------------------------------------------------------------------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------- |

@@ -14,7 +14,7 @@ export const updateBotOrFeedback = async (req: Request, res: Response) => {
     const { id: botId, method, user: author } = req.params;
 
     if (method === "feedbacks") {
-        const { content, stars } = req.body;
+        const { body } = req;
 
         const feedback = await feedbackSchema.findOne({
             "author.id": author,
@@ -26,20 +26,23 @@ export const updateBotOrFeedback = async (req: Request, res: Response) => {
                 .status(HttpStatusCode.NotFound)
                 .json(FEEDBACK.UNKNOWN_FEEDBACK);
 
-        if (!patchFeedbackValidator.isValidSync({ content, stars }))
+        const validation = patchFeedbackValidator
+            .validate(body)
+            .catch((error) => error.errors);
+
+        if (Array.isArray(validation))
             return res
                 .status(HttpStatusCode.BadRequest)
-                .json(GENERICS.INVALID_PROPS);
+                .json({ errors: validation });
 
-        const updatedFeedback = await feedback.updateOne(
-            { $set: { content, stars, edited: true } },
+        const updatedFeedback = await feedbackSchema.findOneAndUpdate(
+            {
+                "author.id": author,
+                target_bot: botId,
+            },
+            { $set: { ...body, edited: true } },
             { new: true }
         );
-
-        if (!updatedFeedback)
-            return res
-                .status(HttpStatusCode.InternalServerError)
-                .json(GENERICS.INTERNAL_SERVER_ERROR);
 
         return res.status(HttpStatusCode.Ok).json(updatedFeedback);
     }

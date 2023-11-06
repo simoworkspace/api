@@ -29,7 +29,7 @@ export const createBot = async (req: Request, res: Response) => {
 
         const exists = await feedbackSchema.exists({
             "author.id": JwtPayload.id,
-            target_bot: botId
+            target_bot: botId,
         });
 
         if (exists)
@@ -37,27 +37,21 @@ export const createBot = async (req: Request, res: Response) => {
                 .status(HttpStatusCode.Conflict)
                 .json(FEEDBACK.THE_USER_ALREADY_SENT);
 
-        const body = req.body;
-        const keys = Object.keys(body);
+        const { body } = req;
 
-        if (
-            !REQUIRED_PROPS.FEEDBACK.every((property) =>
-                keys.includes(property)
-            )
-        )
-            return res.status(HttpStatusCode.BadRequest).json({
-                ...GENERICS.SOME_PROPERTIES_IS_MISSING,
-                bonus: {
-                    missing_properties: REQUIRED_PROPS.FEEDBACK.filter(
-                        (property) => !keys.includes(property)
-                    ),
-                },
-            });
-
-        if (!feedbackValidator.isValidSync(body))
+        if (body.reply_message)
             return res
                 .status(HttpStatusCode.BadRequest)
-                .json(GENERICS.INVALID_PROPS);
+                .json(FEEDBACK.CANNOT_REPLY_WHEN_CREATE);
+
+        const validation = await feedbackValidator
+            .validate(body)
+            .catch((error) => error.errors);
+
+        if (Array.isArray(validation))
+            return res
+                .status(HttpStatusCode.BadRequest)
+                .json({ errors: validation });
 
         const createdFeedback = await feedbackSchema.create({
             ...body,
@@ -146,7 +140,7 @@ export const createBot = async (req: Request, res: Response) => {
         const vote = await botSchema.findOneAndUpdate(
             { _id: botId, "votes.user": props.user },
             {
-                $inc: { "votes.$.votes": 1, "total_votes": 1 },
+                $inc: { "votes.$.votes": 1, total_votes: 1 },
                 $set: { "votes.$.last_vote": new Date().toISOString() },
             },
             { new: true }
@@ -189,7 +183,9 @@ export const createBot = async (req: Request, res: Response) => {
             .status(HttpStatusCode.InternalServerError)
             .json(GENERICS.INTERNAL_SERVER_ERROR);
 
-    const createdAt: number = Math.round(new Date(parseFloat(botId) / 4194304 + 1420070400000).getTime() / 1000);
+    const createdAt: number = Math.round(
+        new Date(parseFloat(botId) / 4194304 + 1420070400000).getTime() / 1000
+    );
 
     await webhooks.bot(createdBot, createdAt);
     await webhooks.logs(createdBot);

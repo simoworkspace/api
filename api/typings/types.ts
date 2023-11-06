@@ -133,6 +133,11 @@ export interface FeedbackStructure {
     content: string;
     target_bot: Snowflake;
     edited?: boolean;
+    reply_message?: {
+        content: string;
+        posted_at: string;
+        edited?: boolean;
+    };
 }
 
 /**
