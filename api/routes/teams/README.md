@@ -6,6 +6,14 @@
 
 Busque por um time na database, retorna uma estrutura de time
 
+## Get user teams
+
+### GET `/api/teams`
+
+Busque pelo time do usuário, retorna uma estrutura de time
+
+-   A API tentara encontrar o time pela api_key ou json web token usado
+
 ## Delete team
 
 ### DELETE `/api/teams`
