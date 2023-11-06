@@ -38,8 +38,8 @@ const rawBotSchema = new Schema<BotStructure>({
         type: [String],
         required: true,
     },
-    owners: {
-        type: [String],
+    owner_id: {
+        type: String,
         required: true,
     },
     created_at: {
