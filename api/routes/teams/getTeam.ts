@@ -8,33 +8,40 @@ import { isUsingJWT } from "../../helpers/isUsingJWT";
 
 export const getTeam = async (req: Request, res: Response) => {
     const { teamId } = req.params;
+    let userId: string | undefined;
+
+    const isUsingjwt = isUsingJWT(req.headers);
+
+    if (isUsingjwt) {
+        const decoded = decode(req.headers.authorization as string);
+
+        if (typeof decoded === "object" && decoded !== null && "id" in decoded)
+            userId = decoded.id;
+    }
+    if (!isUsingjwt)
+        userId = (
+            await botSchema.findOne({ api_key: req.headers.authorization })
+        )?.owner_id;
 
     if (!teamId) {
-        let userId: string | undefined;
-
-        const isUsingjwt = isUsingJWT(req.headers);
-
-        if (isUsingjwt) {
-            const decoded = decode(req.headers.authorization as string);
-
-            if (
-                typeof decoded === "object" &&
-                decoded !== null &&
-                "id" in decoded
-            )
-                userId = decoded.id;
-        }
-        if (!isUsingjwt)
-            userId = (
-                await botSchema.findOne({ api_key: req.headers.authorization })
-            )?.owner_id;
-
         const user = await userSchema.findById(userId, {
             __v: 0,
             "team.__v": 0,
         });
 
         return res.status(HttpStatusCode.Ok).json(user?.team);
+    }
+
+    if (teamId === "@all") {
+        const users = await userSchema.find({});
+
+        return res
+            .status(HttpStatusCode.Ok)
+            .json(
+                users.filter((user) =>
+                    user.team.members.some((member) => member.id === userId)
+                )
+            );
     }
 
     const team = await userSchema.findOne({ "team.id": teamId }, { team: 1 });
@@ -44,3 +51,4 @@ export const getTeam = async (req: Request, res: Response) => {
 
     return res.status(HttpStatusCode.Ok).json(team.team);
 };
+// Da pra retornar todos os documentos e usar .find (o nativo), mas não é uma boa prática
