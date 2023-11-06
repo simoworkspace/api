@@ -91,14 +91,14 @@ export const callback = async (req: Request, res: Response) => {
                 { username, id, avatar, signed: true },
                 JWT_SECRET as string,
                 {
-                    expiresIn: sevenDays
+                    expiresIn: sevenDays,
                 }
             );
 
             await userSchema.findOneAndUpdate(
                 { _id: id },
                 { username, avatar },
-                { new: true }
+                { new: true, upsert: true }
             );
 
             res.cookie("discordUser", token, { maxAge: sevenDays });
@@ -109,9 +109,8 @@ export const callback = async (req: Request, res: Response) => {
                 avatar: avatar,
                 id: id,
                 token: token,
-                username: username
+                username: username,
             });
-
         } catch {
             res.status(HttpStatusCode.BadRequest).json(
                 GENERICS.DISCORD_AUTH_ERROR
