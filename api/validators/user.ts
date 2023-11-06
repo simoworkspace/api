@@ -12,7 +12,7 @@ export const createNotificationValidator = object({
         ])
         .required(),
     url: string().url(),
-}).strict();
+}).strict().required().noUnknown();
 
 export const createTeamValidator = object({
     members: array(

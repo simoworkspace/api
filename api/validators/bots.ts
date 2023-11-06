@@ -6,7 +6,10 @@ const voteValidator = object({
     votes: number().required(),
     user: string().matches(idPattern).required(),
     last_vote: string().required(),
-}).strict();
+})
+    .strict()
+    .required()
+    .noUnknown();
 
 export const botSchemaValidator = object({
     name: string().required(),
@@ -27,7 +30,10 @@ export const botSchemaValidator = object({
     approved: boolean().required(),
     votes: array(voteValidator),
     banner_url: string().max(200).min(1),
-}).strict();
+})
+    .strict()
+    .required()
+    .noUnknown();
 
 export const patchBotValidator = object({
     name: string(),
@@ -46,4 +52,7 @@ export const patchBotValidator = object({
     tags: array(string()).max(5),
     votes: array(voteValidator),
     banner_url: string().max(200).min(1),
-}).strict();
+})
+    .strict()
+    .required()
+    .noUnknown();

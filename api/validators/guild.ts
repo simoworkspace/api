@@ -8,11 +8,15 @@ export const guildValidator = object({
     logs_channel_id: string().matches(idPattern).required(),
     addbot_channel_id: string().matches(idPattern),
     owners: array(string().matches(idPattern).required()).required(),
-});
+})
+    .required()
+    .noUnknown();
 
 export const patchGuildValidator = object({
     verification_channel_id: string().matches(idPattern),
     logs_channel_id: string().matches(idPattern),
     add_bot_channel_id: string().matches(idPattern),
     owners: array(string().matches(idPattern)),
-});
+})
+    .required()
+    .noUnknown();

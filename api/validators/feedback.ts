@@ -11,7 +11,9 @@ export const feedbackValidator = object({
     }),
     content: string().max(500).required(),
     target_bot: string().matches(idPattern),
-});
+})
+    .noUnknown()
+    .required();
 
 export const patchFeedbackValidator = object({
     stars: number(),
