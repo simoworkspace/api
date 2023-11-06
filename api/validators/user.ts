@@ -56,6 +56,11 @@ export const updateTeamValidator = object({
             ]),
             owner: boolean(),
         })
+    ).test(
+        "one-owner",
+        "Some member of the team must be the owner",
+        (members) =>
+            members && members.filter((member) => member.owner).length === 1
     ),
 })
     .test("at-least-one-key", "You must pass at least one key", (obj) => {
