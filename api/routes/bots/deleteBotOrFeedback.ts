@@ -41,7 +41,7 @@ export const deleteBotOrFeedback = async (req: Request, res: Response) => {
         process.env.JWT_SECRET as string
     ) as JwtPayload;
 
-    if (!bot.owners.includes(JwtPayload.id))
+    if (bot.owner_id !== JwtPayload.id)
         return res.status(HttpStatusCode.BadRequest).json(BOT.NOT_BOT_OWNER);
 
     await bot.deleteOne();

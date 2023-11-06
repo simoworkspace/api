@@ -15,7 +15,7 @@ export const webhooks = {
             },
             method: "POST",
             body: JSON.stringify({
-                content: `<@${botData.owners[0]}>\n ⏳ **|** Seu bot **${botData.name}** foi enviado para a análise, aguarde os resultados.`
+                content: `<@${botData.owner_id}>\n ⏳ **|** Seu bot **${botData.name}** foi enviado para a análise, aguarde os resultados.`
             })
         });
     },

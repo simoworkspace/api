@@ -55,7 +55,7 @@ export const updateBotOrFeedback = async (req: Request, res: Response) => {
         process.env.JWT_SECRET as string
     ) as JwtPayload;
 
-    if (!bot.owners.includes(payload.id))
+    if (bot.owner_id !== payload.id)
         return res.status(HttpStatusCode.BadRequest).json(BOT.NOT_BOT_OWNER);
 
     if (Object.keys(req.body).length < 1)
