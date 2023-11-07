@@ -38,9 +38,11 @@ export const getTeam = async (req: Request, res: Response) => {
         return res
             .status(HttpStatusCode.Ok)
             .json(
-                users.filter((user) =>
-                    user.team.members.some((member) => member.id === userId)
-                )
+                users
+                    .filter((user) =>
+                        user.team.members.some((member) => member.id === userId)
+                    )
+                    .map((user) => user.team)
             );
     }
 
@@ -51,4 +53,3 @@ export const getTeam = async (req: Request, res: Response) => {
 
     return res.status(HttpStatusCode.Ok).json(team.team);
 };
-// Da pra retornar todos os documentos e usar .find (o nativo), mas não é uma boa prática
