@@ -150,6 +150,10 @@
         "USER_IS_READONLY": {
             "message": "Your role is read-only",
             "code": 6007
+        },
+        "ONLY_THE_OWNER_CAN_DELETE": {
+            "message": "Only the team owner can delete the team",
+            "code": 6008
         }
     }
 }
