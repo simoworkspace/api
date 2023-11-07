@@ -30,6 +30,10 @@ export const deleteTeam = async (req: Request, res: Response) => {
         return res
             .status(HttpStatusCode.BadRequest)
             .json(TEAM.USER_HAS_NO_TEAM);
+    if (user._id !== userId)
+        return res
+            .status(HttpStatusCode.BadRequest)
+            .json(TEAM.ONLY_THE_OWNER_CAN_DELETE);
 
     await user.updateOne({ $unset: { team: 1 } });
 
