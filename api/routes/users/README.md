@@ -78,6 +78,7 @@ Atualize um usuário, retorna o objeto do usuário desatualizado
 
 #### JSON Params
 
-| FIELD | TYPE   | DESCRIPTION                     |
-| ----- | ------ | ------------------------------- |
-| bio   | string | The new bio to the user (1-200) |
+| FIELD                | TYPE    | DESCRIPTION                                |
+| -------------------- | ------- | ------------------------------------------ |
+| bio                  | string  | A biografia do usuário (1-200)             |
+| notifications_viewed | boolean | Se as notificações do usuário foram vistas |

@@ -69,3 +69,17 @@ export const updateTeamValidator = object({
     })
     .noUnknown()
     .strict();
+
+export const updateUserValidator = object({
+    bio: string().max(200).min(1),
+    notifications_viewed: boolean(),
+})
+    .noUnknown()
+    .strict()
+    .test(
+        "at-least-one-options",
+        "you must pass at least one option",
+        (obj) => {
+            return Object.keys(obj).length > 0;
+        }
+    );

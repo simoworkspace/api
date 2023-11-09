@@ -2,6 +2,7 @@ import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
 import { USER, GENERICS } from "../../helpers/errors.json";
 import { userSchema } from "../../models/User";
+import { updateUserValidator } from "../../validators/user";
 
 export const updateUser = async (req: Request, res: Response) => {
     const { body } = req;
@@ -17,16 +18,16 @@ export const updateUser = async (req: Request, res: Response) => {
     if (!user)
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
 
-    if (typeof body.bio !== "string")
-        return res
-            .status(HttpStatusCode.BadRequest)
-            .json(USER.INVALID_BODY_TO_UPDATE);
-    if (body.bio.length > 200 || body.bio.length === 0)
-        return res
-            .status(HttpStatusCode.BadRequest)
-            .json(USER.INVALID_BIO_LENGTH);
+    const validation = await updateUserValidator
+        .validate(body)
+        .catch((error) => error.errors);
 
-    await user.updateOne({ $set: { bio: body.bio } }, { new: true });
+    if (Array.isArray(validation))
+        return res
+            .status(HttpStatusCode.BadRequest)
+            .json({ errors: validation });
+
+    await user.updateOne({ $set: body }, { new: true });
 
     return res.status(HttpStatusCode.Ok).json(user);
 };

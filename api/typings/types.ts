@@ -38,6 +38,7 @@ export interface UserStructure {
     notifications: Map<string, NotificationBody>;
     bio: string;
     team: Team;
+    notifications_viewed: boolean;
 }
 
 /**

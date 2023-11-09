@@ -38,6 +38,10 @@ const rawUserSchema = new Schema<UserStructure>({
             },
         ],
     },
+    notifications_viewed: {
+        type: Boolean,
+        default: true,
+    },
 });
 
 export const userSchema = model(MODELS_NAME.Users, rawUserSchema);
