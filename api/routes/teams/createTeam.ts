@@ -34,7 +34,7 @@ export const createTeam = async (req: Request, res: Response) => {
 
     const team = await userSchema.findOne({ "team.bot_id": req.body.bot_id });
 
-    if (team?.team?.id)
+    if (team?.team?.bot_id)
         return res
             .status(HttpStatusCode.BadRequest)
             .json(TEAM.BOT_ALREADY_IN_A_TEAM);

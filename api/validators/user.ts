@@ -39,8 +39,7 @@ export const createTeamValidator = object({
     avatar_url: string().required(),
     description: string().min(5).max(50),
     bot_id: string()
-        .matches(/^\d{16,21}$/)
-        .required(),
+        .matches(/^\d{16,21}$/),
 }).required();
 
 export const updateTeamValidator = object({
