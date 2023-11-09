@@ -5,9 +5,11 @@ import type { Request, Response } from "express";
 
 export const getVoteStatus = async (req: Request, res: Response) => {
     const { userId } = req.params;
-    const botId = (await botSchema.findOne({
-        api_key: req.headers.authorization
-    }))?._id;
+    const botId = (
+        await botSchema.findOne({
+            api_key: req.headers.authorization,
+        })
+    )?._id;
 
     if (!userId)
         return res

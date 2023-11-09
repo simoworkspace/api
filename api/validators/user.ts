@@ -12,7 +12,10 @@ export const createNotificationValidator = object({
         ])
         .required(),
     url: string().url(),
-}).strict().required().noUnknown();
+})
+    .strict()
+    .required()
+    .noUnknown();
 
 export const createTeamValidator = object({
     members: array(
@@ -38,8 +41,7 @@ export const createTeamValidator = object({
     name: string().required().min(3).max(15).required(),
     avatar_url: string().required(),
     description: string().min(5).max(50),
-    bot_id: string()
-        .matches(/^\d{16,21}$/),
+    bot_id: string().matches(/^\d{16,21}$/),
 }).required();
 
 export const updateTeamValidator = object({

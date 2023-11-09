@@ -29,21 +29,18 @@ export const getTeam = async (req: Request, res: Response) => {
             "team.__v": 0,
         });
 
+        if (!user?.team?.id)
+            return res.status(HttpStatusCode.NotFound).json(TEAM.UNKNOWN_TEAM);
+
         return res.status(HttpStatusCode.Ok).json(user?.team);
     }
 
     if (teamId === "@all") {
-        const users = await userSchema.find({});
+        const users = await userSchema.find({ "team.members.id": userId });
 
         return res
             .status(HttpStatusCode.Ok)
-            .json(
-                users
-                    .filter((user) =>
-                        user.team.members.some((member) => member.id === userId)
-                    )
-                    .map((user) => user.team)
-            );
+            .json(users.map(({ team }) => team));
     }
 
     const team = await userSchema.findOne({ "team.id": teamId }, { team: 1 });
