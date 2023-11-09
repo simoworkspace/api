@@ -54,7 +54,7 @@ export const updateTeam = async (req: Request, res: Response) => {
 
     const options = { ...team.team, ...body };
 
-    team.updateOne({ $set: { team: options } });
+    await team.updateOne({ $set: { team: options } });
 
     return res.status(HttpStatusCode.Ok).json(options);
 };
