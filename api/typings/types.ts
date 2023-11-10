@@ -25,7 +25,7 @@ export interface BotStructure {
     api_key?: string;
     votes: VoteStructure[];
     total_votes: number;
-    banner_url: string | null;
+    banner_url: string;
 }
 
 /**
