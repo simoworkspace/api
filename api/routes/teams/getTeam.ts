@@ -2,26 +2,13 @@ import type { Request, Response } from "express";
 import { userSchema } from "../../models/User";
 import { HttpStatusCode } from "axios";
 import { TEAM } from "../../helpers/errors.json";
-import { botSchema } from "../../models/Bot";
-import { decode } from "jsonwebtoken";
-import { isUsingJWT } from "../../helpers/isUsingJWT";
+import { getUserId } from "../../helpers/getUserId";
+import { getUserByMember } from "../../helpers/getUserByMember";
 
 export const getTeam = async (req: Request, res: Response) => {
     const { teamId } = req.params;
-    let userId: string | undefined;
-
-    const isUsingjwt = isUsingJWT(req.headers);
-
-    if (isUsingjwt) {
-        const decoded = decode(req.headers.authorization as string);
-
-        if (typeof decoded === "object" && decoded !== null && "id" in decoded)
-            userId = decoded.id;
-    }
-    if (!isUsingjwt)
-        userId = (
-            await botSchema.findOne({ api_key: req.headers.authorization })
-        )?.owner_id;
+    const userId = await getUserId(req.headers);
+    const users = await userSchema.find({}, { avatar: 1, username: 1 });
 
     if (!teamId) {
         const user = await userSchema.findById(userId, {
@@ -32,21 +19,36 @@ export const getTeam = async (req: Request, res: Response) => {
         if (!user?.team?.id)
             return res.status(HttpStatusCode.NotFound).json(TEAM.UNKNOWN_TEAM);
 
-        return res.status(HttpStatusCode.Ok).json(user?.team);
+        return res.status(HttpStatusCode.Ok).json({
+            ...user.team,
+            members: user.team.members.map((member) =>
+                getUserByMember(member, users)
+            ),
+        });
     }
 
     if (teamId === "@all") {
         const users = await userSchema.find({ "team.members.id": userId });
 
-        return res
-            .status(HttpStatusCode.Ok)
-            .json(users.map(({ team }) => team));
+        return res.status(HttpStatusCode.Ok).json(
+            users.map(({ team }) => ({
+                ...team,
+                members: team.members.map((member) =>
+                    getUserByMember(member, users)
+                ),
+            }))
+        );
     }
 
-    const team = await userSchema.findOne({ "team.id": teamId }, { team: 1 });
+    const user = await userSchema.findOne({ "team.id": teamId }, { team: 1 });
 
-    if (!team?.team?.id)
+    if (!user?.team?.id)
         return res.status(HttpStatusCode.NotFound).json(TEAM.UNKNOWN_TEAM);
 
-    return res.status(HttpStatusCode.Ok).json(team.team);
+    const { team } = user;
+
+    return res.status(HttpStatusCode.Ok).json({
+        ...team,
+        members: team.members.map((member) => getUserByMember(member, users)),
+    });
 };
