@@ -4,7 +4,6 @@ import { Request, Response } from "express";
 import { botSchema } from "../../models/Bot";
 import { verify, JwtPayload } from "jsonwebtoken";
 import { feedbackSchema } from "../../models/Feedback";
-import { REQUIRED_PROPS } from "../../../constants.json";
 import { botSchemaValidator } from "../../validators/bots";
 import { feedbackValidator } from "../../validators/feedback";
 import { GENERICS, BOT, FEEDBACK } from "../../helpers/errors.json";
@@ -148,18 +147,6 @@ export const createBot = async (req: Request, res: Response) => {
 
         return res.status(HttpStatusCode.Ok).json(vote?.votes);
     }
-
-    const keys = Object.keys(props);
-
-    if (!REQUIRED_PROPS.BOT.every((property) => keys.includes(property)))
-        return res.status(HttpStatusCode.Ok).json({
-            ...GENERICS.SOME_PROPERTIES_IS_MISSING,
-            bonus: {
-                missing_properties: REQUIRED_PROPS.BOT.filter(
-                    (property) => !keys.includes(property)
-                ),
-            },
-        });
 
     if (exists)
         return res.status(HttpStatusCode.Conflict).json(BOT.BOT_ALREADY_EXISTS);

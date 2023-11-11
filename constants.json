@@ -2,7 +2,6 @@
     "MODELS_NAME": {
         "Bots": "addbots",
         "Users": "User",
-        "Guilds": "Guilds",
         "Feedbacks": "Feedbacks"
     },
     "PORT": 80,
@@ -16,22 +15,5 @@
             "VOTE": "/api/v1/vote-status/:userId"
         },
         "TEAM": "/api/teams(/:teamId)?"
-    },
-    "REQUIRED_PROPS": {
-        "FEEDBACK": ["stars", "content"],
-        "BOT": [
-            "name",
-            "short_description",
-            "long_description",
-            "created_at",
-            "approved",
-            "avatar",
-            "invite_url",
-            "prefixes",
-            "owners",
-            "verified",
-            "tags"
-        ],
-        "GUILD": ["verification_channel_id", "logs_channel_id", "owners"]
     }
 }
