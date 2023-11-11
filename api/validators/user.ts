@@ -29,15 +29,8 @@ export const createTeamValidator = object({
                     TeamPermissions.ReadOnly,
                 ])
                 .required(),
-            owner: boolean(),
         })
-    )
-        .required()
-        .test(
-            "one-owner",
-            "Some member of the team must be the owner",
-            (members) => members.filter((member) => member.owner).length === 1
-        ),
+    ).required(),
     name: string().required().min(3).max(15).required(),
     avatar_url: string().required(),
     description: string().min(5).max(50),
@@ -55,13 +48,7 @@ export const updateTeamValidator = object({
                 TeamPermissions.Administrator,
                 TeamPermissions.ReadOnly,
             ]),
-            owner: boolean(),
         })
-    ).test(
-        "one-owner",
-        "Some member of the team must be the owner",
-        (members) =>
-            members && members.filter((member) => member.owner).length === 1
     ),
 })
     .test("at-least-one-key", "You must pass at least one key", (obj) => {
