@@ -69,7 +69,7 @@ export const createBot = async (req: Request, res: Response) => {
                 .status(HttpStatusCode.InternalServerError)
                 .json(GENERICS.INTERNAL_SERVER_ERROR);
 
-        return res.status(HttpStatusCode.Ok).json(createdFeedback);
+        return res.status(HttpStatusCode.Created).json(createdFeedback);
     }
 
     const props = req.body;
