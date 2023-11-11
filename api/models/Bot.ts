@@ -76,6 +76,7 @@ const rawBotSchema = new Schema<BotStructure>({
         type: String,
         default: null,
     },
+    team_id: String,
 });
 
 export const botSchema = model(MODELS_NAME.Bots, rawBotSchema);

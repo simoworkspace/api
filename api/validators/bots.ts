@@ -1,4 +1,5 @@
 import { object, string, array, boolean, number } from "yup";
+import { userSchema } from "../models/User";
 
 const idPattern = /^\d{16,21}$/;
 
@@ -52,6 +53,7 @@ export const patchBotValidator = object({
     tags: array(string()).max(5),
     votes: array(voteValidator),
     banner_url: string().max(200).min(1),
+    team_id: string(),
 })
     .strict()
     .required()

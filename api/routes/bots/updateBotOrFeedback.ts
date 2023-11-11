@@ -5,7 +5,9 @@ import { verify, JwtPayload } from "jsonwebtoken";
 import { feedbackSchema } from "../../models/Feedback";
 import { patchBotValidator } from "../../validators/bots";
 import { patchFeedbackValidator } from "../../validators/feedback";
-import { GENERICS, BOT, FEEDBACK } from "../../helpers/errors.json";
+import { GENERICS, BOT, FEEDBACK, TEAM } from "../../helpers/errors.json";
+import { userSchema } from "../../models/User";
+import { TeamPermissions } from "../../typings/types";
 
 /**
  * Updates a bot or feedback
@@ -61,17 +63,42 @@ export const updateBotOrFeedback = async (req: Request, res: Response) => {
     if (bot.owner_id !== payload.id)
         return res.status(HttpStatusCode.BadRequest).json(BOT.NOT_BOT_OWNER);
 
-    if (Object.keys(req.body).length < 1)
+    const { body } = req;
+
+    if (Object.keys(body).length < 1)
         return res
             .status(HttpStatusCode.BadRequest)
             .json(GENERICS.MISSING_BODY);
-    if (!patchBotValidator.isValidSync(req.body, { strict: true }))
-        return res
-            .status(HttpStatusCode.BadRequest)
-            .json(GENERICS.INVALID_PROPS);
+
+    const validation = await patchBotValidator
+        .validate(body)
+        .catch((error) => error.errors);
+
+    if (Array.isArray(validation))
+        return res.status(HttpStatusCode.BadRequest).json(validation);
+    if ("team_id" in body) {
+        const team = await userSchema.findOne({ "team.id": body.team_id });
+
+        if (!team)
+            return res.status(HttpStatusCode.NotFound).json(TEAM.UNKNOWN_TEAM);
+
+        const member = team.team.members.find((mem) => mem.id);
+
+        if (!member)
+            return res
+                .status(HttpStatusCode.BadRequest)
+                .json(TEAM.USER_IS_NOT_A_MEMBER);
+        if (
+            member.permission !== TeamPermissions.Administrator &&
+            !member.owner
+        )
+            return res
+                .status(HttpStatusCode.BadRequest)
+                .json(TEAM.USER_IS_READONLY);
+    }
 
     await bot.updateOne(
-        { $set: req.body },
+        { $set: body },
         {
             new: true,
         }

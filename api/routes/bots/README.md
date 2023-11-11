@@ -130,6 +130,7 @@ Este método é usado para editar um bot, retorna o objeto do pode desatualizado
 | tags              | string[]                                                                                                 | As tags do bot                                                              |
 | votes             | [VoteStructure](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/core/types/types.d.ts#L47)[] | Array de votos do bot                                                       |
 | banner_url        | string                                                                                                   | URL do banner do bot                                                        |
+| team_id           | string                                                                                                   | O ID do time que o bot pertence                                             |
 
 -   Todas as propriedades são opicionais
 
