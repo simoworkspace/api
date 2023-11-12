@@ -1,5 +1,4 @@
 import { object, string, array, boolean, number } from "yup";
-import { userSchema } from "../models/User";
 
 const idPattern = /^\d{16,21}$/;
 
@@ -24,7 +23,7 @@ export const botSchemaValidator = object({
     short_description: string().min(50).max(80),
     long_description: string().min(200).max(2048),
     prefixes: array(string().max(6)).max(5).required(),
-    owner_id: string().matches(idPattern),
+    owner_id: string().matches(idPattern).required(),
     created_at: string().required(),
     verified: boolean().required(),
     tags: array(string()).max(5).required(),
