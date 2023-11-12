@@ -8,6 +8,7 @@ import { botSchemaValidator } from "../../validators/bots";
 import { feedbackValidator } from "../../validators/feedback";
 import { GENERICS, BOT, FEEDBACK } from "../../helpers/errors.json";
 import { webhooks } from "../../helpers/webhooks";
+import { getUserId } from "../../helpers/getUserId";
 
 /**
  * Creates a bot, vote, or submit a feedback
@@ -158,9 +159,12 @@ export const createBot = async (req: Request, res: Response) => {
             .status(HttpStatusCode.BadRequest)
             .json({ errors: validation });
 
+    const ownerId = (await getUserId(req.headers)) as string;
+
     const createdBot = await botSchema.create({
         ...body,
         _id: botId,
+        owner_id: ownerId,
     });
 
     if (!createdBot)
