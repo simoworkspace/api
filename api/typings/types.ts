@@ -55,6 +55,10 @@ export interface Team {
      */
     id: string;
     /**
+     * The invite hash of the team
+     */
+    invite_hash: string;
+    /**
      * The name of the team
      */
     name: string;

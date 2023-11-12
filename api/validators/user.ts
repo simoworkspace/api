@@ -31,6 +31,7 @@ export const createTeamValidator = object({
                 .required(),
         })
     ).required(),
+    invite_hash: string().max(6),
     name: string().required().min(3).max(15).required(),
     avatar_url: string().required(),
     description: string().min(5).max(50),
