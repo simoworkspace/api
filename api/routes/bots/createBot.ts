@@ -55,11 +55,7 @@ export const createBot = async (req: Request, res: Response) => {
         const createdFeedback = await feedbackSchema.create({
             ...body,
             posted_at: new Date().toISOString(),
-            author: {
-                username: JwtPayload.username,
-                avatar: JwtPayload.avatar,
-                id: JwtPayload.id,
-            },
+            author_id: JwtPayload.id,
             target_bot: botId,
         });
 
@@ -71,20 +67,20 @@ export const createBot = async (req: Request, res: Response) => {
         return res.status(HttpStatusCode.Created).json(createdFeedback);
     }
 
-    const props = req.body;
+    const { body } = req;
     const exists = await botSchema.exists({ _id: botId });
 
     if (method === "votes") {
         if (!exists)
             return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_BOT);
 
-        if (!("user" in props))
+        if (!("user" in body))
             return res
                 .status(HttpStatusCode.BadRequest)
                 .json(GENERICS.MISSING_USER);
 
         const request = await fetch(
-            `https://discord.com/api/v10/users/${props.user}`,
+            `https://discord.com/api/v10/users/${body.user}`,
             {
                 method: "GET",
                 headers: { Authorization: `Bot ${process.env.CLIENT_TOKEN}` },
@@ -93,19 +89,19 @@ export const createBot = async (req: Request, res: Response) => {
 
         const { bot: isBot } = await request.json();
 
-        if (isBot || props.user === botId)
+        if (isBot || body.user === botId)
             return res
                 .status(HttpStatusCode.BadRequest)
                 .json(BOT.BOT_CANNOT_VOTE_IN_A_BOT);
 
         const votes = await botSchema.findOne({
             _id: botId,
-            "votes.user": props.user,
+            "votes.user": body.user,
         });
 
         if (!votes) {
             const voteBody = {
-                user: props.user,
+                user: body.user,
                 last_vote: new Date().toISOString(),
                 votes: 1,
             };
@@ -121,7 +117,7 @@ export const createBot = async (req: Request, res: Response) => {
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const { last_vote } = votes.votes.find(
-            (vote) => vote.user === props.user
+            (vote) => vote.user === body.user
         )!;
 
         const twelveHours = 4.32e7;
@@ -137,10 +133,12 @@ export const createBot = async (req: Request, res: Response) => {
             });
 
         const vote = await botSchema.findOneAndUpdate(
-            { _id: botId, "votes.user": props.user },
+            { _id: botId, "votes.user": body.user },
             {
                 $inc: { "votes.$.votes": 1, total_votes: 1 },
-                $set: { "votes.$.last_vote": new Date().toISOString() },
+                $set: {
+                    "votes.$.last_vote": new Date().toISOString(),
+                },
             },
             { new: true }
         );
@@ -152,7 +150,7 @@ export const createBot = async (req: Request, res: Response) => {
         return res.status(HttpStatusCode.Conflict).json(BOT.BOT_ALREADY_EXISTS);
 
     const validation = await botSchemaValidator
-        .validate(props)
+        .validate(body)
         .catch((error) => error.errors);
 
     if (Array.isArray(validation))
@@ -161,7 +159,7 @@ export const createBot = async (req: Request, res: Response) => {
             .json({ errors: validation });
 
     const createdBot = await botSchema.create({
-        ...props,
+        ...body,
         _id: botId,
     });
 
