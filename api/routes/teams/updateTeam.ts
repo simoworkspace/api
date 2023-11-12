@@ -54,7 +54,14 @@ export const updateTeam = async (req: Request, res: Response) => {
 
     const options = { ...team.team, ...body };
 
-    await team.updateOne({ $set: { team: options } });
+    await team.updateOne({
+        $set: {
+            team: {
+                ...options,
+                invite_hash: Math.random().toString(22).slice(2, 8)
+            }
+        }
+    });
 
     return res.status(HttpStatusCode.Ok).json(options);
 };

@@ -49,6 +49,7 @@ export const createTeam = async (req: Request, res: Response) => {
             $set: {
                 team: {
                     ...body,
+                    invite_hash: Math.random().toString(22).slice(2, 8),
                     members: [...body.members, { id: userId, owner: true }],
                     id: Math.random().toString(36).slice(2),
                 },
