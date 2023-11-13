@@ -97,6 +97,10 @@
         "CANNOT_REPLY_WHEN_CREATE": {
             "message": "A reply message cannot be created when creating a feedback",
             "code": 4003
+        },
+        "UNKNOWN_AUTHOR": {
+            "message": "Unknown author",
+            "code": 4005
         }
     },
     "USER": {
