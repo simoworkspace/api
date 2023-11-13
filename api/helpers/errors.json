@@ -128,7 +128,7 @@
     },
     "TEAM": {
         "UNKNOWN_TEAM": {
-            "message": "Unknwon team",
+            "message": "Unknown team",
             "code": 6001
         },
         "USER_ALREADY_HAVE_A_TEAM": {
@@ -158,6 +158,14 @@
         "ONLY_THE_OWNER_CAN_DELETE": {
             "message": "Only the team owner can delete the team",
             "code": 6008
+        },
+        "INVALID_INVITE_HASH": {
+            "message": "Invalid invite",
+            "code": 6009
+        },
+        "ALREADY_A_MEMBER": {
+            "message": "User is already a member",
+            "code": 6010
         }
     }
 }
