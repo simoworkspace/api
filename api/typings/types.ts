@@ -133,7 +133,7 @@ export interface GuildStructure {
  * Represents the structure in the feedback schema
  */
 export interface FeedbackStructure {
-    author: DiscordUserStructure;
+    author_id: string;
     stars: number;
     posted_at: string;
     content: string;

@@ -7,11 +7,7 @@ const rawFeedbackSchema = new Schema<FeedbackStructure>({
         type: Number,
         required: true,
     },
-    author: {
-        id: String,
-        username: String,
-        avatar: String,
-    },
+    author_id: String,
     posted_at: {
         type: String,
         required: true,
