@@ -14,7 +14,7 @@ export const createFeedback = async (
         return res.status(HttpStatusCode.NotFound).json(FEEDBACK.UNKNOWN_USER);
 
     const exists = await feedbackSchema.exists({
-        "author.id": authorId,
+        author_id: authorId,
         target_bot: botId,
     });
 
@@ -47,11 +47,7 @@ export const createFeedback = async (
     const createdFeedback = await feedbackSchema.create({
         ...body,
         posted_at: new Date().toISOString(),
-        author: {
-            id: authorId,
-            username: author.username,
-            avatar: author.avatar,
-        },
+        author_id: authorId,
         target_bot: botId,
     });
 

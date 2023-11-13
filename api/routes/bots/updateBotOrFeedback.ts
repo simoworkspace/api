@@ -19,7 +19,7 @@ export const updateBotOrFeedback = async (req: Request, res: Response) => {
         const { body } = req;
 
         const feedback = await feedbackSchema.findOne({
-            "author.id": author,
+            author_id: author,
             target_bot: botId,
         });
 
@@ -39,7 +39,7 @@ export const updateBotOrFeedback = async (req: Request, res: Response) => {
 
         const updatedFeedback = await feedbackSchema.findOneAndUpdate(
             {
-                "author.id": author,
+                author_id: author,
                 target_bot: botId,
             },
             { $set: { ...body, edited: true } },

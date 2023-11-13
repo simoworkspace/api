@@ -14,7 +14,7 @@ export const deleteBotOrFeedback = async (req: Request, res: Response) => {
     if (method === "feedbacks") {
         const feedback = await feedbackSchema.findOne({
             target_bot: botId,
-            "author.id": author,
+            author_id: author,
         });
 
         if (!feedback)
