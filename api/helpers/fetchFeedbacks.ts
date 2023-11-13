@@ -26,7 +26,7 @@ export const fetchFeedbacks = async (req: Request, res: Response) => {
                 target_bot,
                 edited,
                 reply_message,
-                posted_at
+                posted_at,
             }) => {
                 const author = await userSchema.findById(author_id, {
                     username: 1,
@@ -44,9 +44,10 @@ export const fetchFeedbacks = async (req: Request, res: Response) => {
                         avatar: author?.avatar,
                         id: author_id,
                     },
-                    posted_at
+                    posted_at,
                 };
             }
         )
     ).then((result) => res.status(HttpStatusCode.Ok).json(result));
 };
+
