@@ -4,12 +4,15 @@ import { HttpStatusCode } from "axios";
 import { TEAM } from "../../helpers/errors.json";
 import { getUserId } from "../../helpers/getUserId";
 import { getUserByMember } from "../../helpers/getUserByMember";
+import { fetchUserTeams } from "./fetchUserTeams";
 
 export const getTeam = async (req: Request, res: Response) => {
-    const { teamId } = req.params;
+    const { teamId, invite } = req.params;
     const userId = await getUserId(req.headers);
     const users = await userSchema.find({}, { avatar: 1, username: 1 });
 
+    if ([invite, teamId].includes("@all"))
+        return fetchUserTeams(res, userId as string);
     if (!teamId) {
         const user = await userSchema.findById(userId, {
             __v: 0,
@@ -25,19 +28,6 @@ export const getTeam = async (req: Request, res: Response) => {
                 getUserByMember(member, users)
             ),
         });
-    }
-
-    if (teamId === "@all") {
-        const users = await userSchema.find({ "team.members.id": userId });
-
-        return res.status(HttpStatusCode.Ok).json(
-            users.map(({ team }) => ({
-                ...team,
-                members: team.members.map((member) =>
-                    getUserByMember(member, users)
-                ),
-            }))
-        );
     }
 
     const user = await userSchema.findOne({ "team.id": teamId }, { team: 1 });
