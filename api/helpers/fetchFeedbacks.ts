@@ -50,4 +50,3 @@ export const fetchFeedbacks = async (req: Request, res: Response) => {
         )
     ).then((result) => res.status(HttpStatusCode.Ok).json(result));
 };
-
