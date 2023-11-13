@@ -69,3 +69,11 @@ Edite/atualize um time, retorna o objeto do time atualizado
 
 -   Todas as propriedades são opcionais
 -   A API tentara encontrar o time pela api_key ou json web token usado
+
+## Join team
+
+### PUT `/api/teams/{team.id}/{team.invite_hash}`
+
+Entre para um time, retorna `true` se entrou
+
+-   O usuário não pode já ser um membro do time
