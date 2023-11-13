@@ -85,7 +85,7 @@ Este método retorna o status de voto de um usuário em um bot
 
 ### GET `/api/bots/{botId}/feedbacks`
 
-Este método é usada para pegar todos os feedbacks já feitos em um bot, retorna uma Array de [feedbacks](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/core/types/types.d.ts#L113)
+Este método é usada para pegar todos os feedbacks já feitos em um bot, retorna uma Array de [feedbacks](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/core/types/types.d.ts#L113) com `author.username`, `author.avatar` e `author.id`
 
 ## Delete Bot
 
@@ -174,7 +174,7 @@ Este método é usado para adicionar um bot no banco de dados, retorna uma estru
 
 Este método é usado para adicionar um voto no bot, retorna uma estrutura de [voto](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/core/types/types.d.ts#L62)
 
-- A API tentara buscar o ID do usuário pela api-key ou pelo JWT usado
+-   A API tentara buscar o ID do usuário pela api-key ou pelo JWT usado
 
 #### Example
 
@@ -182,8 +182,8 @@ Este método é usado para adicionar um voto no bot, retorna uma estrutura de [v
 fetch(url, {
     method: "POST",
     headers: {
-        Authorization: '6jija02kl0bfda-e8jb0lad6bje0c-5awdsa38eezzb'
-    }
+        Authorization: "6jija02kl0bfda-e8jb0lad6bje0c-5awdsa38eezzb",
+    },
 });
 ```
 
