@@ -14,6 +14,6 @@
         "V1": {
             "VOTE": "/api/v1/vote-status/:userId"
         },
-        "TEAM": "/api/teams(/:teamId)?"
+        "TEAM": "/api/teams(/:teamId)?(/:invite)"
     }
 }

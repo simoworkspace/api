@@ -23,6 +23,7 @@ import { getTeam } from "./routes/teams/getTeam";
 import { createTeam } from "./routes/teams/createTeam";
 import { deleteTeam } from "./routes/teams/deleteTeam";
 import { updateTeam } from "./routes/teams/updateTeam";
+import { joinTeam } from "./routes/teams/joinTeam";
 
 load();
 
@@ -61,7 +62,8 @@ app.route(ROUTES.TEAM)
     .get(getTeam)
     .post(createTeam)
     .delete(deleteTeam)
-    .patch(updateTeam);
+    .patch(updateTeam)
+    .put(joinTeam);
 
 export let requestCount = 0;
 
