@@ -4,7 +4,13 @@
 
 ### GET `/api/bots/{botId}`
 
-Este método é usado para buscar um bot no banco de dados ou na API do Discord, retorna uma [estrutura](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/typings/index.d.ts#L7)
+Este método é usado para buscar um bot no banco de dado, retorna uma [estrutura](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/typings/index.d.ts#L7) de bot
+
+# Get Bot By Discord
+
+### GET `/api/bots/{botId}/discord`
+
+Este método é usado para buscar um bot na database do Discord, retorna uma [estrutura](https://discord.com/developers/docs/resources/user#user-object-user-structure) de user
 
 ## Get Bots By Query
 
@@ -29,25 +35,11 @@ Este método é usado para buscar vários bots no banco de dados, retorna uma Ar
 | startAt           | integer           | None    |
 | endAt             | integer           | None    |
 
-## Check If a Bot Exists
-
-### GET `/api/bots/{botId}/exists` (DEPRECATED)
-
-Este método é usado para verificar se um bot existe no banco de dados, retorna um booleano
-
-#### Example Response Structure
-
-```json
-{
-    "exists": false
-}
-```
-
 ## List All Bots
 
 ### GET `/api/bots`
 
-Este método é usado para pegar todos os bots do banco de dados, retorna uma Array de [estrutura](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/typings/index.d.ts#L7) de bot
+Este método é usado para pegar todos os bots do banco de dados, retorna uma array de [estrutura](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/typings/index.d.ts#L7) de bot
 
 ## Get Bot Votes
 
@@ -82,11 +74,12 @@ Este método retorna o status de voto de um usuário em um bot
 
 ```json
 {
-    "can_vote": true
+    "can_vote": true,
+    "rest_time": null
 }
 ```
 
--   `rest_time` não é retornado quando `can_vote` é `true`
+-   `rest_time` é `null` quando `can_vote` é `true`
 
 ## Get Bot Feedbacks
 
@@ -110,7 +103,7 @@ Este método é usado para deletar um feedback de um bot, retorna uma estrutura 
 
 ### PATCH `/api/bots/{botId}`
 
-Este método é usado para editar um bot, retorna o objeto do pode desatualizado
+Este método é usado para editar um bot, retorna o objeto do bot desatualizado
 
 #### JSON Params
 
@@ -181,22 +174,16 @@ Este método é usado para adicionar um bot no banco de dados, retorna uma estru
 
 Este método é usado para adicionar um voto no bot, retorna uma estrutura de [voto](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/core/types/types.d.ts#L62)
 
-#### JSON Params
-
-| FIELD | TYPE      | DESCRIPTION             |
-| ----- | --------- | ----------------------- |
-| user  | Snowflake | O usuário que irá votar |
+- A API tentara buscar o ID do usuário pela api-key ou pelo JWT usado
 
 #### Example
 
 ```ts
-const body = {
-    user: "963124227911860264",
-};
-
 fetch(url, {
     method: "POST",
-    body: JSON.stringify(body),
+    headers: {
+        Authorization: '6jija02kl0bfda-e8jb0lad6bje0c-5awdsa38eezzb'
+    }
 });
 ```
 
