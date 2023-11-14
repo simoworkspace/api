@@ -166,6 +166,10 @@
         "ALREADY_A_MEMBER": {
             "message": "User is already a member",
             "code": 6010
+        },
+        "NO_INVITE_WITH_GET": {
+            "message": "The GET method does not support invite parameter",
+            "code": 6011
         }
     }
 }
