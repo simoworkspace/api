@@ -66,6 +66,7 @@ Edite/atualize um time, retorna o objeto do time atualizado
 | avatar_url  | string                            | O URL do avatar do time    |
 | description | string                            | A descrição do time (5-50) |
 | members     | [member](/api/typings/types.ts)[] | Os membros do time         |
+| bot_id      | Snowflake                         | O ID do bot do time        |
 
 -   Todas as propriedades são opcionais
 -   A API tentara encontrar o time pela api_key ou json web token usado

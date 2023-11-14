@@ -1,6 +1,8 @@
 import { array, boolean, number, object, string } from "yup";
 import { NotificationType, TeamPermissions } from "../typings/types";
 
+const idPattern = /^\d{16,21}$/;
+
 export const createNotificationValidator = object({
     content: string().required(),
     type: number()
@@ -20,23 +22,23 @@ export const createNotificationValidator = object({
 export const createTeamValidator = object({
     members: array(
         object({
-            id: string()
-                .matches(/^\d{16,21}$/)
-                .required(),
+            id: string().matches(idPattern).required(),
             permission: number()
                 .oneOf([
                     TeamPermissions.Administrator,
                     TeamPermissions.ReadOnly,
                 ])
                 .required(),
-        })
+        }).noUnknown()
     ).required(),
     invite_hash: string().max(6),
     name: string().required().min(3).max(15).required(),
     avatar_url: string().required(),
     description: string().min(5).max(50),
-    bot_id: string().matches(/^\d{16,21}$/),
-}).required();
+    bot_id: string().matches(idPattern),
+})
+    .required()
+    .noUnknown();
 
 export const updateTeamValidator = object({
     name: string().min(3).max(15),
@@ -44,13 +46,14 @@ export const updateTeamValidator = object({
     description: string().min(5).max(50),
     members: array(
         object({
-            id: string().matches(/^\d{16,21}$/),
+            id: string().matches(idPattern),
             permission: number().oneOf([
                 TeamPermissions.Administrator,
                 TeamPermissions.ReadOnly,
             ]),
         })
     ),
+    bot_id: string().matches(idPattern),
 })
     .test("at-least-one-key", "You must pass at least one key", (obj) => {
         return Object.keys(obj).length > 0;
