@@ -29,11 +29,14 @@ Este método é usado para buscar vários bots no banco de dados, retorna uma Ar
 | startAt           | integer           | None    |
 | endAt             | integer           | None    |
 
-## List All Bots
+## List all user bots
 
 ### GET `/api/bots`
 
-Este método é usado para pegar todos os bots do banco de dados, retorna uma array de [estrutura](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/typings/index.d.ts#L7) de bot
+Este método é usado para pegar todos os bots do banco de dados que o autor da
+requisição é o proprietário, retorna uma array de
+[estrutura](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/typings/index.d.ts#L7)
+de bot
 
 ## Get Bot Votes
 
