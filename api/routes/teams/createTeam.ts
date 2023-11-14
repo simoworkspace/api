@@ -52,7 +52,6 @@ export const createTeam = async (req: Request, res: Response) => {
                     ...body,
                     invite_hash: Math.random().toString(22).slice(2, 8),
                     members: [
-                        ...body.members,
                         { id: userId, permission: TeamPermissions.Owner },
                     ],
                     id: Math.random().toString(36).slice(2),

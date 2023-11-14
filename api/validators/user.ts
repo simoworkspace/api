@@ -20,17 +20,6 @@ export const createNotificationValidator = object({
     .noUnknown();
 
 export const createTeamValidator = object({
-    members: array(
-        object({
-            id: string().matches(idPattern).required(),
-            permission: number()
-                .oneOf([
-                    TeamPermissions.Administrator,
-                    TeamPermissions.ReadOnly,
-                ])
-                .required(),
-        }).noUnknown()
-    ).required(),
     invite_hash: string().max(6),
     name: string().required().min(3).max(15).required(),
     avatar_url: string().required(),

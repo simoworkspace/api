@@ -38,13 +38,12 @@ Crie um time, retorna o objeto do time com um `id`
 
 #### JSON Params
 
-| FIELD        | TYPE                                 | DESCRIPTION                     |
-| ------------ | ------------------------------------ | ------------------------------- |
-| members      | [member](/api/typings//types.ts)[]\* | Os membros do time              |
-| name         | string                               | O nome to time (3-15)           |
-| avatar_url   | string                               | O URL do avatar do time         |
-| description? | string                               | A descrição do time (5-50)      |
-| bot_id       | Snowflake                            | O ID do bot que o time pertence |
+| FIELD        | TYPE      | DESCRIPTION                     |
+| ------------ | --------- | ------------------------------- |
+| name         | string    | O nome to time (3-15)           |
+| avatar_url   | string    | O URL do avatar do time         |
+| description? | string    | A descrição do time (5-50)      |
+| bot_id       | Snowflake | O ID do bot que o time pertence |
 
 -   \* O owner é definido como o autor da requisição
 
