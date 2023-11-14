@@ -59,13 +59,12 @@ Edite/atualize um time, retorna o objeto do time atualizado
 
 #### JSON Params
 
-| FIELD       | TYPE                              | DESCRIPTION                |
-| ----------- | --------------------------------- | -------------------------- |
-| name        | string                            | O nome do time (3-15)      |
-| avatar_url  | string                            | O URL do avatar do time    |
-| description | string                            | A descrição do time (5-50) |
-| members     | [member](/api/typings/types.ts)[] | Os membros do time         |
-| bot_id      | Snowflake                         | O ID do bot do time        |
+| FIELD       | TYPE      | DESCRIPTION                |
+| ----------- | --------- | -------------------------- |
+| name        | string    | O nome do time (3-15)      |
+| avatar_url  | string    | O URL do avatar do time    |
+| description | string    | A descrição do time (5-50) |
+| bot_id      | Snowflake | O ID do bot do time        |
 
 -   Todas as propriedades são opcionais
 -   A API tentara encontrar o time pela api_key ou json web token usado
@@ -87,3 +86,14 @@ Transfira a posse do time para outro usuário
 -   O usuário tem que ser um membro
 -   Você não pode transferir para você mesmo
 -   O usuário não pode ser proprietario de um time
+
+## Remove member
+
+### PUT `/api/teams/{team.id}/remove-member`
+
+Remova um membro do time
+
+-   Ressalvas
+    -   Você precisa ser um administrador
+    -   Você não pode expulsar o proprietário do time
+    -   Você não pode expulsar um administrador se você é um administrador
