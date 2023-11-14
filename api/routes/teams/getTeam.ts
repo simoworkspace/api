@@ -10,7 +10,7 @@ export const getTeam = async (req: Request, res: Response) => {
     const { teamId } = req.params;
     const userId = await getUserId(req.headers);
 
-    if (teamId === "@all") return fetchUserTeams(res, userId as string);
+    if (teamId === "@all") return fetchUserTeams(res, userId);
 
     const users = await userSchema.find({}, { avatar: 1, username: 1 });
 
