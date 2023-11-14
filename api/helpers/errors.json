@@ -132,7 +132,7 @@
             "code": 6001
         },
         "USER_ALREADY_HAVE_A_TEAM": {
-            "message": "The user already has a team",
+            "message": "User already has a team",
             "code": 6002
         },
         "BOT_ALREADY_IN_A_TEAM": {
@@ -147,7 +147,7 @@
             "message": "The user does not belongs to a team",
             "code": 6005
         },
-        "USER_IS_NOT_A_MEMBER": {
+        "AUTHOR_IS_NOT_A_MEMBER": {
             "message": "You don't belong to this team",
             "code": 6006
         },
@@ -170,6 +170,18 @@
         "NO_INVITE_WITH_GET": {
             "message": "The GET method does not support invite parameter",
             "code": 6011
+        },
+        "ONLY_THE_OWNER_CAN_TRANSFER": {
+            "message": "Only the team owner can transfer the ownership",
+            "code": 6012
+        },
+        "USER_IS_NOT_A_MEMBER": {
+            "message": "User is not a member",
+            "code": 6013
+        },
+        "CANNOT_TRANSFER_TO_YOURSELF": {
+            "message": "You cannot transfer the ownership to yourself",
+            "code": 6014
         }
     }
 }

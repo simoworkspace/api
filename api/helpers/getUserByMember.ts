@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import type { Document } from "mongoose";
 import type { TeamMember, UserStructure } from "../typings/types";
 
 export const getUserByMember = (
@@ -17,7 +17,6 @@ export const getUserByMember = (
     return {
         id: member.id,
         permission: member.permission,
-        owner: member.owner,
         username: user.username,
         avatar: user.avatar,
     };
