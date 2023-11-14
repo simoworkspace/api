@@ -5,6 +5,7 @@ import { USER, TEAM } from "../../helpers/errors.json";
 import { userSchema } from "../../models/User";
 import { TeamPermissions } from "../../typings/types";
 import { changeOwner } from "./changeOwner";
+import { removeMember } from "./removeMember";
 
 export const joinTeam = async (req: Request, res: Response) => {
     const userId = await getUserId(req.headers);
@@ -16,6 +17,7 @@ export const joinTeam = async (req: Request, res: Response) => {
 
     if (teamId === "change-owner")
         return changeOwner(res, { userId: invite, authorId: userId });
+    if (invite === "remove-member") return removeMember(req, res);
 
     const user = await userSchema.findOne({ "team.id": teamId });
 

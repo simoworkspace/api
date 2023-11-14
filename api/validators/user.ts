@@ -1,5 +1,5 @@
-import { array, boolean, number, object, string } from "yup";
-import { NotificationType, TeamPermissions } from "../typings/types";
+import { boolean, number, object, string } from "yup";
+import { NotificationType } from "../typings/types";
 
 const idPattern = /^\d{16,21}$/;
 
@@ -33,15 +33,6 @@ export const updateTeamValidator = object({
     name: string().min(3).max(15),
     avatar_url: string(),
     description: string().min(5).max(50),
-    members: array(
-        object({
-            id: string().matches(idPattern),
-            permission: number().oneOf([
-                TeamPermissions.Administrator,
-                TeamPermissions.ReadOnly,
-            ]),
-        })
-    ),
     bot_id: string().matches(idPattern),
 })
     .test("at-least-one-key", "You must pass at least one key", (obj) => {
