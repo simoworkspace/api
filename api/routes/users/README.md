@@ -2,9 +2,12 @@
 
 ## Get user
 
-### GET `/api/users`
+### GET `/api/users/{user._id}`
 
-Busque pelo usuário que corresponde ao JWT ou api-key, retorna uma estrutura de usuário
+Busque por um usuário na database, retorna uma estrutura de usuário
+
+-   `notifications` será `null` se o ID do usuário for diferente do ID do autor da
+    requisição
 
 ### Example Response
 
