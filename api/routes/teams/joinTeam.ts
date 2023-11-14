@@ -4,6 +4,7 @@ import { HttpStatusCode } from "axios";
 import { USER, TEAM } from "../../helpers/errors.json";
 import { userSchema } from "../../models/User";
 import { TeamPermissions } from "../../typings/types";
+import { changeOwner } from "./changeOwner";
 
 export const joinTeam = async (req: Request, res: Response) => {
     const userId = await getUserId(req.headers);
@@ -12,6 +13,10 @@ export const joinTeam = async (req: Request, res: Response) => {
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
 
     const { teamId, invite } = req.params;
+
+    if (teamId === "change-owner")
+        return changeOwner(res, { userId: invite, authorId: userId });
+
     const user = await userSchema.findOne({ "team.id": teamId });
 
     if (!user?.team?.id)

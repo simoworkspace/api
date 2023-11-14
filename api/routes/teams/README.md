@@ -34,7 +34,7 @@ Delete um time na database, retorna uma resposta vazia
 
 ### POST `/api/teams`
 
-Crie um time, retorna o objeto do time com um `id`
+Crie um time, retorna o objeto do time com um `id` e `members`
 
 #### JSON Params
 
@@ -77,3 +77,13 @@ Edite/atualize um time, retorna o objeto do time atualizado
 Entre para um time, retorna `true` se entrou
 
 -   O usuário não pode já ser um membro do time
+
+## Transfer ownership
+
+### PUT `/api/teams/change-owner/{user._id}`
+
+Transfira a posse do time para outro usuário
+
+-   O usuário tem que ser um membro
+-   Você não pode transferir para você mesmo
+-   O usuário não pode ser proprietario de um time
