@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { botSchema } from "../../models/Bot";
 import { BOT } from "../../helpers/errors.json";
 import { fetchFeedbacks } from "../../helpers/fetchFeedbacks";
+import { getUserId } from "../../helpers/getUserId";
 
 /**
  * Gets a bot from Discord API or from the database
@@ -39,9 +40,13 @@ export const getBot = async (req: Request, res: Response) => {
 
     if (method === "feedbacks") return fetchFeedbacks(req, res);
 
+    const userId = await getUserId(req.headers);
     const targetBot = await (botId
         ? botSchema.findById(botId).select("-api_key")
-        : botSchema.find().sort({ total_votes: -1 }).select("-api_key"));
+        : botSchema
+            .find({ owner_id: userId })
+            .sort({ total_votes: -1 })
+            .select("-api_key"));
 
     if (botId) {
         if (Array.isArray(targetBot)) return;
