@@ -1,75 +1,32 @@
 import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
 import { botSchema } from "../../models/Bot";
-import { verify, JwtPayload } from "jsonwebtoken";
-import { feedbackSchema } from "../../models/Feedback";
 import { patchBotValidator } from "../../validators/bots";
-import { patchFeedbackValidator } from "../../validators/feedback";
-import { GENERICS, BOT, FEEDBACK, TEAM } from "../../helpers/errors.json";
+import { BOT, TEAM } from "../../helpers/errors.json";
 import { userSchema } from "../../models/User";
 import { TeamPermissions } from "../../typings/types";
+import { updateFeedback } from "./updateFeedback";
+import { getUserId } from "../../helpers/getUserId";
 
 /**
  * Updates a bot or feedback
  */
 export const updateBotOrFeedback = async (req: Request, res: Response) => {
-    const { id: botId, method, user: author } = req.params;
+    const { id: botId, method } = req.params;
+    const userId = await getUserId(req.headers);
 
-    if (method === "feedbacks") {
-        const { body } = req;
-
-        const feedback = await feedbackSchema.findOne({
-            author_id: author,
-            target_bot: botId,
-        });
-
-        if (!feedback)
-            return res
-                .status(HttpStatusCode.NotFound)
-                .json(FEEDBACK.UNKNOWN_FEEDBACK);
-
-        const validation = patchFeedbackValidator
-            .validate(body)
-            .catch((error) => error.errors);
-
-        if (Array.isArray(validation))
-            return res
-                .status(HttpStatusCode.BadRequest)
-                .json({ errors: validation });
-
-        const updatedFeedback = await feedbackSchema.findOneAndUpdate(
-            {
-                author_id: author,
-                target_bot: botId,
-            },
-            { $set: { ...body, edited: true } },
-            { new: true }
-        );
-
-        return res.status(HttpStatusCode.Ok).json(updatedFeedback);
-    }
+    if (method === "feedbacks")
+        return updateFeedback(req, res, { botId, authorId: userId });
 
     const bot = await botSchema.findById({
         _id: botId,
     });
 
     if (!bot) return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_BOT);
-
-    const payload = verify(
-        req.headers.authorization as string,
-        process.env.JWT_SECRET as string
-    ) as JwtPayload;
-
-    if (bot.owner_id !== payload.id)
+    if (bot.owner_id !== userId)
         return res.status(HttpStatusCode.BadRequest).json(BOT.NOT_BOT_OWNER);
 
     const { body } = req;
-
-    if (Object.keys(body).length < 1)
-        return res
-            .status(HttpStatusCode.BadRequest)
-            .json(GENERICS.MISSING_BODY);
-
     const validation = await patchBotValidator
         .validate(body)
         .catch((error) => error.errors);
@@ -97,12 +54,13 @@ export const updateBotOrFeedback = async (req: Request, res: Response) => {
                 .json(TEAM.USER_IS_READONLY);
     }
 
-    await bot.updateOne(
+    const updatedBot = await botSchema.findByIdAndUpdate(
+        botId,
         { $set: body },
         {
             new: true,
         }
     );
 
-    return res.status(HttpStatusCode.Ok).json(bot);
+    return res.status(HttpStatusCode.Ok).json(updatedBot);
 };

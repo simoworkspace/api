@@ -2,6 +2,7 @@ import { HttpStatusCode } from "axios";
 import { userSchema } from "../../models/User";
 import type { Request, Response } from "express";
 import { GENERICS, USER } from "../../helpers/errors.json";
+import { getUserId } from "../../helpers/getUserId";
 
 export const deleteNotification = async (req: Request, res: Response) => {
     if (req.params.method !== "notifications")
@@ -9,7 +10,8 @@ export const deleteNotification = async (req: Request, res: Response) => {
             .status(HttpStatusCode.MethodNotAllowed)
             .json(GENERICS.METHOD_NOT_ALLOWED);
 
-    const { userId, notificationId } = req.params;
+    const userId = await getUserId(req.headers);
+    const { notificationId } = req.params;
     const user = await userSchema.findById(userId);
 
     if (!user)
@@ -39,5 +41,5 @@ export const deleteNotification = async (req: Request, res: Response) => {
 
     await user.save();
 
-    return res.status(HttpStatusCode.NoContent).json(null);
+    return res.status(HttpStatusCode.NoContent).send();
 };

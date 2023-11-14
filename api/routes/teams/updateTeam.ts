@@ -1,36 +1,22 @@
 import type { Request, Response } from "express";
-import { isUsingJWT } from "../../helpers/isUsingJWT";
-import { decode } from "jsonwebtoken";
-import { botSchema } from "../../models/Bot";
 import { userSchema } from "../../models/User";
 import { HttpStatusCode } from "axios";
 import { TEAM } from "../../helpers/errors.json";
 import { TeamPermissions } from "../../typings/types";
 import { updateTeamValidator } from "../../validators/user";
+import { getUserId } from "../../helpers/getUserId";
 
 export const updateTeam = async (req: Request, res: Response) => {
-    const { teamId } = req.params;
-    const team = await userSchema.findOne({ "team.id": teamId });
+    const user = await userSchema.findOne({ "team.id": req.params.teamId });
 
-    if (!team)
+    if (!user?.team?.id)
         return res.status(HttpStatusCode.NotFound).json(TEAM.UNKNOWN_TEAM);
 
-    let userId: string | undefined;
+    const userId = await getUserId(req.headers);
 
-    const isUsingjwt = isUsingJWT(req.headers);
+    const { team } = user;
 
-    if (isUsingjwt) {
-        const decoded = decode(req.headers.authorization as string);
-
-        if (typeof decoded === "object" && decoded !== null && "id" in decoded)
-            userId = decoded.id;
-    }
-    if (!isUsingjwt)
-        userId = (
-            await botSchema.findOne({ api_key: req.headers.authorization })
-        )?.owner_id;
-
-    const member = team.team.members.find((member) => member.id === userId);
+    const member = team.members.find((member) => member.id === userId);
 
     if (!member)
         return res
@@ -52,15 +38,15 @@ export const updateTeam = async (req: Request, res: Response) => {
             .status(HttpStatusCode.BadRequest)
             .json({ errors: validation });
 
-    const options = { ...team.team, ...body };
+    const options = { ...team, ...body };
 
-    await team.updateOne({
+    await user.updateOne({
         $set: {
             team: {
                 ...options,
-                invite_hash: Math.random().toString(22).slice(2, 8)
-            }
-        }
+                invite_hash: Math.random().toString(22).slice(2, 8),
+            },
+        },
     });
 
     return res.status(HttpStatusCode.Ok).json(options);

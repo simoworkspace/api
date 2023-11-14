@@ -1,20 +1,21 @@
 import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
 import { botSchema } from "../../models/Bot";
-import { JwtPayload, verify } from "jsonwebtoken";
 import { feedbackSchema } from "../../models/Feedback";
 import { BOT, FEEDBACK, GENERICS } from "../../helpers/errors.json";
+import { getUserId } from "../../helpers/getUserId";
 
 /**
  * Deletes a bot or feedback
  */
 export const deleteBotOrFeedback = async (req: Request, res: Response) => {
-    const { id: botId, method, user: author } = req.params;
+    const { id: botId, method } = req.params;
+    const userId = await getUserId(req.headers);
 
     if (method === "feedbacks") {
         const feedback = await feedbackSchema.findOne({
             target_bot: botId,
-            author_id: author,
+            author_id: userId,
         });
 
         if (!feedback)
@@ -27,21 +28,10 @@ export const deleteBotOrFeedback = async (req: Request, res: Response) => {
         return res.status(HttpStatusCode.Ok).json(GENERICS.SUCCESS);
     }
 
-    const botOwnerId = author;
-
-    const bot = await botSchema.findById({
-        _id: botId,
-        owners: { $in: [botOwnerId] },
-    });
+    const bot = await botSchema.findById(botId);
 
     if (!bot) return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_BOT);
-
-    const JwtPayload = verify(
-        req.headers.authorization as string,
-        process.env.JWT_SECRET as string
-    ) as JwtPayload;
-
-    if (bot.owner_id !== JwtPayload.id)
+    if (bot.owner_id !== userId)
         return res.status(HttpStatusCode.BadRequest).json(BOT.NOT_BOT_OWNER);
 
     await bot.deleteOne();

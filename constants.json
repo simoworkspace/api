@@ -6,14 +6,13 @@
     },
     "PORT": 80,
     "ROUTES": {
-        "BOTS": "/api/bots/:id(\\d{16,21})?(/:method(vote-status|votes?|feedbacks))?(/:user(\\d{16,21}))?",
-        "USER": "/api/users/:userId(\\d{16,21})(/:method(notifications|discord))?(/:notificationId(\\d+|bulk-delete))?",
+        "BOTS": "/api/bots/:id(\\d{16,21})?(/:method(votes?|feedbacks))?",
+        "USER": "/api/users/:method(notifications)?(/:notificationId(\\d+|bulk-delete))?",
         "AUTH": "/api/auth/:method(callback|user|logout)",
         "TOKEN": "/api/auth/:method(api-key|token)(/:botId)?",
         "STATUS": "/api/status",
-        "V1": {
-            "VOTE": "/api/v1/vote-status/:userId"
-        },
-        "TEAM": "/api/teams(/:teamId)?(/:invite)"
+        "VOTE_STATUS": "/api/vote-status/:userId",
+        "TEAM": "/api/teams/:teamId?/:invite?",
+        "DISCORD": "/api/discord-user/:userId(\\d+)"
     }
 }

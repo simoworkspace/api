@@ -3,7 +3,6 @@ import { Request, Response } from "express";
 import { botSchema } from "../../models/Bot";
 import { BOT } from "../../helpers/errors.json";
 import { fetchFeedbacks } from "../../helpers/fetchFeedbacks";
-import { fetchVoteStatus } from "../../helpers/fetchVoteStatus";
 
 /**
  * Gets a bot from Discord API or from the database
@@ -20,9 +19,11 @@ export const getBot = async (req: Request, res: Response) => {
         delete query.endAt;
         delete query.startAt;
 
-        const botsFound = await botSchema.find(query, null, {
-            limit: queryLimit,
-        }).sort({ total_votes: -1 });
+        const botsFound = await botSchema
+            .find(query, null, {
+                limit: queryLimit,
+            })
+            .sort({ total_votes: -1 });
 
         return res
             .status(HttpStatusCode.Ok)
@@ -37,7 +38,6 @@ export const getBot = async (req: Request, res: Response) => {
     const { id: botId, method } = req.params;
 
     if (method === "feedbacks") return fetchFeedbacks(req, res);
-    if (method === "vote-status") return fetchVoteStatus(req, res);
 
     const targetBot = await (botId
         ? botSchema.findById(botId).select("-api_key")
@@ -46,19 +46,26 @@ export const getBot = async (req: Request, res: Response) => {
     if (botId) {
         if (Array.isArray(targetBot)) return;
 
-        const botImage = await fetch(`https://cdn.discordapp.com/avatars/${targetBot?._id}/${targetBot?.avatar}.png`);
+        const botImage = await fetch(
+            `https://cdn.discordapp.com/avatars/${targetBot?._id}/${targetBot?.avatar}.png`
+        );
 
         if (botImage.status === 404) {
-            const request = await fetch(`https://discord.com/api/v10/users/${botId}`, {
-                method: "GET",
-                headers: { Authorization: `Bot ${process.env.CLIENT_TOKEN}` },
-            });
+            const request = await fetch(
+                `https://discord.com/api/v10/users/${botId}`,
+                {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bot ${process.env.CLIENT_TOKEN}`,
+                    },
+                }
+            );
 
             const botData = await request.json();
 
             await botSchema.findByIdAndUpdate(botId, {
                 name: botData.username,
-                avatar: botData.avatar
+                avatar: botData.avatar,
             });
         }
     }

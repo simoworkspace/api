@@ -1,27 +1,11 @@
 import { Request, Response } from "express";
-import { isUsingJWT } from "../../helpers/isUsingJWT";
-import { decode } from "jsonwebtoken";
-import { botSchema } from "../../models/Bot";
 import { userSchema } from "../../models/User";
 import { HttpStatusCode } from "axios";
 import { USER, TEAM } from "../../helpers/errors.json";
+import { getUserId } from "../../helpers/getUserId";
 
 export const deleteTeam = async (req: Request, res: Response) => {
-    let userId: string | undefined;
-
-    const isUsingjwt = isUsingJWT(req.headers);
-
-    if (isUsingjwt) {
-        const decoded = decode(req.headers.authorization as string);
-
-        if (typeof decoded === "object" && decoded !== null && "id" in decoded)
-            userId = decoded.id;
-    }
-    if (!isUsingjwt)
-        userId = (
-            await botSchema.findOne({ api_key: req.headers.authorization })
-        )?.owner_id;
-
+    const userId = await getUserId(req.headers);
     const user = await userSchema.findById(userId);
 
     if (!user)

@@ -2,7 +2,6 @@ import cors from "cors";
 import { load } from "env-smart";
 import { connect } from "mongoose";
 import cookieParser from "cookie-parser";
-import { auth } from "./middlewares/auth";
 import { default as express } from "express";
 import { getBot } from "./routes/bots/getBot";
 import { PORT, ROUTES } from "../constants.json";
@@ -16,14 +15,14 @@ import { deleteNotification } from "./routes/users/deleteNotification";
 import { updateBotOrFeedback } from "./routes/bots/updateBotOrFeedback";
 import { deleteBotOrFeedback } from "./routes/bots/deleteBotOrFeedback";
 import { createToken } from "./routes/auth/createToken";
-import { getVoteStatus } from "./routes/v1/vote-status";
-import { apiKeyAuth } from "./middlewares/apiKeyAuth";
+import { getVoteStatus } from "./routes/vote-status/getVoteStatus";
 import { updateUser } from "./routes/users/updateUser";
 import { getTeam } from "./routes/teams/getTeam";
 import { createTeam } from "./routes/teams/createTeam";
 import { deleteTeam } from "./routes/teams/deleteTeam";
 import { updateTeam } from "./routes/teams/updateTeam";
 import { joinTeam } from "./routes/teams/joinTeam";
+import { fetchDiscordUser } from "./routes/discord/fetchDiscordUser";
 
 load();
 
@@ -46,24 +45,25 @@ app.use(
 
 app.route(ROUTES.USER)
     .get(getUser)
-    .post(auth, createNotification)
-    .delete(auth, deleteNotification)
-    .patch(auth, updateUser);
+    .post(createNotification)
+    .delete(deleteNotification)
+    .patch(updateUser);
 app.route(ROUTES.AUTH).get(callback);
-app.route(ROUTES.TOKEN).get(auth, getToken).post(auth, createToken);
+app.route(ROUTES.TOKEN).get(getToken).post(createToken);
 app.route(ROUTES.BOTS)
     .get(getBot)
-    .delete(auth, deleteBotOrFeedback)
-    .patch(auth, updateBotOrFeedback)
-    .post(auth, createBot);
+    .delete(deleteBotOrFeedback)
+    .patch(updateBotOrFeedback)
+    .post(createBot);
 app.route(ROUTES.STATUS).get(getStatus);
-app.route(ROUTES.V1.VOTE).get(apiKeyAuth, getVoteStatus);
+app.route(ROUTES.VOTE_STATUS).get(getVoteStatus);
 app.route(ROUTES.TEAM)
     .get(getTeam)
     .post(createTeam)
     .delete(deleteTeam)
     .patch(updateTeam)
     .put(joinTeam);
+app.route(ROUTES.DISCORD).get(fetchDiscordUser);
 
 export let requestCount = 0;
 

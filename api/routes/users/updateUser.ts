@@ -3,10 +3,12 @@ import { Request, Response } from "express";
 import { USER, GENERICS } from "../../helpers/errors.json";
 import { userSchema } from "../../models/User";
 import { updateUserValidator } from "../../validators/user";
+import { getUserId } from "../../helpers/getUserId";
 
 export const updateUser = async (req: Request, res: Response) => {
     const { body } = req;
-    const { userId, method } = req.params;
+    const { method } = req.params;
+    const userId = await getUserId(req.headers);
 
     if (method)
         return res
@@ -27,7 +29,11 @@ export const updateUser = async (req: Request, res: Response) => {
             .status(HttpStatusCode.BadRequest)
             .json({ errors: validation });
 
-    await user.updateOne({ $set: body }, { new: true });
+    const updatedUser = await userSchema.findByIdAndUpdate(
+        userId,
+        { $set: body },
+        { new: true }
+    );
 
-    return res.status(HttpStatusCode.Ok).json(user);
+    return res.status(HttpStatusCode.Ok).json(updatedUser);
 };

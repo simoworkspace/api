@@ -6,12 +6,6 @@
 
 Este método é usado para buscar um bot no banco de dado, retorna uma [estrutura](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/typings/index.d.ts#L7) de bot
 
-# Get Bot By Discord
-
-### GET `/api/bots/{botId}/discord`
-
-Este método é usado para buscar um bot na database do Discord, retorna uma [estrutura](https://discord.com/developers/docs/resources/user#user-object-user-structure) de user
-
 ## Get Bots By Query
 
 ### GET `/api/bots/{botId}`
@@ -45,7 +39,7 @@ Este método é usado para pegar todos os bots do banco de dados, retorna uma ar
 
 ### GET `/api/bots/{botId}/votes`
 
-Este método é usado para pegar todos os votos de um bot, retorna uma Array de votos
+Este método é usado para pegar todos os votos de um bot, retorna uma array de votos
 
 ### Example Response
 
@@ -64,28 +58,11 @@ Este método é usado para pegar todos os votos de um bot, retorna uma Array de 
 ]
 ```
 
-## Get Vote Status
-
-### GET `/api/bots/{botId}/vote-status/{userId}`
-
-Este método retorna o status de voto de um usuário em um bot
-
-#### Example Response Structure
-
-```json
-{
-    "can_vote": true,
-    "rest_time": null
-}
-```
-
--   `rest_time` é `null` quando `can_vote` é `true`
-
 ## Get Bot Feedbacks
 
 ### GET `/api/bots/{botId}/feedbacks`
 
-Este método é usada para pegar todos os feedbacks já feitos em um bot, retorna uma Array de [feedbacks](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/core/types/types.d.ts#L113) com `author.username`, `author.avatar` e `author.id`
+Este método é usada para pegar todos os feedbacks já feitos em um bot, retorna uma array de [feedbacks](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/core/types/types.d.ts#L113) com `author.username`, `author.avatar` e `author.id`
 
 ## Delete Bot
 
@@ -95,9 +72,11 @@ Este método é usado para deletar um bot no banco de dados, retorna uma estrutu
 
 ## Delete Feedback
 
-### DELETE `/api/bots/{botId}/feedbacks/{userId}`
+### DELETE `/api/bots/{botId}/feedbacks`
 
 Este método é usado para deletar um feedback de um bot, retorna uma estrutura JSON com `code`
+
+-   O ID do usuário será pego do JWT ou api_key usado
 
 ## Patch Bot
 
@@ -129,9 +108,11 @@ Este método é usado para editar um bot, retorna o objeto do bot desatualizado
 
 ## Patch Feedback
 
-### PATCH `/api/bots/{botId}/feedbacks/{userId}`
+### PATCH `/api/bots/{botId}/feedbacks`
 
 Este método é usado para editar um feedback em um bot, retorna uma estrutura de [feedback](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/core/types/types.d.ts#L113)
+
+-   O ID do usuário será pego do JWT ou api_key usado
 
 #### JSON Params
 
@@ -174,7 +155,7 @@ Este método é usado para adicionar um bot no banco de dados, retorna uma estru
 
 Este método é usado para adicionar um voto no bot, retorna uma estrutura de [voto](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/core/types/types.d.ts#L62)
 
--   A API tentara buscar o ID do usuário pela api-key ou pelo JWT usado
+-   O ID do usuário será pego do JWT ou api_key usado
 
 #### Example
 
@@ -189,7 +170,7 @@ fetch(url, {
 
 ## Add Feedback
 
-### POST `/api/bots/{botId}/feedbacks/{userId}`
+### POST `/api/bots/{botId}/feedbacks`
 
 Este método é usado para postar um feedback em um bot, retorna uma estrutura de [feedback](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/core/types/types.d.ts#L113)
 
@@ -199,6 +180,8 @@ Este método é usado para postar um feedback em um bot, retorna uma estrutura d
 | ------- | --------- | ------- |
 | stars   | int (0-5) | Nenhum  |
 | content | string    | Nenhum  |
+
+-   O ID do usuário será pego do JWT ou api_key usado
 
 ```ts
 fetch(url, {

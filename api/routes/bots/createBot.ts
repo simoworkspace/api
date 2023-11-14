@@ -12,13 +12,17 @@ import { createVote } from "./createVote";
  * Creates a bot, vote, or submit a feedback
  */
 export const createBot = async (req: Request, res: Response) => {
-    const { id: botId, method, user: authorId } = req.params;
+    const { id: botId, method } = req.params;
+    const userId = await getUserId(req.headers);
 
-    if (method === "feedbacks")
-        return createFeedback(req, res, { authorId, botId });
-
-    const { body } = req;
     const exists = await botSchema.exists({ _id: botId });
+
+    if (method === "feedbacks") {
+        if (!exists)
+            return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_BOT);
+
+        return createFeedback(req, res, { authorId: userId, botId });
+    }
 
     if (method === "votes") {
         if (!exists)
@@ -30,6 +34,8 @@ export const createBot = async (req: Request, res: Response) => {
     if (exists)
         return res.status(HttpStatusCode.Conflict).json(BOT.BOT_ALREADY_EXISTS);
 
+    const { body } = req;
+
     const validation = await botSchemaValidator
         .validate(body)
         .catch((error) => error.errors);
@@ -39,12 +45,10 @@ export const createBot = async (req: Request, res: Response) => {
             .status(HttpStatusCode.BadRequest)
             .json({ errors: validation });
 
-    const ownerId = (await getUserId(req.headers)) as string;
-
     const createdBot = await botSchema.create({
         ...body,
         _id: botId,
-        owner_id: ownerId,
+        owner_id: userId,
     });
 
     if (!createdBot)
@@ -52,7 +56,7 @@ export const createBot = async (req: Request, res: Response) => {
             .status(HttpStatusCode.InternalServerError)
             .json(GENERICS.INTERNAL_SERVER_ERROR);
 
-    const createdAt: number = Math.round(
+    const createdAt = Math.round(
         new Date(parseFloat(botId) / 4194304 + 1420070400000).getTime() / 1000
     );
 

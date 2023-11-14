@@ -1,32 +1,32 @@
 # User Resources
 
-## Get discord user
-
-### GET `/api/users/{userId}`
-
-Busque por um usuário na API do Discord, retorna uma [estrutura](https://discord.com/developers/docs/resources/user#user-object) de usuário do Discord.
-
 ## Get user
 
-Busque por um usuário nada database, retorna uma estrutura de usuário
+### GET `/api/users`
+
+Busque pelo usuário que corresponde ao JWT ou api-key, retorna uma estrutura de usuário
 
 ### Example Response
 
 ```json
 {
+    "team": {
+        "members": []
+    },
     "_id": "963124227911860264",
     "username": "meunreal",
     "avatar": "1f42e6dc5631724994ee7ea819371036",
     "notifications": {},
-    "bio": "some cool bio goes here ❤"
+    "bio": "I updated my biography on 13/11/2024",
+    "notifications_viewed": true
 }
 ```
 
 ## Get user notifications
 
-### GET `/api/users/{userId}/notifications`
+### GET `/api/users/notifications`
 
-Busque por todas as notificações de um usuário
+Retorne todas as notificações do usuário que corresponde ao JWT ou api-key
 
 #### Example Response Structure
 
@@ -47,21 +47,24 @@ Busque por todas as notificações de um usuário
 
 ## Delete a notification
 
-### DELETE `/api/users/{userId}/notifications/{notificationId}`
+### DELETE `/api/users/notifications/{notificationId}`
 
-Delete uma notificação de um usuário, retorna uma resposta vazia
+Delete uma notificação do usuário que corresponde ao JWT ou api-key, retorna uma
+resposta vazia
 
 ## Bulk delete all notifications
 
-### DELETE `/api/users/{userId}/notifications/bulk-delete`
+### DELETE `/api/users/notifications/bulk-delete`
 
-Delete todas as notificações de um usuário, retorna um mensagem de sucesso
+Delete todas as notificações do usuário que corresponde ao JWT ou api-key,
+retorna um mensagem de sucesso
 
 ## Create a notification
 
-### POST `/api/users/{userId}/notifications`
+### POST `/api/users/notifications`
 
-Crie uma nova notificação, retorna todas as notificações do usuário
+Crie uma nova notificação do usuário que corresponde ao JWT ou api-key, retorna
+a notificação criada com uma propriedade `sent_at`
 
 #### JSON Params
 
@@ -69,12 +72,14 @@ Crie uma nova notificação, retorna todas as notificações do usuário
 | ------- | ------- | ------------------------------- |
 | content | string  | O conteúdo/corpo da notificação |
 | type    | integer | O tipo da notificação           |
+| url?    | string  | URL da notificação              |
 
 ## Update user
 
-### PATCH `/api/users/{userId}`
+### PATCH `/api/users`
 
-Atualize um usuário, retorna o objeto do usuário desatualizado
+Atualize o objeto do usuário que corresponde ao JWT ou api-key, retorna o objeto
+do usuário atualizado
 
 #### JSON Params
 
