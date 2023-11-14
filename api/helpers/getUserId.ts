@@ -3,7 +3,8 @@ import { isUsingJWT } from "./isUsingJWT";
 import { botSchema } from "../models/Bot";
 
 export const getUserId = async (headers: Record<string, unknown>) => {
-    if (!("authorization" in headers)) return null;
+    if (!("authorization" in headers))
+        throw new Error("No `authorization` header in headers");
 
     let userId: string | undefined;
 
@@ -16,5 +17,5 @@ export const getUserId = async (headers: Record<string, unknown>) => {
         userId = (await botSchema.findOne({ api_key: headers.authorization }))
             ?.owner_id;
 
-    return userId ?? null;
+    return userId as string;
 };
