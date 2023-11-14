@@ -88,10 +88,6 @@ export interface TeamMember {
      * Permission of the member in the team
      */
     permission: TeamPermissions;
-    /**
-     * Whether the member is the owner or not
-     */
-    owner?: boolean;
 }
 
 /**
@@ -100,6 +96,7 @@ export interface TeamMember {
 export enum TeamPermissions {
     Administrator,
     ReadOnly,
+    Owner,
 }
 
 /**

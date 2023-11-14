@@ -22,7 +22,7 @@ export const updateTeam = async (req: Request, res: Response) => {
         return res
             .status(HttpStatusCode.BadRequest)
             .json(TEAM.USER_IS_NOT_A_MEMBER);
-    if (member.permission !== TeamPermissions.Administrator && !member.owner)
+    if (member.permission === TeamPermissions.ReadOnly)
         return res
             .status(HttpStatusCode.BadRequest)
             .json(TEAM.USER_IS_READONLY);

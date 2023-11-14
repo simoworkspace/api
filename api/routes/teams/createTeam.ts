@@ -5,6 +5,7 @@ import { HttpStatusCode } from "axios";
 import { USER, TEAM } from "../../helpers/errors.json";
 import { createTeamValidator } from "../../validators/user";
 import { getUserId } from "../../helpers/getUserId";
+import { TeamPermissions } from "../../typings/types";
 
 export const createTeam = async (req: Request, res: Response) => {
     const userId = await getUserId(req.headers);
@@ -50,7 +51,10 @@ export const createTeam = async (req: Request, res: Response) => {
                 team: {
                     ...body,
                     invite_hash: Math.random().toString(22).slice(2, 8),
-                    members: [...body.members, { id: userId, owner: true }],
+                    members: [
+                        ...body.members,
+                        { id: userId, permission: TeamPermissions.Owner },
+                    ],
                     id: Math.random().toString(36).slice(2),
                 },
             },
