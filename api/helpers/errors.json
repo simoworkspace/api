@@ -182,6 +182,22 @@
         "CANNOT_TRANSFER_TO_YOURSELF": {
             "message": "You cannot transfer the ownership to yourself",
             "code": 6014
+        },
+        "CANT_REMOVE_THE_OWNER": {
+            "message": "Cannot remove the team owner",
+            "code": 6015
+        },
+        "CANNOT_REMOVE_YOURSELF": {
+            "message": "You cannot remove yourself",
+            "code": 6016
+        },
+        "CANNOT_REMOVE_AN_ADM": {
+            "message": "You can't remove an administrator",
+            "code": 6017
+        },
+        "MISSING_MEMBER_ID_TO_REMOVE": {
+            "message": "Cannot remove a member without 'member_id' in body",
+            "code": 6018
         }
     }
 }
