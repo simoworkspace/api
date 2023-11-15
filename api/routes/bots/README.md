@@ -156,7 +156,7 @@ Este método é usado para adicionar um bot no banco de dados, retorna uma estru
 
 ### POST `/api/bots/{botId}/votes`
 
-Este método é usado para adicionar um voto no bot, retorna uma estrutura de [voto](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/core/types/types.d.ts#L62)
+Este método é usado para adicionar um voto no bot, retorna todos os votos do bot com o novo voto adicionado
 
 -   O ID do usuário será pego do JWT ou api_key usado
 
