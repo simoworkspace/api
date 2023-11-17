@@ -59,8 +59,14 @@ resposta vazia
 
 ### DELETE `/api/users/notifications/bulk-delete`
 
-Delete todas as notificações do usuário que corresponde ao JWT ou api-key,
-retorna um mensagem de sucesso
+Delete todas as notificações do usuário que corresponde ao JWT ou api-key
+
+#### JSON Return
+
+| FIELD | TYPE     | DESCRIPTION                              |
+| ----- | -------- | ---------------------------------------- |
+| count | number   | O número total de notificações deletadas |
+| ids   | string[] | Os IDs das notificações                  |
 
 ## Create a notification
 

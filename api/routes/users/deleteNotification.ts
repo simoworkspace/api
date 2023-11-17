@@ -22,11 +22,16 @@ export const deleteNotification = async (req: Request, res: Response) => {
                 .status(HttpStatusCode.BadRequest)
                 .json(USER.NO_NOTIFICATIONS);
 
+        const data = {
+            count: user.notifications.size,
+            ids: [...user.notifications.keys()],
+        };
+
         user.notifications.clear();
 
         await user.save();
 
-        return res.status(HttpStatusCode.Ok).json(GENERICS.SUCCESS);
+        return res.status(HttpStatusCode.Ok).json(data);
     }
     if (!notificationId)
         return res
