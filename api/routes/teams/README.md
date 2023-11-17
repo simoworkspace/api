@@ -93,6 +93,12 @@ Transfira a posse do time para outro usuário
 
 Remova um membro do time
 
+### JSON Params
+
+| FIELD | TYPE | DESCRIPTION |
+| ----- | ---- | ----------- |
+| member_id | Snowflake | O ID do membro que será removido |
+
 -   Ressalvas
     -   Você precisa ser um administrador
     -   Você não pode expulsar o proprietário do time
