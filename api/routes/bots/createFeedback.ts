@@ -4,6 +4,9 @@ import { FEEDBACK } from "../../helpers/errors.json";
 import { feedbackSchema } from "../../models/Feedback";
 import { feedbackValidator } from "../../validators/feedback";
 import { userSchema } from "../../models/User";
+import { createNotification } from "../users/createNotification";
+import { NotificationType } from "@simo.js/simo-api-types";
+import { botSchema } from "../../models/Bot";
 
 export const createFeedback = async (
     req: Request,
@@ -49,6 +52,14 @@ export const createFeedback = async (
         posted_at: new Date().toISOString(),
         author_id: authorId,
         target_bot: botId,
+    });
+
+    const bot = await botSchema.findById(botId);
+    const owner = await userSchema.findById(bot?.owner_id);
+
+    await createNotification(res, owner?.id as string, {
+        content: `**${owner?.username}** Comentou no seu bot **${bot?.name}**\n${body.content}`,
+        type: NotificationType.Comment,
     });
 
     return res.status(HttpStatusCode.Created).json(createdFeedback);

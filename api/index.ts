@@ -10,7 +10,6 @@ import { getToken } from "./routes/auth/getToken";
 import { callback } from "./routes/auth/callback";
 import { createBot } from "./routes/bots/createBot";
 import { getStatus } from "./routes/status/getStatus";
-import { createNotification } from "./routes/users/createNotification";
 import { deleteNotification } from "./routes/users/deleteNotification";
 import { updateBotOrFeedback } from "./routes/bots/updateBotOrFeedback";
 import { deleteBotOrFeedback } from "./routes/bots/deleteBotOrFeedback";
@@ -45,7 +44,6 @@ app.use(
 
 app.route(ROUTES.USER)
     .get(getUser)
-    .post(createNotification)
     .delete(deleteNotification)
     .patch(updateUser);
 app.route(ROUTES.AUTH).get(callback);

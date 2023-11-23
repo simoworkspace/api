@@ -1,25 +1,22 @@
 import { HttpStatusCode } from "axios";
 import { userSchema } from "../../models/User";
-import type { Request, Response } from "express";
-import { GENERICS, USER } from "../../helpers/errors.json";
+import type { Response } from "express";
+import { USER } from "../../helpers/errors.json";
 import { createNotificationValidator } from "../../validators/user";
-import { getUserId } from "../../helpers/getUserId";
+import type { NotificationPayload } from "@simo.js/simo-api-types";
 
-export const createNotification = async (req: Request, res: Response) => {
-    if (req.params.method !== "notifications")
-        return res
-            .status(HttpStatusCode.MethodNotAllowed)
-            .json(GENERICS.METHOD_NOT_ALLOWED);
-
-    const userId = await getUserId(req.headers);
+export const createNotification = async (
+    res: Response,
+    userId: string,
+    data: Omit<NotificationPayload, "sent_at">
+) => {
     const user = await userSchema.findById(userId);
 
     if (!user)
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
 
-    const { body } = req;
     const validation = await createNotificationValidator
-        .validate(body)
+        .validate(data)
         .catch((error) => error.errors);
 
     if (Array.isArray(validation))
@@ -34,13 +31,9 @@ export const createNotification = async (req: Request, res: Response) => {
             : `${Math.max(...notificationsId.map(Number)) + 1}`;
 
     user.notifications.set(notificationId, {
-        ...body,
+        ...data,
         sent_at: new Date().toISOString(),
     });
 
     await user.save();
-
-    return res
-        .status(HttpStatusCode.Created)
-        .json(user.notifications.get(notificationId));
 };
