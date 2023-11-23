@@ -68,21 +68,6 @@ Delete todas as notificações do usuário que corresponde ao JWT ou api-key
 | count | number   | O número total de notificações deletadas |
 | ids   | string[] | Os IDs das notificações                  |
 
-## Create a notification
-
-### POST `/api/users/notifications`
-
-Crie uma nova notificação do usuário que corresponde ao JWT ou api-key, retorna
-a notificação criada com uma propriedade `sent_at`
-
-#### JSON Params
-
-| FIELD   | TYPE    | DESCRIPTION                     |
-| ------- | ------- | ------------------------------- |
-| content | string  | O conteúdo/corpo da notificação |
-| type    | integer | O tipo da notificação           |
-| url?    | string  | URL da notificação              |
-
 ## Update user
 
 ### PATCH `/api/users`
