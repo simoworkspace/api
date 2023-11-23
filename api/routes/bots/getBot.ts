@@ -2,7 +2,7 @@ import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
 import { botSchema } from "../../models/Bot";
 import { BOT } from "../../helpers/errors.json";
-import { fetchFeedbacks } from "../../helpers/fetchFeedbacks";
+import { fetchBotFeedbacks } from "./fetchBotFeedbacks";
 import { getUserId } from "../../helpers/getUserId";
 
 /**
@@ -38,7 +38,7 @@ export const getBot = async (req: Request, res: Response) => {
 
     const { id: botId, method } = req.params;
 
-    if (method === "feedbacks") return fetchFeedbacks(req, res);
+    if (method === "feedbacks") return fetchBotFeedbacks(req, res);
 
     const userId = await getUserId(req.headers);
     const targetBot = await (botId
@@ -55,7 +55,7 @@ export const getBot = async (req: Request, res: Response) => {
             `https://cdn.discordapp.com/avatars/${targetBot?._id}/${targetBot?.avatar}.png`
         );
 
-        if (botImage.status === 404) {
+        if (botImage.status === HttpStatusCode.NotFound) {
             const request = await fetch(
                 `https://discord.com/api/v10/users/${botId}`,
                 {

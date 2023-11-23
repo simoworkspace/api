@@ -1,24 +1,19 @@
 import { HttpStatusCode } from "axios";
-import { FEEDBACK } from "./errors.json";
+import { FEEDBACK } from "../../helpers/errors.json";
 import type { Request, Response } from "express";
-import { feedbackSchema } from "../models/Feedback";
-import { userSchema } from "../models/User";
+import { feedbackSchema } from "../../models/Feedback";
+import { userSchema } from "../../models/User";
 
-/**
- * Fetches all feedbacks from a bot
- */
-export const fetchFeedbacks = async (req: Request, res: Response) => {
-    const { id: botId } = req.params;
-
-    const data = await feedbackSchema.find({
-        target_bot: botId,
+export const fetchBotFeedbacks = async (req: Request, res: Response) => {
+    const feedbacks = await feedbackSchema.find({
+        target_bot: req.params.id,
     });
 
-    if (!data || data.length < 1)
+    if (!feedbacks || feedbacks.length < 1)
         return res.status(HttpStatusCode.NoContent).json(FEEDBACK.NO_FEEDBACKS);
 
     return Promise.all(
-        data.map(
+        feedbacks.map(
             async ({
                 stars,
                 author_id,

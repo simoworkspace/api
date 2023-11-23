@@ -18,11 +18,14 @@ export const createNotification = async (req: Request, res: Response) => {
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
 
     const { body } = req;
+    const validation = await createNotificationValidator
+        .validate(body)
+        .catch((error) => error.errors);
 
-    if (!createNotificationValidator.isValidSync(body))
+    if (Array.isArray(validation))
         return res
             .status(HttpStatusCode.BadRequest)
-            .json(GENERICS.INVALID_PROPS);
+            .json({ errors: validation });
 
     const notificationsId = [...user.notifications.keys()];
     const notificationId =

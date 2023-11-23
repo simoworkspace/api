@@ -6,9 +6,8 @@ import { updateUserValidator } from "../../validators/user";
 import { getUserId } from "../../helpers/getUserId";
 
 export const updateUser = async (req: Request, res: Response) => {
-    const { body } = req;
-    const { method } = req.params;
     const userId = await getUserId(req.headers);
+    const { method } = req.params;
 
     if (method)
         return res
@@ -19,6 +18,8 @@ export const updateUser = async (req: Request, res: Response) => {
 
     if (!user)
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
+
+    const { body } = req;
 
     const validation = await updateUserValidator
         .validate(body)

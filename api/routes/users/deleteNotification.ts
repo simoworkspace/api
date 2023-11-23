@@ -11,11 +11,13 @@ export const deleteNotification = async (req: Request, res: Response) => {
             .json(GENERICS.METHOD_NOT_ALLOWED);
 
     const userId = await getUserId(req.headers);
-    const { notificationId } = req.params;
     const user = await userSchema.findById(userId);
 
     if (!user)
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
+
+    const { notificationId } = req.params;
+
     if (notificationId === "bulk-delete") {
         if (user.notifications.size < 1)
             return res
@@ -42,9 +44,9 @@ export const deleteNotification = async (req: Request, res: Response) => {
             .status(HttpStatusCode.NotFound)
             .json(USER.UNKNOWN_NOTIFICATION);
 
-    user.notifications.delete(notificationId);
+    const isNotificationDeleted = user.notifications.delete(notificationId);
 
     await user.save();
 
-    return res.status(HttpStatusCode.NoContent).send();
+    return res.status(HttpStatusCode.Ok).json(isNotificationDeleted);
 };
