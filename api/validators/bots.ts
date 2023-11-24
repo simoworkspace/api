@@ -12,8 +12,6 @@ const voteValidator = object({
     .noUnknown();
 
 export const botSchemaValidator = object({
-    name: string().required(),
-    avatar: string().required(),
     invite_url: string().url().required(),
     website_url: string().url(),
     support_server: string().matches(

@@ -45,8 +45,18 @@ export const createBot = async (req: Request, res: Response) => {
             .status(HttpStatusCode.BadRequest)
             .json({ errors: validation });
 
+    const response = await fetch(`https://discord.com/api/v10/users/${botId}`, {
+        headers: { Authorization: `Bot ${process.env.CLIENT_TOKEN}` },
+    });
+    const data = await response.json();
+
+    if ("message" in data)
+        return res.status(HttpStatusCode.BadRequest).json(BOT.UNKNOWN_BOT);
+
     const createdBot = await botSchema.create({
         ...body,
+        avatar: data.avatar,
+        name: data.username,
         _id: botId,
         owner_id: userId,
     });
