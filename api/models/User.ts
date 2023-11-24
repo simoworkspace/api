@@ -35,6 +35,7 @@ const rawUserSchema = new Schema<UserStructure>({
             {
                 id: String,
                 permission: Number,
+                _id: false,
             },
         ],
     },
