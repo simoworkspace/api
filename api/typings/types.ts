@@ -27,6 +27,7 @@ export interface BotStructure {
     total_votes: number;
     banner_url: string;
     team_id: string;
+    vote_message: string;
 }
 
 /**
