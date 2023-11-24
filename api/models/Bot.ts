@@ -80,7 +80,7 @@ const rawBotSchema = new Schema<BotStructure>({
     vote_message: {
         type: String,
         default(this: BotStructure) {
-            return `Obrigado por votar em ${this.name}`;
+            return `Obrigado por votar em ${this.name}.`;
         },
     },
 });
