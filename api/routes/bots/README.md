@@ -129,14 +129,12 @@ Este método é usado para editar um feedback em um bot, retorna uma estrutura d
 
 ### POST `/api/bots/{botId}`
 
-Este método é usado para adicionar um bot no banco de dados, retorna uma estrutura de [bot](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/typings/index.d.ts#L7) com `owner_id`
+Este método é usado para adicionar um bot no banco de dados, retorna uma estrutura de [bot](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/typings/index.d.ts#L7)
 
 #### JSON Params
 
 | FIELD             | TYPE                                                                                                     | DEFAULT                              | DESCRIPTION                                                                                       |
 | ----------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------- |
-| name              | string                                                                                                   |                                      | O nome do bot                                                                                     |
-| avatar            | string                                                                                                   |                                      | The avatar URL of the bot                                                                         |
 | invite_url        | string                                                                                                   |                                      | O URL de convite do bot (Deve ser um URL válido)                                                  |
 | website_url?      | string                                                                                                   |                                      | O URL do website do bot                                                                           |
 | support_server?   | string                                                                                                   |                                      | O URL de convite do servidor de suporte do bot (Apenas URLs de servidores do Discord são aceitas) |
@@ -145,7 +143,7 @@ Este método é usado para adicionar um bot no banco de dados, retorna uma estru
 | long_description  | string                                                                                                   |                                      | A descrição longa (Deve conter entre 200-500 caracteres, Markdown é válido)                       |
 | prefixes          | string[]                                                                                                 |                                      | Os prefixos do bot (Use `/` para se referir a slash-commands)                                     |
 | created_at        | ISO8601 timestamp                                                                                        |                                      | A data de criação do bot                                                                          |
-| verified          | string                                                                                                   |                                      | Se o bot é verificado ou não                                                                      |
+| verified          | boolean                                                                                                  |                                      | Se o bot é verificado ou não                                                                      |
 | tags              | string[]                                                                                                 |                                      | As tags do bot                                                                                    |
 | votes?            | [VoteStructure](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/core/types/types.d.ts#L47)[] | []                                   | Array de votos do bot                                                                             |
 | banner_url?       | string                                                                                                   |                                      | Novo URL do banner do bot                                                                         |
