@@ -24,7 +24,6 @@ export const botSchemaValidator = object({
     created_at: string().required(),
     verified: boolean().required(),
     tags: array(string()).max(5).required(),
-    approved: boolean().required(),
     votes: array(voteValidator),
     banner_url: string().max(200).min(1),
     vote_message: string().min(5).max(30),

@@ -56,7 +56,7 @@ const rawBotSchema = new Schema<BotStructure>({
     },
     approved: {
         type: Boolean,
-        required: true,
+        default: false,
     },
     api_key: {
         type: String,
