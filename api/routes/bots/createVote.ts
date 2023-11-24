@@ -1,10 +1,10 @@
 import { HttpStatusCode } from "axios";
 import type { Request, Response } from "express";
 import parseMs from "ms";
-import { BOT, USER } from "../../helpers/errors.json";
+import { BOT, USER } from "../../utils/errors.json";
 import { botSchema } from "../../models/Bot";
 import { userSchema } from "../../models/User";
-import { getUserId } from "../../helpers/getUserId";
+import { getUserId } from "../../utils/getUserId";
 
 export const createVote = async (
     req: Request,

@@ -1,9 +1,9 @@
 import type { Request, Response } from "express";
 import { userSchema } from "../../models/User";
 import { HttpStatusCode } from "axios";
-import { TEAM } from "../../helpers/errors.json";
-import { getUserId } from "../../helpers/getUserId";
-import { getUserByMember } from "../../helpers/getUserByMember";
+import { TEAM } from "../../utils/errors.json";
+import { getUserId } from "../../utils/getUserId";
+import { getUserByMember } from "../../utils/getUserByMember";
 import { fetchUserTeams } from "./fetchUserTeams";
 
 export const getTeam = async (req: Request, res: Response) => {

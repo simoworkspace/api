@@ -2,8 +2,8 @@ import { sign, verify } from "jsonwebtoken";
 import { HttpStatusCode } from "axios";
 import { userSchema } from "../../models/User";
 import type { Request, Response } from "express";
-import { GENERICS } from "../../helpers/errors.json";
-import { webhooks } from "../../helpers/webhooks";
+import { GENERICS } from "../../utils/errors.json";
+import { webhooks } from "../../utils/webhooks";
 
 /** Website callback */
 export const callback = async (req: Request, res: Response) => {

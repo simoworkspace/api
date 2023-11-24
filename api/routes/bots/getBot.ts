@@ -1,9 +1,9 @@
 import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
 import { botSchema } from "../../models/Bot";
-import { BOT } from "../../helpers/errors.json";
+import { BOT } from "../../utils/errors.json";
 import { fetchBotFeedbacks } from "./fetchBotFeedbacks";
-import { getUserId } from "../../helpers/getUserId";
+import { getUserId } from "../../utils/getUserId";
 
 /**
  * Gets a bot from Discord API or from the database

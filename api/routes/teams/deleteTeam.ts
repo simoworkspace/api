@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { userSchema } from "../../models/User";
 import { HttpStatusCode } from "axios";
-import { USER, TEAM } from "../../helpers/errors.json";
-import { getUserId } from "../../helpers/getUserId";
+import { USER, TEAM } from "../../utils/errors.json";
+import { getUserId } from "../../utils/getUserId";
 
 export const deleteTeam = async (req: Request, res: Response) => {
     const userId = await getUserId(req.headers);

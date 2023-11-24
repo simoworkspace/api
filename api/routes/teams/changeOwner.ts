@@ -1,6 +1,6 @@
 import { HttpStatusCode } from "axios";
 import type { Response } from "express";
-import { USER, TEAM } from "../../helpers/errors.json";
+import { USER, TEAM } from "../../utils/errors.json";
 import { userSchema } from "../../models/User";
 import { TeamPermissions } from "../../typings/types";
 

@@ -1,9 +1,9 @@
 import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
-import { USER, GENERICS } from "../../helpers/errors.json";
+import { USER, GENERICS } from "../../utils/errors.json";
 import { userSchema } from "../../models/User";
 import { updateUserValidator } from "../../validators/user";
-import { getUserId } from "../../helpers/getUserId";
+import { getUserId } from "../../utils/getUserId";
 
 export const updateUser = async (req: Request, res: Response) => {
     const userId = await getUserId(req.headers);

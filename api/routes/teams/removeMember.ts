@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
 import { userSchema } from "../../models/User";
 import { HttpStatusCode } from "axios";
-import { TEAM } from "../../helpers/errors.json";
-import { getUserId } from "../../helpers/getUserId";
+import { TEAM } from "../../utils/errors.json";
+import { getUserId } from "../../utils/getUserId";
 import { TeamPermissions } from "../../typings/types";
 
 export const removeMember = async (req: Request, res: Response) => {

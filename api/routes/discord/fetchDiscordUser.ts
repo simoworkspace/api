@@ -1,6 +1,6 @@
 import { HttpStatusCode } from "axios";
 import type { Response, Request } from "express";
-import { USER } from "../../helpers/errors.json";
+import { USER } from "../../utils/errors.json";
 
 export const fetchDiscordUser = async (req: Request, res: Response) => {
     const { CLIENT_TOKEN } = process.env;

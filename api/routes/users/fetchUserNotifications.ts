@@ -1,5 +1,5 @@
 import { HttpStatusCode } from "axios";
-import { USER } from "../../helpers/errors.json";
+import { USER } from "../../utils/errors.json";
 import type { Response } from "express";
 import { userSchema } from "../../models/User";
 

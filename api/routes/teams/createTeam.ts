@@ -2,9 +2,9 @@ import type { Request, Response } from "express";
 import { userSchema } from "../../models/User";
 import { botSchema } from "../../models/Bot";
 import { HttpStatusCode } from "axios";
-import { USER, TEAM } from "../../helpers/errors.json";
+import { USER, TEAM } from "../../utils/errors.json";
 import { createTeamValidator } from "../../validators/user";
-import { getUserId } from "../../helpers/getUserId";
+import { getUserId } from "../../utils/getUserId";
 import { TeamPermissions } from "../../typings/types";
 
 export const createTeam = async (req: Request, res: Response) => {

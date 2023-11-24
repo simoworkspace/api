@@ -1,5 +1,5 @@
 import { HttpStatusCode } from "axios";
-import { FEEDBACK } from "../../helpers/errors.json";
+import { FEEDBACK } from "../../utils/errors.json";
 import type { Request, Response } from "express";
 import { feedbackSchema } from "../../models/Feedback";
 import { userSchema } from "../../models/User";

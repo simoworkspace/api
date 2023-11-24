@@ -2,11 +2,11 @@ import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
 import { botSchema } from "../../models/Bot";
 import { patchBotValidator } from "../../validators/bots";
-import { BOT, TEAM } from "../../helpers/errors.json";
+import { BOT, TEAM } from "../../utils/errors.json";
 import { userSchema } from "../../models/User";
 import { TeamPermissions } from "../../typings/types";
 import { updateFeedback } from "./updateFeedback";
-import { getUserId } from "../../helpers/getUserId";
+import { getUserId } from "../../utils/getUserId";
 
 /**
  * Updates a bot or feedback

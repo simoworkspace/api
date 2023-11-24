@@ -1,6 +1,6 @@
 import { Response } from "express";
 import { userSchema } from "../../models/User";
-import { getUserByMember } from "../../helpers/getUserByMember";
+import { getUserByMember } from "../../utils/getUserByMember";
 import { HttpStatusCode } from "axios";
 
 export const fetchUserTeams = async (res: Response, userId: string) => {

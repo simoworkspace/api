@@ -2,9 +2,9 @@ import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
 import { botSchema } from "../../models/Bot";
 import { botSchemaValidator } from "../../validators/bots";
-import { GENERICS, BOT } from "../../helpers/errors.json";
-import { webhooks } from "../../helpers/webhooks";
-import { getUserId } from "../../helpers/getUserId";
+import { GENERICS, BOT } from "../../utils/errors.json";
+import { webhooks } from "../../utils/webhooks";
+import { getUserId } from "../../utils/getUserId";
 import { createFeedback } from "./createFeedback";
 import { createVote } from "./createVote";
 

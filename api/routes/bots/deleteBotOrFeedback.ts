@@ -2,8 +2,8 @@ import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
 import { botSchema } from "../../models/Bot";
 import { feedbackSchema } from "../../models/Feedback";
-import { BOT, FEEDBACK, GENERICS } from "../../helpers/errors.json";
-import { getUserId } from "../../helpers/getUserId";
+import { BOT, FEEDBACK, GENERICS } from "../../utils/errors.json";
+import { getUserId } from "../../utils/getUserId";
 
 /**
  * Deletes a bot or feedback

@@ -1,7 +1,7 @@
 import { HttpStatusCode } from "axios";
 import { userSchema } from "../../models/User";
 import type { Response } from "express";
-import { USER } from "../../helpers/errors.json";
+import { USER } from "../../utils/errors.json";
 import { createNotificationValidator } from "../../validators/user";
 import type { NotificationPayload } from "@simo.js/simo-api-types";
 

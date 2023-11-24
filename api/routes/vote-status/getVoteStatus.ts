@@ -1,8 +1,8 @@
 import { HttpStatusCode } from "axios";
 import { botSchema } from "../../models/Bot";
-import { BOT, USER } from "../../helpers/errors.json";
+import { BOT, USER } from "../../utils/errors.json";
 import type { Request, Response } from "express";
-import { isUsingJWT } from "../../helpers/isUsingJWT";
+import { isUsingJWT } from "../../utils/isUsingJWT";
 import { JwtPayload, decode } from "jsonwebtoken";
 import { userSchema } from "../../models/User";
 

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { getUserId } from "../../helpers/getUserId";
+import { getUserId } from "../../utils/getUserId";
 import { HttpStatusCode } from "axios";
-import { USER, TEAM } from "../../helpers/errors.json";
+import { USER, TEAM } from "../../utils/errors.json";
 import { userSchema } from "../../models/User";
 import { TeamPermissions } from "../../typings/types";
 import { changeOwner } from "./changeOwner";

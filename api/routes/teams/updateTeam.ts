@@ -1,10 +1,10 @@
 import type { Request, Response } from "express";
 import { userSchema } from "../../models/User";
 import { HttpStatusCode } from "axios";
-import { TEAM } from "../../helpers/errors.json";
+import { TEAM } from "../../utils/errors.json";
 import { TeamPermissions } from "../../typings/types";
 import { updateTeamValidator } from "../../validators/user";
-import { getUserId } from "../../helpers/getUserId";
+import { getUserId } from "../../utils/getUserId";
 
 export const updateTeam = async (req: Request, res: Response) => {
     const user = await userSchema.findOne({ "team.id": req.params.teamId });

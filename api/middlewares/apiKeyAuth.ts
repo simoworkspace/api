@@ -1,5 +1,5 @@
 import { HttpStatusCode } from "axios";
-import { GENERICS } from "../helpers/errors.json";
+import { GENERICS } from "../utils/errors.json";
 import type { Request, Response, NextFunction } from "express";
 import { botSchema } from "../models/Bot";
 
