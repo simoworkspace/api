@@ -47,7 +47,6 @@ export const patchBotValidator = object({
     short_description: string().min(50).max(80),
     long_description: string().max(2048),
     prefixes: array(string().max(6)).max(5),
-    owner_id: string().matches(idPattern),
     verified: boolean(),
     tags: array(string()).max(5),
     votes: array(voteValidator),
