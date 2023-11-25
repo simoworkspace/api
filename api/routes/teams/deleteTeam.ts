@@ -21,5 +21,5 @@ export const deleteTeam = async (req: Request, res: Response) => {
 
     await user.updateOne({ $unset: { team: 1 } });
 
-    return res.status(HttpStatusCode.Ok).send();
+    return res.status(HttpStatusCode.NoContent);
 };
