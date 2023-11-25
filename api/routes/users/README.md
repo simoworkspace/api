@@ -25,6 +25,12 @@ Busque por um usuário na database, retorna uma estrutura de usuário
 }
 ```
 
+## Get author
+
+### GET `/api/users/@me`
+
+Busque pelo author da requisição, retorna uma estrutura de usuário completa
+
 ## Get user notifications
 
 ### GET `/api/users/notifications`
