@@ -2,7 +2,7 @@
 
 ## Get team
 
-### GET `/api/teams/{teamId}`
+### GET `/api/teams/{team.id}`
 
 Busque por um time na database, retorna uma estrutura de time
 
@@ -96,8 +96,8 @@ Remova um membro do time
 
 ### JSON Params
 
-| FIELD | TYPE | DESCRIPTION |
-| ----- | ---- | ----------- |
+| FIELD     | TYPE      | DESCRIPTION                      |
+| --------- | --------- | -------------------------------- |
 | member_id | Snowflake | O ID do membro que será removido |
 
 -   Ressalvas

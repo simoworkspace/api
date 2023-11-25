@@ -2,7 +2,7 @@
 
 ## Get user vote status
 
-### GET `/api/vote-status/{userId}`
+### GET `/api/vote-status/{user._id}`
 
 #### Example Response Structure
 
