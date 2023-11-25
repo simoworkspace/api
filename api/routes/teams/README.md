@@ -18,7 +18,8 @@ Busque pelo time do usuário, retorna uma estrutura de time
 
 ### GET `/api/teams/@all`
 
-Busque por todos os times que o usuário está, retorna uma array de estruturas de time
+Busque por todos os times que o usuário está, retorna uma array de estruturas de
+time
 
 -   A API tentara encontrar o time pela api_key ou json web token usado
 
@@ -71,7 +72,7 @@ Edite/atualize um time, retorna o objeto do time atualizado
 
 ## Join team
 
-### PUT `/api/teams/{team.id}/{team.invite_hash}`
+### PUT `/api/teams/{team.id}/{team.invite_code}`
 
 Entre para um time, retorna `true` se entrou
 

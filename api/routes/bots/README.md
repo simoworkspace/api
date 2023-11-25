@@ -50,12 +50,12 @@ Este método é usado para pegar todos os votos de um bot, retorna uma array de 
 [
     {
         "votes": 4,
-        "user": "963124227911860264",
+        "user_id": "963124227911860264",
         "last_vote": "2023-09-03T12:25:33.610Z"
     },
     {
         "votes": 1,
-        "user": "786985391734390824",
+        "user_id": "786985391734390824",
         "last_vote": "2023-09-03T12:26:44.515Z"
     }
 ]
@@ -151,7 +151,8 @@ Este método é usado para adicionar um bot no banco de dados, retorna uma estru
 
 ### POST `/api/bots/{botId}/votes`
 
-Este método é usado para adicionar um voto no bot, retorna todos os votos do bot com o novo voto adicionado
+Este método é usado para adicionar um voto no bot, retorna todos os votos do bot
+com o novo voto adicionado
 
 -   O ID do usuário será pego do JWT ou api_key usado
 
