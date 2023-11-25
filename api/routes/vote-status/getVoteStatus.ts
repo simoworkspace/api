@@ -30,7 +30,7 @@ export const getVoteStatus = async (req: Request, res: Response) => {
 
     if (!bot) return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_BOT);
 
-    const vote = bot.votes.find((vote) => vote.user === userId);
+    const vote = bot.votes.find((vote) => vote.user_id === userId);
 
     if (!vote)
         return res
