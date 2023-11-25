@@ -1,15 +1,4 @@
-import { object, string, array, boolean, number } from "yup";
-
-const idPattern = /^\d{16,21}$/;
-
-const voteValidator = object({
-    votes: number().required(),
-    user: string().matches(idPattern).required(),
-    last_vote: string().required(),
-})
-    .strict()
-    .required()
-    .noUnknown();
+import { object, string, array, boolean } from "yup";
 
 export const botSchemaValidator = object({
     invite_url: string().url().required(),
@@ -24,7 +13,6 @@ export const botSchemaValidator = object({
     created_at: string().required(),
     verified: boolean().required(),
     tags: array(string()).max(5).required(),
-    votes: array(voteValidator),
     banner_url: string().max(200).min(1),
     vote_message: string().min(5).max(30),
 })
@@ -46,7 +34,6 @@ export const patchBotValidator = object({
     prefixes: array(string().max(6)).max(5),
     verified: boolean(),
     tags: array(string()).max(5),
-    votes: array(voteValidator),
     banner_url: string().max(200).min(1),
     team_id: string(),
     vote_message: string().min(5).max(30),
