@@ -14,8 +14,10 @@ export const getUser = async (req: Request, res: Response) => {
 
     if (method === "notifications")
         return fetchUserNotifications(res, authorId);
+    if (!method)
+        return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
 
-    const user = await userSchema.findById(method, { __v: 0 });
+    const user = await userSchema.findById(method === "@me" ? authorId : method, { __v: 0 });
 
     if (!user)
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
