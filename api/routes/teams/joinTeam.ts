@@ -26,7 +26,7 @@ export const joinTeam = async (req: Request, res: Response) => {
 
     const { team } = user;
 
-    if (team.invite_hash !== invite)
+    if (team.invite_code !== invite)
         return res
             .status(HttpStatusCode.BadRequest)
             .json(TEAM.INVALID_INVITE_HASH);

@@ -26,7 +26,7 @@ const rawUserSchema = new Schema<UserStructure>({
     },
     team: {
         id: String,
-        invite_hash: String,
+        invite_code: String,
         name: String,
         avatar_url: String,
         description: String,

@@ -17,7 +17,7 @@ const rawFeedbackSchema = new Schema<FeedbackStructure>({
         required: true,
         maxlength: 500,
     },
-    target_bot: {
+    target_bot_id: {
         type: String,
         required: true,
     },

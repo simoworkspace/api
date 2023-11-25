@@ -24,7 +24,7 @@ export interface BotStructure {
     approved: boolean;
     api_key?: string;
     votes: VoteStructure[];
-    total_votes: number;
+    votes_count: number;
     banner_url: string;
     team_id: string;
     vote_message: string;
@@ -58,7 +58,7 @@ export interface Team {
     /**
      * The invite hash of the team
      */
-    invite_hash: string;
+    invite_code: string;
     /**
      * The name of the team
      */
@@ -112,7 +112,7 @@ export interface DiscordUserStructure extends Omit<UserStructure, "_id"> {
  */
 export interface VoteStructure {
     votes: number;
-    user: Snowflake;
+    user_id: Snowflake;
     last_vote: string;
 }
 
@@ -135,7 +135,7 @@ export interface FeedbackStructure {
     stars: number;
     posted_at: string;
     content: string;
-    target_bot: Snowflake;
+    target_bot_id: Snowflake;
     edited?: boolean;
     reply_message?: {
         content: string;

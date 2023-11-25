@@ -12,7 +12,7 @@ export const updateFeedback = async (
     const { body } = req;
     const feedback = await feedbackSchema.findOne({
         author_id: authorId,
-        target_bot: botId,
+        target_bot_id: botId,
     });
 
     if (!feedback)
@@ -32,7 +32,7 @@ export const updateFeedback = async (
     const updatedFeedback = await feedbackSchema.findOneAndUpdate(
         {
             author_id: authorId,
-            target_bot: botId,
+            target_bot_id: botId,
         },
         { $set: { ...body, edited: true } },
         { new: true }

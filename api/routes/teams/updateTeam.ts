@@ -44,7 +44,7 @@ export const updateTeam = async (req: Request, res: Response) => {
         $set: {
             team: {
                 ...options,
-                invite_hash: Math.random().toString(22).slice(2, 8),
+                invite_code: Math.random().toString(22).slice(2, 8),
             },
         },
     });

@@ -33,12 +33,12 @@ export const createVote = async (
 
     const votes = await botSchema.findOne({
         _id: botId,
-        "votes.user": user._id,
+        "votes.user_id": user._id,
     });
 
     if (!votes) {
         const voteBody = {
-            user: user._id,
+            user_id: user._id,
             last_vote: new Date().toISOString(),
             votes: 1,
         };
@@ -53,7 +53,7 @@ export const createVote = async (
     }
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const { last_vote } = votes.votes.find((vote) => vote.user === user._id)!;
+    const { last_vote } = votes.votes.find((vote) => vote.user_id === user._id)!;
 
     const twelveHours = 4.32e7;
     const timeLeft = new Date().getTime() - new Date(last_vote).getTime();
@@ -68,9 +68,9 @@ export const createVote = async (
         });
 
     const vote = await botSchema.findOneAndUpdate(
-        { _id: botId, "votes.user": user._id },
+        { _id: botId, "votes.user_id": user._id },
         {
-            $inc: { "votes.$.votes": 1, total_votes: 1 },
+            $inc: { "votes.$.votes": 1, votes_count: 1 },
             $set: {
                 "votes.$.last_vote": new Date().toISOString(),
             },

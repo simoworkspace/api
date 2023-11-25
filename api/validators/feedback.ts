@@ -10,7 +10,7 @@ export const feedbackValidator = object({
         avatar: string(),
     }),
     content: string().max(500).required(),
-    target_bot: string().matches(idPattern),
+    target_bot_id: string().matches(idPattern),
 })
     .noUnknown()
     .required();

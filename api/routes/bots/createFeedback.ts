@@ -18,7 +18,7 @@ export const createFeedback = async (
 
     const exists = await feedbackSchema.exists({
         author_id: authorId,
-        target_bot: botId,
+        target_bot_id: botId,
     });
 
     if (exists)
@@ -51,7 +51,7 @@ export const createFeedback = async (
         ...body,
         posted_at: new Date().toISOString(),
         author_id: authorId,
-        target_bot: botId,
+        target_bot_id: botId,
     });
 
     const bot = await botSchema.findById(botId);

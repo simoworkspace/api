@@ -6,7 +6,7 @@ import { userSchema } from "../../models/User";
 
 export const fetchBotFeedbacks = async (req: Request, res: Response) => {
     const feedbacks = await feedbackSchema.find({
-        target_bot: req.params.id,
+        target_bot_id: req.params.id,
     });
 
     if (!feedbacks || feedbacks.length < 1)
@@ -18,7 +18,7 @@ export const fetchBotFeedbacks = async (req: Request, res: Response) => {
                 stars,
                 author_id,
                 content,
-                target_bot,
+                target_bot_id,
                 edited,
                 reply_message,
                 posted_at,
@@ -31,7 +31,7 @@ export const fetchBotFeedbacks = async (req: Request, res: Response) => {
                 return {
                     stars,
                     content,
-                    target_bot,
+                    target_bot_id,
                     edited,
                     reply_message,
                     author: {

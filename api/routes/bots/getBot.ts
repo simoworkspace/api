@@ -24,7 +24,7 @@ export const getBot = async (req: Request, res: Response) => {
             .find(query, null, {
                 limit: queryLimit,
             })
-            .sort({ total_votes: -1 });
+            .sort({ votes_count: -1 });
 
         return res
             .status(HttpStatusCode.Ok)
@@ -45,7 +45,7 @@ export const getBot = async (req: Request, res: Response) => {
         ? botSchema.findById(botId).select("-api_key")
         : botSchema
             .find({ owner_id: userId })
-            .sort({ total_votes: -1 })
+            .sort({ votes_count: -1 })
             .select("-api_key"));
 
     if (botId) {
