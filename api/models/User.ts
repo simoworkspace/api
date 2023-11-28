@@ -24,21 +24,6 @@ const rawUserSchema = new Schema<UserStructure>({
         type: String,
         default: "",
     },
-    team: {
-        id: String,
-        invite_code: String,
-        name: String,
-        avatar_url: String,
-        description: String,
-        bot_id: String,
-        members: [
-            {
-                id: String,
-                permission: Number,
-                _id: false,
-            },
-        ],
-    },
     notifications_viewed: {
         type: Boolean,
         default: true,
