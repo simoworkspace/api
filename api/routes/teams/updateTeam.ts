@@ -1,22 +1,21 @@
 import type { Request, Response } from "express";
-import { userSchema } from "../../models/User";
 import { HttpStatusCode } from "axios";
 import { TEAM } from "../../utils/errors.json";
 import { TeamPermissions } from "../../typings/types";
 import { updateTeamValidator } from "../../validators/user";
 import { getUserId } from "../../utils/getUserId";
+import { teamModel } from "../../models/Team";
 
 export const updateTeam = async (req: Request, res: Response) => {
-    const user = await userSchema.findOne({ "team.id": req.params.teamId });
+    const { teamId } = req.params;
+    const team = await teamModel.findOne({ id: teamId });
 
-    if (!user?.team?.id)
+    if (!team)
         return res.status(HttpStatusCode.NotFound).json(TEAM.UNKNOWN_TEAM);
 
     const userId = await getUserId(req.headers);
 
-    const { team } = user;
-
-    const member = team.members.find((member) => member.id === userId);
+    const member = team.members.find((crrMember) => crrMember.id === userId);
 
     if (!member)
         return res
@@ -38,16 +37,11 @@ export const updateTeam = async (req: Request, res: Response) => {
             .status(HttpStatusCode.BadRequest)
             .json({ errors: validation });
 
-    const options = { ...team, ...body };
+    const updatedTeam = await teamModel.findOneAndUpdate(
+        { id: teamId },
+        { $set: body },
+        { new: true }
+    );
 
-    await user.updateOne({
-        $set: {
-            team: {
-                ...options,
-                invite_code: Math.random().toString(22).slice(2, 8),
-            },
-        },
-    });
-
-    return res.status(HttpStatusCode.Ok).json(options);
+    return res.status(HttpStatusCode.Ok).json(updatedTeam);
 };

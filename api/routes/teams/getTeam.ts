@@ -1,9 +1,11 @@
-import type { Request, Response } from "express";
-import { userSchema } from "../../models/User";
-import { HttpStatusCode } from "axios";
-import { TEAM } from "../../utils/errors.json";
+import { Request, Response } from "express";
 import { getUserId } from "../../utils/getUserId";
+import { teamModel } from "../../models/Team";
+import { TeamPermissions } from "../../typings/types";
+import { HttpStatusCode } from "axios";
 import { getUserByMember } from "../../utils/getUserByMember";
+import { userSchema } from "../../models/User";
+import { TEAM } from "../../utils/errors.json";
 import { fetchUserTeams } from "./fetchUserTeams";
 
 export const getTeam = async (req: Request, res: Response) => {
@@ -15,31 +17,39 @@ export const getTeam = async (req: Request, res: Response) => {
     const users = await userSchema.find({}, { avatar: 1, username: 1 });
 
     if (!teamId) {
-        const user = await userSchema.findById(userId, {
-            __v: 0,
-            "team.__v": 0,
+        const teams = await teamModel.find({
+            members: {
+                $elemMatch: { id: userId, permission: TeamPermissions.Owner },
+            },
         });
 
-        if (!user?.team?.id)
+        if (teams.length === 0)
             return res.status(HttpStatusCode.NotFound).json(TEAM.UNKNOWN_TEAM);
 
-        return res.status(HttpStatusCode.Ok).json({
-            ...user.team,
-            members: user.team.members.map((member) =>
-                getUserByMember(member, users)
-            ),
-        });
+        return res.status(HttpStatusCode.Ok).json(
+            teams.map(
+                (team) =>
+                    ({
+                        ...team,
+                        members: team.members.map((member) =>
+                            getUserByMember(member, users)
+                        ),
+                    })._doc
+            )
+        );
     }
 
-    const user = await userSchema.findOne({ "team.id": teamId }, { team: 1 });
+    const team = await teamModel.findOne({ id: teamId });
 
-    if (!user?.team?.id)
+    if (!team)
         return res.status(HttpStatusCode.NotFound).json(TEAM.UNKNOWN_TEAM);
 
-    const { team } = user;
-
-    return res.status(HttpStatusCode.Ok).json({
-        ...team,
-        members: team.members.map((member) => getUserByMember(member, users)),
-    });
+    return res.status(HttpStatusCode.Ok).json(
+        {
+            ...team,
+            members: team.members.map((member) =>
+                getUserByMember(member, users)
+            ),
+        }._doc
+    );
 };

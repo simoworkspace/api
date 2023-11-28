@@ -1,46 +1,42 @@
 import type { Request, Response } from "express";
-import { userSchema } from "../../models/User";
+import { teamModel } from "../../models/Team";
 import { HttpStatusCode } from "axios";
 import { TEAM } from "../../utils/errors.json";
 import { getUserId } from "../../utils/getUserId";
 import { TeamPermissions } from "../../typings/types";
 
-export const removeMember = async (req: Request, res: Response) => {
-    const { teamId } = req.params;
-    const user = await userSchema.findOne({ "team.id": teamId });
+export const kickMember = async (req: Request, res: Response) => {
+    const team = await teamModel.findOne({ id: req.params.teamId });
 
-    if (!user?.team?.id)
+    if (!team)
         return res.status(HttpStatusCode.NotFound).json(TEAM.UNKNOWN_TEAM);
 
-    const { team } = user;
-    const userId = await getUserId(req.headers);
-
-    const member = team.members.find((mbr) => mbr.id === userId);
+    const authorId = await getUserId(req.headers);
+    const member = team.members.find((member) => member.id === authorId);
 
     if (!member)
         return res
-            .status(HttpStatusCode.BadRequest)
+            .status(HttpStatusCode.NotFound)
             .json(TEAM.AUTHOR_IS_NOT_A_MEMBER);
     if (member.permission === TeamPermissions.ReadOnly)
         return res
             .status(HttpStatusCode.BadRequest)
             .json(TEAM.USER_IS_READONLY);
-    if (!("member_id" in req.body))
+
+    const { targetId } = req.params;
+
+    if (targetId === authorId)
         return res
-            .status(HttpStatusCode.BadRequest)
-            .json(TEAM.MISSING_MEMBER_ID_TO_REMOVE);
-    if (userId === req.body.member_id)
-        return res
-            .status(HttpStatusCode.BadRequest)
+            .status(HttpStatusCode.Conflict)
             .json(TEAM.CANNOT_REMOVE_YOURSELF);
 
     const memberToRemove = team.members.find(
-        (mbr) => mbr.id === req.body.member_id
+        (member) => member.id === targetId
     );
 
     if (!memberToRemove)
         return res
-            .status(HttpStatusCode.BadRequest)
+            .status(HttpStatusCode.NotFound)
             .json(TEAM.USER_IS_NOT_A_MEMBER);
     if (memberToRemove.permission === TeamPermissions.Owner)
         return res
@@ -54,18 +50,11 @@ export const removeMember = async (req: Request, res: Response) => {
             .status(HttpStatusCode.BadRequest)
             .json(TEAM.CANNOT_REMOVE_AN_ADM);
 
-    const updatedTeam = await userSchema.findOneAndUpdate(
-        {
-            "team.id": teamId,
+    await team.updateOne({
+        $set: {
+            members: team.members.filter((member) => member.id !== targetId),
         },
-        {
-            $set: {
-                "team.members": team.members.filter(
-                    (mbr) => mbr.id !== memberToRemove.id
-                ),
-            },
-        }
-    );
+    });
 
-    return res.status(HttpStatusCode.Ok).json(updatedTeam);
+    return res.status(HttpStatusCode.Ok).json(memberToRemove);
 };

@@ -1,11 +1,11 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { getUserId } from "../../utils/getUserId";
+import { kickMember } from "./kickMember";
+import { teamModel } from "../../models/Team";
 import { HttpStatusCode } from "axios";
-import { USER, TEAM } from "../../utils/errors.json";
-import { userSchema } from "../../models/User";
+import { TEAM, USER } from "../../utils/errors.json";
 import { TeamPermissions } from "../../typings/types";
 import { changeOwner } from "./changeOwner";
-import { removeMember } from "./removeMember";
 
 export const joinTeam = async (req: Request, res: Response) => {
     const userId = await getUserId(req.headers);
@@ -16,15 +16,16 @@ export const joinTeam = async (req: Request, res: Response) => {
     const { teamId, invite } = req.params;
 
     if (teamId === "change-owner")
-        return changeOwner(res, { userId: invite, authorId: userId });
-    if (invite === "remove-member") return removeMember(req, res);
+        return changeOwner(res, {
+            userId: req.params.targetId,
+            authorId: userId,
+            teamId,
+        });
+    if (invite === "remove-member") return kickMember(req, res);
 
-    const user = await userSchema.findOne({ "team.id": teamId });
+    const team = await teamModel.findOne({ id: teamId });
 
-    if (!user?.team?.id)
-        return res.status(HttpStatusCode.NotFound).json(TEAM.UNKNOWN_TEAM);
-
-    const { team } = user;
+    if (!team) return res.status(HttpStatusCode.Ok).json(TEAM.UNKNOWN_TEAM);
 
     if (team.invite_code !== invite)
         return res
@@ -35,14 +36,11 @@ export const joinTeam = async (req: Request, res: Response) => {
             .status(HttpStatusCode.BadRequest)
             .json(TEAM.ALREADY_A_MEMBER);
 
-    await user.updateOne({
+    await team.updateOne({
         $push: {
-            "team.members": {
-                id: userId,
-                permission: TeamPermissions.ReadOnly,
-            },
+            members: { id: userId, permission: TeamPermissions.ReadOnly },
         },
     });
 
-    return res.status(HttpStatusCode.Ok).json(true);
+    return res.status(HttpStatusCode.NoContent).send();
 };

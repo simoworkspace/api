@@ -1,25 +1,30 @@
 import { Request, Response } from "express";
-import { userSchema } from "../../models/User";
 import { HttpStatusCode } from "axios";
-import { USER, TEAM } from "../../utils/errors.json";
+import { TEAM } from "../../utils/errors.json";
 import { getUserId } from "../../utils/getUserId";
+import { teamModel } from "../../models/Team";
+import { TeamPermissions } from "../../typings/types";
 
 export const deleteTeam = async (req: Request, res: Response) => {
     const userId = await getUserId(req.headers);
-    const user = await userSchema.findById(userId);
 
-    if (!user)
-        return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
-    if (!user.team.id)
-        return res
-            .status(HttpStatusCode.BadRequest)
-            .json(TEAM.USER_HAS_NO_TEAM);
-    if (user._id !== userId)
+    const team = await teamModel.findOne({ id: req.params.teamId });
+
+    if (!team)
+        return res.status(HttpStatusCode.NotFound).json(TEAM.UNKNOWN_TEAM);
+
+    const owner = team.members.find(
+        (member) => member.permission === TeamPermissions.Owner
+    );
+
+    if (!owner) return;
+
+    if (owner.id !== userId)
         return res
             .status(HttpStatusCode.BadRequest)
             .json(TEAM.ONLY_THE_OWNER_CAN_DELETE);
 
-    await user.updateOne({ $unset: { team: 1 } });
+    await team.deleteOne();
 
-    return res.status(HttpStatusCode.NoContent);
+    return res.status(HttpStatusCode.NoContent).send();
 };

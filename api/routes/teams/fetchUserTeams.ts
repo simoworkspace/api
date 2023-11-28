@@ -1,17 +1,24 @@
-import { Response } from "express";
-import { userSchema } from "../../models/User";
-import { getUserByMember } from "../../utils/getUserByMember";
 import { HttpStatusCode } from "axios";
+import { teamModel } from "../../models/Team";
+import type { Response } from "express";
+import { getUserByMember } from "../../utils/getUserByMember";
+import { userSchema } from "../../models/User";
 
 export const fetchUserTeams = async (res: Response, userId: string) => {
-    const users = await userSchema.find({ "team.members.id": userId });
+    const teams = await teamModel.find({
+        members: { $elemMatch: { id: userId } },
+    });
+    const users = await userSchema.find({});
 
     return res.status(HttpStatusCode.Ok).json(
-        users.map(({ team }) => ({
-            ...team,
-            members: team.members.map((member) =>
-                getUserByMember(member, users)
-            ),
-        }))
+        teams.map(
+            (team) =>
+                ({
+                    ...team,
+                    members: team.members.map((member) =>
+                        getUserByMember(member, users)
+                    ),
+                })._doc
+        )
     );
 };

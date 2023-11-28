@@ -1,39 +1,44 @@
 import type { Request, Response } from "express";
-import { userSchema } from "../../models/User";
-import { botSchema } from "../../models/Bot";
-import { HttpStatusCode } from "axios";
-import { USER, TEAM } from "../../utils/errors.json";
-import { createTeamValidator } from "../../validators/user";
 import { getUserId } from "../../utils/getUserId";
+import { HttpStatusCode } from "axios";
+import { GENERICS, TEAM, BOT } from "../../utils/errors.json";
+import { teamModel } from "../../models/Team";
 import { TeamPermissions } from "../../typings/types";
+import { botSchema } from "../../models/Bot";
+import { createTeamValidator } from "../../validators/user";
 
 export const createTeam = async (req: Request, res: Response) => {
     const userId = await getUserId(req.headers);
 
     if (!userId)
-        return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
+        return res.status(HttpStatusCode.NotFound).json(GENERICS.INVALID_AUTH);
 
-    const user = await userSchema.findById(userId);
+    const userTeams = await teamModel.find({
+        members: {
+            $elemMatch: { id: userId, permission: TeamPermissions.Owner },
+        },
+    });
 
-    if (!user)
-        return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
-    if (user.team?.id)
+    if (userTeams.length === 2)
         return res
             .status(HttpStatusCode.BadRequest)
-            .json(TEAM.USER_ALREADY_HAVE_A_TEAM);
+            .json(TEAM.USER_REACHED_TWO_TEAMS);
 
     const { body } = req;
+    const isBotInATeam = await teamModel.exists({ bot_id: body.bot_id });
 
-    const team = await userSchema.findOne({ "team.bot_id": body.bot_id });
-
-    if (team?.team?.bot_id)
+    if (isBotInATeam)
         return res
             .status(HttpStatusCode.BadRequest)
             .json(TEAM.BOT_ALREADY_IN_A_TEAM);
-    if (await botSchema.findById(body.bot_id))
+
+    const bot = await botSchema.findById(body.bot_id);
+
+    if (!bot) return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_BOT);
+    if (bot.owner_id !== userId)
         return res
             .status(HttpStatusCode.BadRequest)
-            .json(TEAM.BOT_ALREADY_ADDED);
+            .json(TEAM.ONLY_BOT_OWNER_CAN_ADD_IT);
 
     const validation = await createTeamValidator
         .validate(body)
@@ -44,22 +49,17 @@ export const createTeam = async (req: Request, res: Response) => {
             errors: validation,
         });
 
-    const createdTeam = await userSchema.findByIdAndUpdate(
-        userId,
-        {
-            $set: {
-                team: {
-                    ...body,
-                    invite_code: Math.random().toString(22).slice(2, 8),
-                    members: [
-                        { id: userId, permission: TeamPermissions.Owner },
-                    ],
-                    id: Math.random().toString(36).slice(2),
-                },
-            },
-        },
-        { new: true, projection: { team: 1 } }
-    );
+    const teamId = Math.random().toString(36).slice(2);
+    const createdTeam = await teamModel.create({
+        ...body,
+        invite_code: Math.random().toString(36).slice(2, 8),
+        members: [{ id: userId, permission: TeamPermissions.Owner }],
+        id: teamId,
+    });
 
-    return res.status(HttpStatusCode.Ok).json(createdTeam?.team);
+    await bot.updateOne({ team_id: teamId });
+
+    delete createdTeam.__v;
+
+    return res.status(HttpStatusCode.Created).json(createdTeam);
 };
