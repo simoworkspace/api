@@ -145,3 +145,93 @@ export enum NotificationType {
     RefusedBot,
     Mixed,
 }
+
+export interface AuditLogStructure {
+    team_id: string;
+    executor_id: string;
+    created_at: string;
+    id: string;
+    action_type: AuditLogActionType;
+    changes: AnyAuditLogChange[];
+    target_id: Snowflake | null;
+}
+
+export enum AuditLogActionType {
+    /**
+     * Member was added in a team
+     */
+    MemberAdd,
+    /**
+     * Member was removed in a team
+     */
+    MemberRemove,
+    /**
+     * Member was updated in a team
+     */
+    MemberUpdate,
+
+    /**
+     * Ownership of a team has been transferred
+     */
+    TeamOwnershipTransfer,
+    /**
+     * Team settings were updated
+     */
+    TeamUpdate,
+
+    /**
+     * Bot was added to a team
+     */
+    BotAdd,
+    /**
+     * Bot was removed in a team
+     */
+    BotRemove,
+
+    /**
+     * Invite was updated
+     */
+    InviteUpdate,
+}
+
+export type AnyAuditLogChange =
+    | AuditLogInviteUpdateChange
+    | AuditLogBotAddChange
+    | AuditLogBotRemoveChange
+    | AuditLogTeamUpdateChange
+    | AuditLogMemberAddChange
+    | AuditLogMemberRemoveChange
+    | AuditLogMemberUpdateChange
+    | AuditLogTeamOwnershipTransferChange;
+
+export type AuditLogMemberAddChange = BaseAuditLogChange<never, never>;
+export type AuditLogMemberRemoveChange = AuditLogMemberAddChange;
+
+export type AuditLogMemberUpdateChange = BaseAuditLogChange<
+    "permission",
+    TeamPermissions
+>;
+
+export type AuditLogTeamOwnershipTransferChange = BaseAuditLogChange<
+    "id",
+    Snowflake
+>;
+
+export type AuditLogTeamUpdateChange = BaseAuditLogChange<
+    "name" | "description" | "avatar_url",
+    string
+>;
+
+export type AuditLogBotAddChange = BaseAuditLogChange<"bot_id", Snowflake>;
+export type AuditLogBotRemoveChange = AuditLogBotAddChange;
+
+export type AuditLogInviteUpdateChange = BaseAuditLogChange<
+    "invite_code",
+    string
+>;
+
+export type BaseAuditLogChange<Key, Data> = {
+    changed_key: Key;
+    old_data: Data;
+    new_data?: Data;
+};
