@@ -13,7 +13,7 @@ export const joinTeam = async (req: Request, res: Response) => {
     if (!userId)
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
 
-    const { teamId, invite } = req.params;
+    const { teamId, inviteCode } = req.params;
 
     if (teamId === "change-owner")
         return changeOwner(res, {
@@ -21,13 +21,13 @@ export const joinTeam = async (req: Request, res: Response) => {
             authorId: userId,
             teamId,
         });
-    if (invite === "remove-member") return kickMember(req, res);
+    if (inviteCode === "remove-member") return kickMember(req, res);
 
     const team = await teamModel.findOne({ id: teamId });
 
     if (!team) return res.status(HttpStatusCode.Ok).json(TEAM.UNKNOWN_TEAM);
 
-    if (team.invite_code !== invite)
+    if (team.invite_code !== inviteCode)
         return res
             .status(HttpStatusCode.BadRequest)
             .json(TEAM.INVALID_INVITE_HASH);
