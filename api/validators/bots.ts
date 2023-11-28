@@ -35,7 +35,6 @@ export const patchBotValidator = object({
     verified: boolean(),
     tags: array(string()).max(5),
     banner_url: string().max(200).min(1),
-    team_id: string(),
     vote_message: string().min(5).max(30),
 })
     .strict()
