@@ -211,7 +211,7 @@
             "message": "You can't update yourself",
             "code": 6020
         },
-        "CANT_UPDATED_THIS_MEMBER": {
+        "CANT_UPDATE_THIS_MEMBER": {
             "message": "You can't update this member",
             "code": 6021
         },
