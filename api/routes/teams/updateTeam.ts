@@ -5,6 +5,7 @@ import { TeamPermissions } from "../../typings/types";
 import { updateTeamValidator } from "../../validators/user";
 import { getUserId } from "../../utils/getUserId";
 import { teamModel } from "../../models/Team";
+import { updateMember } from "./updateMember";
 
 export const updateTeam = async (req: Request, res: Response) => {
     const { teamId } = req.params;
@@ -14,6 +15,9 @@ export const updateTeam = async (req: Request, res: Response) => {
         return res.status(HttpStatusCode.NotFound).json(TEAM.UNKNOWN_TEAM);
 
     const userId = await getUserId(req.headers);
+
+    if (req.params.inviteCode === "members")
+        return updateMember(req, res, userId);
 
     const member = team.members.find((crrMember) => crrMember.id === userId);
 
