@@ -1,106 +1,78 @@
 # Team Resources
 
+## Get teams user is in
+
+### GET `/api/teams/@all`
+
+Busque por todos os times onde o usuário é um membro, retorna uma array de times
+
+## Get teams user owns
+
+### GET `/api/teams`
+
+Busque por todos os times onde o usuário é o proprietário, retorna uma array de times
+
 ## Get team
 
 ### GET `/api/teams/{team.id}`
 
-Busque por um time na database, retorna uma estrutura de time
+Busque por um time, retorna uma estrutura de time
 
-## Get user teams
+## Change team owner
 
-### GET `/api/teams`
+### PUT `/api/teams/{team.id}/change-owner/{member.id}`
 
-Busque pelo time do usuário, retorna uma estrutura de time
+Transfira a posse de um time para outro usuário, retorna o time atualizado
 
--   A API tentara encontrar o time pela api_key ou json web token usado
+## Kick member
 
-## Get all user teams
+### PUT `/api/teams/{team.id}/members/{member.id}`
 
-### GET `/api/teams/@all`
-
-Busque por todos os times que o usuário está, retorna uma array de estruturas de
-time
-
--   A API tentara encontrar o time pela api_key ou json web token usado
-
-## Delete team
-
-### DELETE `/api/teams`
-
-Delete um time na database, retorna uma resposta vazia
-
--   A API tentara encontrar o time pela api_key ou json web token usado
-
-## Create team
-
-### POST `/api/teams`
-
-Crie um time, retorna o objeto do time com um `id` e `members`
-
-#### JSON Params
-
-| FIELD        | TYPE      | DESCRIPTION                     |
-| ------------ | --------- | ------------------------------- |
-| name         | string    | O nome to time (3-15)           |
-| avatar_url   | string    | O URL do avatar do time         |
-| description? | string    | A descrição do time (5-50)      |
-| bot_id       | Snowflake | O ID do bot que o time pertence |
-
--   \* O owner é definido como o autor da requisição
-
--   Requirements:
-    -   Você não pode já estar em um time
-    -   O bot usado não pode estar em um time ou adicionado na botlist
-
-## Update team
-
-### PATCH `/api/teams`
-
-Edite/atualize um time, retorna o objeto do time atualizado
-
-#### JSON Params
-
-| FIELD       | TYPE      | DESCRIPTION                |
-| ----------- | --------- | -------------------------- |
-| name        | string    | O nome do time (3-15)      |
-| avatar_url  | string    | O URL do avatar do time    |
-| description | string    | A descrição do time (5-50) |
-| bot_id      | Snowflake | O ID do bot do time        |
-
--   Todas as propriedades são opcionais
--   A API tentara encontrar o time pela api_key ou json web token usado
+Expulse um membro do time, retorna a estrutura do membro removido
 
 ## Join team
 
 ### PUT `/api/teams/{team.id}/{team.invite_code}`
 
-Entre para um time, retorna `true` se entrou
+Entre em um time, retorna uma resposta `204: No Content`
 
--   O usuário não pode já ser um membro do time
+## Delete team
 
-## Transfer ownership
+### DELETE `/api/teams/{team.id}`
 
-### PUT `/api/teams/change-owner/{user._id}`
+Delete um time, retorna uma resposta `204: No Content`
 
-Transfira a posse do time para outro usuário
+## Modify team
 
--   O usuário tem que ser um membro
--   Você não pode transferir para você mesmo
--   O usuário não pode ser proprietario de um time
+### PATCH `/api/teams/{team.id}`
 
-## Remove member
-
-### PUT `/api/teams/{team.id}/remove-member`
-
-Remova um membro do time
+Modifique um time, retorna o objeto do time atualizado
 
 ### JSON Params
 
-| FIELD     | TYPE      | DESCRIPTION                      |
-| --------- | --------- | -------------------------------- |
-| member_id | Snowflake | O ID do membro que será removido |
+| NAME        | TYPE          | DESCRIPTION             |
+| ----------- | ------------- | ----------------------- |
+| name        | string (3-15) | O nome do time          |
+| description | string (5-50) | A descrição do time     |
+| avatar_url  | string        | O URL do avatar do time |
+
+-   Todos os parâmetros são opicionais
+
+## Create team
+
+### POST `/api/teams/{team.id}`
+
+Crie um time, retorna o objeto do time criado
+
+### JSON Params
+
+| NAME         | TYPE          | DESCRIPTION                    |
+| ------------ | ------------- | ------------------------------ |
+| name         | string (3-15) | O nome do time                 |
+| avatar_url   | string        | O URL do avatar do time        |
+| description? | string        | A descrição do time            |
+| bot_id       | Snowflake     | O bot que pertence a esse time |
 
 -   Ressalvas
-    -   Você precisa ser um administrador
-    -   Você não pode expulsar o proprietário do time
-    -   Você não pode expulsar um administrador se você é um administrador
+    -   Você só pode ter 2 times no máximo
+    -   Você deve ser proprietário do bot e o bot já deve estar adicionado em [Simo Botlist](bombadeagua.life)
