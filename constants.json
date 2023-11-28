@@ -12,7 +12,7 @@
         "TOKEN": "/api/auth/:method(api-key|token)(/:botId)?",
         "STATUS": "/api/status",
         "VOTE_STATUS": "/api/vote-status/:userId",
-        "TEAM": "/api/teams/:teamId?/:invite?",
+        "TEAM": "/api/teams/:teamId?/:inviteCode?/:targetId?",
         "DISCORD": "/api/discord-user/:userId(\\d+)"
     }
 }
