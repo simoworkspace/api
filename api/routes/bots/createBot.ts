@@ -34,6 +34,13 @@ export const createBot = async (req: Request, res: Response) => {
     if (exists)
         return res.status(HttpStatusCode.Conflict).json(BOT.BOT_ALREADY_EXISTS);
 
+    const userBots = await botSchema.find({ owner_id: userId });
+
+    if (userBots.length === 2)
+        return res
+            .status(HttpStatusCode.BadRequest)
+            .json(BOT.BOT_CREATE_LIMIT_ERROR);
+
     const { body } = req;
 
     const validation = await botSchemaValidator
