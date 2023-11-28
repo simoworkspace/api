@@ -18,6 +18,13 @@ Busque por todos os times onde o usuário é o proprietário, retorna uma array 
 
 Busque por um time, retorna uma estrutura de time
 
+## Get team audit-logs
+
+### GET `/api/teams/{team.id}/audit-logs`
+
+Busque por todos os registros de auditoria de um time, retorna uma array de objetos
+de registro de auditoria
+
 ## Change team owner
 
 ### PUT `/api/teams/{team.id}/change-owner/{member.id}`
