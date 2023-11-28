@@ -58,6 +58,22 @@ Modifique um time, retorna o objeto do time atualizado
 
 -   Todos os parâmetros são opicionais
 
+## Modify member
+
+### PATCH `/api/teams/{team.id}/members/{member.id}`
+
+Modifique um membro de um time, retorna o objeto do membro atualizado
+
+### JSON Params
+
+| NAME       | TYPE         | DESCRIPTION                |
+| ---------- | ------------ | -------------------------- |
+| permission | number (0-1) | A nova permissão do membro |
+
+-   Ressalvas
+    -   Você não pode atualizar um membro que tem a mesma permissão que você
+    -   Você não pode atualizar o proprietário do time
+
 ## Create team
 
 ### POST `/api/teams/{team.id}`
