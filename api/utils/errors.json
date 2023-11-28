@@ -67,6 +67,10 @@
         "METHOD_NOT_ALLOWED": {
             "message": "Method not allowed",
             "code": 2008
+        },
+        "BAD_ROUTE": {
+            "message": "Bad route",
+            "code": 2009
         }
     },
     "GUILD": {
@@ -131,8 +135,8 @@
             "message": "Unknown team",
             "code": 6001
         },
-        "USER_ALREADY_HAVE_A_TEAM": {
-            "message": "User already has a team",
+        "USER_REACHED_TWO_TEAMS": {
+            "message": "User can't have more than 2 teams",
             "code": 6002
         },
         "BOT_ALREADY_IN_A_TEAM": {
@@ -198,6 +202,22 @@
         "MISSING_MEMBER_ID_TO_REMOVE": {
             "message": "Cannot remove a member without 'member_id' in body",
             "code": 6018
+        },
+        "ONLY_BOT_OWNER_CAN_ADD_IT": {
+            "message": "Only the owner of this bot can add the bot to the team",
+            "code": 6019
+        },
+        "CANT_UPDATE_YOURSELF": {
+            "message": "You can't update yourself",
+            "code": 6020
+        },
+        "CANT_UPDATED_THIS_MEMBER": {
+            "message": "You can't update this member",
+            "code": 6021
+        },
+        "NEW_PERMISSION_MUST_DIFFER_FROM_CURRENT": {
+            "message": "New permission must differ from the current one",
+            "code": 6022
         }
     }
 }
