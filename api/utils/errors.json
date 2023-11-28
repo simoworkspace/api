@@ -218,6 +218,10 @@
         "NEW_PERMISSION_MUST_DIFFER_FROM_CURRENT": {
             "message": "New permission must differ from the current one",
             "code": 6022
+        },
+        "AUDIT_LOG_VIEW_PERMISSION_ERROR": {
+            "message": "Unauthorized to view team's audit log",
+            "code": 6023
         }
     }
 }
