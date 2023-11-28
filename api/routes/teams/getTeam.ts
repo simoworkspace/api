@@ -7,12 +7,15 @@ import { getUserByMember } from "../../utils/getUserByMember";
 import { userSchema } from "../../models/User";
 import { TEAM } from "../../utils/errors.json";
 import { fetchUserTeams } from "./fetchUserTeams";
+import { fetchAuditLogs } from "./fetchAuditLogs";
 
 export const getTeam = async (req: Request, res: Response) => {
     const { teamId } = req.params;
     const userId = await getUserId(req.headers);
 
     if (teamId === "@all") return fetchUserTeams(res, userId);
+    if (req.params.inviteCode === "audit-logs")
+        return fetchAuditLogs(res, teamId, userId);
 
     const users = await userSchema.find({}, { avatar: 1, username: 1 });
 
