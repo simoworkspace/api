@@ -2,9 +2,7 @@ import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
 import { botSchema } from "../../models/Bot";
 import { patchBotValidator } from "../../validators/bots";
-import { BOT, TEAM } from "../../utils/errors.json";
-import { userSchema } from "../../models/User";
-import { TeamPermissions } from "../../typings/types";
+import { BOT } from "../../utils/errors.json";
 import { updateFeedback } from "./updateFeedback";
 import { getUserId } from "../../utils/getUserId";
 
@@ -33,23 +31,6 @@ export const updateBotOrFeedback = async (req: Request, res: Response) => {
 
     if (Array.isArray(validation))
         return res.status(HttpStatusCode.BadRequest).json(validation);
-    if ("team_id" in body) {
-        const team = await userSchema.findOne({ "team.id": body.team_id });
-
-        if (!team)
-            return res.status(HttpStatusCode.NotFound).json(TEAM.UNKNOWN_TEAM);
-
-        const member = team.team.members.find((mem) => mem.id);
-
-        if (!member)
-            return res
-                .status(HttpStatusCode.BadRequest)
-                .json(TEAM.USER_IS_NOT_A_MEMBER);
-        if (member.permission === TeamPermissions.ReadOnly)
-            return res
-                .status(HttpStatusCode.BadRequest)
-                .json(TEAM.USER_IS_READONLY);
-    }
 
     const updatedBot = await botSchema.findByIdAndUpdate(
         botId,
