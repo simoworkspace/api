@@ -1,5 +1,5 @@
 import { boolean, number, object, string } from "yup";
-import { NotificationType } from "../typings/types";
+import { NotificationType, TeamPermissions } from "../typings/types";
 
 const idPattern = /^\d{16,21}$/;
 
@@ -54,3 +54,9 @@ export const updateUserValidator = object({
             return Object.keys(obj).length > 0;
         }
     );
+
+export const updateTeamMemberValidator = object({
+    permission: number()
+        .oneOf([TeamPermissions.Administrator, TeamPermissions.ReadOnly])
+        .required(),
+}).noUnknown();
