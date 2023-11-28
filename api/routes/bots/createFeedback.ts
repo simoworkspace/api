@@ -5,7 +5,7 @@ import { feedbackSchema } from "../../models/Feedback";
 import { feedbackValidator } from "../../validators/feedback";
 import { userSchema } from "../../models/User";
 import { createNotification } from "../users/createNotification";
-import { NotificationType } from "@simo.js/simo-api-types";
+import { NotificationType } from "../../typings/types";
 import { botSchema } from "../../models/Bot";
 
 export const createFeedback = async (

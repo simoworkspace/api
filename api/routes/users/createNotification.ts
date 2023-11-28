@@ -3,12 +3,12 @@ import { userSchema } from "../../models/User";
 import type { Response } from "express";
 import { USER } from "../../utils/errors.json";
 import { createNotificationValidator } from "../../validators/user";
-import type { NotificationPayload } from "@simo.js/simo-api-types";
+import { NotificationBody } from "../../typings/types";
 
 export const createNotification = async (
     res: Response,
     userId: string,
-    data: Omit<NotificationPayload, "sent_at">
+    data: Omit<NotificationBody, "sent_at">
 ) => {
     const user = await userSchema.findById(userId);
 
