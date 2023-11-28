@@ -27,6 +27,10 @@
         "NOT_BOT_OWNER": {
             "message": "You are not this bot owner",
             "code": 1007
+        },
+        "BOT_CREATE_LIMIT_ERROR": {
+            "message": "You reached the limit of bots",
+            "code": 1008
         }
     },
     "GENERICS": {
