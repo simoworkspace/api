@@ -39,7 +39,6 @@ export interface UserStructure {
     avatar: string;
     notifications: Map<string, NotificationBody>;
     bio: string;
-    team: Team;
     notifications_viewed: boolean;
 }
 
@@ -117,17 +116,6 @@ export interface VoteStructure {
 }
 
 /**
- * Represents the structure in the guild schema
- */
-export interface GuildStructure {
-    _id: Snowflake;
-    verification_channel_id: Snowflake;
-    logs_channel_id: Snowflake;
-    addbot_channel_id: Snowflake | undefined;
-    owners: Snowflake[];
-}
-
-/**
  * Represents the structure in the feedback schema
  */
 export interface FeedbackStructure {
@@ -142,14 +130,6 @@ export interface FeedbackStructure {
         posted_at: string;
         edited?: boolean;
     };
-}
-
-/**
- * Represents scopes used in GET-AUTH function
- */
-export enum APIScopes {
-    Identify = "identify",
-    Guilds = "guilds",
 }
 
 export interface NotificationBody {
