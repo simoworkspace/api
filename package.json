@@ -15,7 +15,6 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@simo.js/simo-api-types": "^1.0.1",
         "axios": "^1.4.0",
         "cookie-parser": "^1.4.6",
         "cors": "^2.8.5",
