@@ -4,8 +4,11 @@ import { TEAM } from "../../utils/errors.json";
 import { getUserId } from "../../utils/getUserId";
 import { teamModel } from "../../models/Team";
 import { TeamPermissions } from "../../typings/types";
+import { removeBot } from "./removeBot";
 
 export const deleteTeam = async (req: Request, res: Response) => {
+    if (req.params.inviteCode === "bots") return removeBot(req, res);
+
     const userId = await getUserId(req.headers);
 
     const team = await teamModel.findOne({ id: req.params.teamId });

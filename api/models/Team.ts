@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 import type { Team } from "../typings/types";
 
 const rawTeamSchema = new Schema<Team>({
-    bot_id: { type: String, required: true },
+    bots_id: { type: [String], required: true },
     description: String,
     avatar_url: {
         type: String,

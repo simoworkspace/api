@@ -6,8 +6,11 @@ import { teamModel } from "../../models/Team";
 import { TeamPermissions } from "../../typings/types";
 import { botSchema } from "../../models/Bot";
 import { createTeamValidator } from "../../validators/user";
+import { addBot } from "./addBot";
 
 export const createTeam = async (req: Request, res: Response) => {
+    if (req.params.inviteCode === "bots") return addBot(req, res);
+
     const userId = await getUserId(req.headers);
 
     if (!userId)
@@ -25,20 +28,31 @@ export const createTeam = async (req: Request, res: Response) => {
             .json(TEAM.USER_REACHED_TWO_TEAMS);
 
     const { body } = req;
-    const isBotInATeam = await teamModel.exists({ bot_id: body.bot_id });
 
-    if (isBotInATeam)
+    if (!("bots_id" in body) || !Array.isArray(body.bots_id))
+        return res
+            .status(HttpStatusCode.BadRequest)
+            .json(TEAM.MISSING_BOTS_ID_ERROR);
+
+    const isSomeBotInATeam = await teamModel.exists({
+        bots_id: { $in: body.bots_id },
+    });
+
+    if (isSomeBotInATeam)
         return res
             .status(HttpStatusCode.BadRequest)
             .json(TEAM.BOT_ALREADY_IN_A_TEAM);
 
-    const bot = await botSchema.findById(body.bot_id);
+    for (const botId of body.bots_id) {
+        const bot = await botSchema.findById(botId);
 
-    if (!bot) return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_BOT);
-    if (bot.owner_id !== userId)
-        return res
-            .status(HttpStatusCode.BadRequest)
-            .json(TEAM.ONLY_BOT_OWNER_CAN_ADD_IT);
+        if (!bot)
+            return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_BOT);
+        if (bot.owner_id !== userId)
+            return res
+                .status(HttpStatusCode.BadRequest)
+                .json(TEAM.ONLY_BOT_OWNER_CAN_ADD_IT);
+    }
 
     const validation = await createTeamValidator
         .validate(body)
@@ -57,7 +71,9 @@ export const createTeam = async (req: Request, res: Response) => {
         id: teamId,
     });
 
-    await bot.updateOne({ team_id: teamId });
+    for (const botId of body.bots_id) {
+        await botSchema.findByIdAndUpdate(botId, { team_id: teamId });
+    }
 
     delete createdTeam.__v;
 

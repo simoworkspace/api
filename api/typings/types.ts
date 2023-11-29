@@ -73,7 +73,7 @@ export interface Team {
     /**
      * The bot ID that belongs to the team
      */
-    bot_id: Snowflake;
+    bots_id: Snowflake[];
 }
 
 /**
