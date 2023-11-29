@@ -7,6 +7,7 @@ const rawAuditLogSchema = new Schema<AuditLogStructure>({
     created_at: String,
     id: String,
     action_type: Number,
+    changes: [Object],
 });
 
 export const auditLogModel = model("auditLog", rawAuditLogSchema);
