@@ -4,6 +4,7 @@ import { USER, TEAM } from "../../utils/errors.json";
 import { userSchema } from "../../models/User";
 import { TeamPermissions } from "../../typings/types";
 import { teamModel } from "../../models/Team";
+import { createAuditLog } from "./createAuditLog";
 
 export const changeOwner = async (
     res: Response,
@@ -61,6 +62,20 @@ export const changeOwner = async (
             $pull: { members: { id: authorId } },
         }
     );
+
+    await createAuditLog({
+        team_id: teamId,
+        executor_id: authorId,
+        created_at: new Date().toISOString(),
+        target_id: userId,
+        changes: [
+            {
+                changed_key: "id",
+                old_value: authorId,
+                new_value: authorId,
+            },
+        ],
+    });
 
     return res.status(HttpStatusCode.Ok).json(updatedTeam);
 };

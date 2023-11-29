@@ -4,8 +4,9 @@ import { kickMember } from "./kickMember";
 import { teamModel } from "../../models/Team";
 import { HttpStatusCode } from "axios";
 import { TEAM, USER } from "../../utils/errors.json";
-import { TeamPermissions } from "../../typings/types";
+import { AuditLogActionType, TeamPermissions } from "../../typings/types";
 import { changeOwner } from "./changeOwner";
+import { createAuditLog } from "./createAuditLog";
 
 export const joinTeam = async (req: Request, res: Response) => {
     const userId = await getUserId(req.headers);
@@ -40,6 +41,14 @@ export const joinTeam = async (req: Request, res: Response) => {
         $push: {
             members: { id: userId, permission: TeamPermissions.ReadOnly },
         },
+    });
+    await createAuditLog({
+        team_id: teamId,
+        executor_id: userId,
+        created_at: new Date().toISOString(),
+        action_type: AuditLogActionType.MemberAdd,
+        target_id: userId,
+        changes: [],
     });
 
     return res.status(HttpStatusCode.NoContent).send();

@@ -2,8 +2,9 @@ import type { Request, Response } from "express";
 import { teamModel } from "../../models/Team";
 import { HttpStatusCode } from "axios";
 import { TEAM } from "../../utils/errors.json";
-import { TeamPermissions } from "../../typings/types";
+import { AuditLogActionType, TeamPermissions } from "../../typings/types";
 import { updateTeamMemberValidator } from "../../validators/user";
+import { createAuditLog } from "./createAuditLog";
 
 export const updateMember = async (
     req: Request,
@@ -75,6 +76,20 @@ export const updateMember = async (
             },
         }
     );
+    await createAuditLog({
+        team_id: team.id,
+        executor_id: authorId,
+        created_at: new Date().toISOString(),
+        action_type: AuditLogActionType.MemberUpdate,
+        target_id: targetId,
+        changes: [
+            {
+                changed_key: "permission",
+                old_value: userMember.permission,
+                new_value: newPermission,
+            },
+        ],
+    });
 
     return res
         .status(HttpStatusCode.Ok)

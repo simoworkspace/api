@@ -1,11 +1,17 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import type { Request, Response } from "express";
 import { HttpStatusCode } from "axios";
 import { TEAM } from "../../utils/errors.json";
-import { TeamPermissions } from "../../typings/types";
+import {
+    AnyAuditLogChange,
+    AuditLogActionType,
+    TeamPermissions,
+} from "../../typings/types";
 import { updateTeamValidator } from "../../validators/user";
 import { getUserId } from "../../utils/getUserId";
 import { teamModel } from "../../models/Team";
 import { updateMember } from "./updateMember";
+import { createAuditLog } from "./createAuditLog";
 
 export const updateTeam = async (req: Request, res: Response) => {
     const { teamId } = req.params;
@@ -46,6 +52,27 @@ export const updateTeam = async (req: Request, res: Response) => {
         { $set: body },
         { new: true }
     );
+
+    const changes = [] as AnyAuditLogChange[];
+
+    for (const [key, value] of Object.entries(body)) {
+        changes.push({
+            // @ts-ignore
+            changed_key: key,
+            // @ts-ignore
+            old_value: team[key],
+            new_value: value,
+        });
+    }
+
+    await createAuditLog({
+        team_id: teamId,
+        executor_id: userId,
+        created_at: new Date().toISOString(),
+        action_type: AuditLogActionType.TeamUpdate,
+        target_id: null,
+        changes: changes,
+    });
 
     return res.status(HttpStatusCode.Ok).json(updatedTeam);
 };
