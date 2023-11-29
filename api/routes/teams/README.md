@@ -41,13 +41,19 @@ Expulse um membro do time, retorna a estrutura do membro removido
 
 ### PUT `/api/teams/{team.id}/{team.invite_code}`
 
-Entre em um time, retorna uma resposta `204: No Content`
+Entre em um time, retorna uma resposta `204: No Content` vazia
 
 ## Delete team
 
 ### DELETE `/api/teams/{team.id}`
 
-Delete um time, retorna uma resposta `204: No Content`
+Delete um time, retorna uma resposta `204: No Content` vazia
+
+## Remove bot
+
+### DELETE `/api/teams/{team.id}/bots/{bot._id}`
+
+Remova um bot do time, retorna uma resposta `204: No Content` vazia
 
 ## Modify team
 
@@ -95,8 +101,14 @@ Crie um time, retorna o objeto do time criado
 | name         | string (3-15) | O nome do time                 |
 | avatar_url   | string        | O URL do avatar do time        |
 | description? | string        | A descrição do time            |
-| bot_id       | Snowflake     | O bot que pertence a esse time |
+| bot_ids      | Snowflake[]   | O bot que pertence a esse time |
 
 -   Ressalvas
     -   Você só pode ter 2 times no máximo
     -   Você deve ser proprietário do bot e o bot já deve estar adicionado em [Simo Botlist](bombadeagua.life)
+
+## Add bot
+
+### POST `/api/teams/{team.id}/bots/{bot._id}`
+
+Adicione um bot em um time, retorna o objeto do time desatualizado
