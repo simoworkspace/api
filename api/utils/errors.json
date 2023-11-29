@@ -226,6 +226,22 @@
         "AUDIT_LOG_VIEW_PERMISSION_ERROR": {
             "message": "Unauthorized to view team's audit log",
             "code": 6023
+        },
+        "MISSING_PERMISSION": {
+            "message": "Missing permission",
+            "code": 6024
+        },
+        "BOT_ALREADY_ADDED_TO_TEAM": {
+            "message": "Bot is already added to this team",
+            "code": 6025
+        },
+        "BOT_LIMIT_EXCEEDED_ERROR": {
+            "message": "Limit reached. The maximum number of bots allowed in the team is 3",
+            "code": 6026
+        },
+        "MISSING_BOTS_ID_ERROR": {
+            "message": "Missing 'bots_id' property in body",
+            "code": 6027
         }
     }
 }
