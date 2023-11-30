@@ -72,10 +72,6 @@ const rawBotSchema = new Schema<BotStructure>({
         required: true,
         default: 0,
     },
-    banner_url: {
-        type: String,
-        default: null,
-    },
     team_id: String,
     vote_message: {
         type: String,
