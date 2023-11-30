@@ -28,6 +28,10 @@ const rawUserSchema = new Schema<UserStructure>({
         type: Boolean,
         default: true,
     },
+    banner_url: {
+        type: String,
+        default: null,
+    },
 });
 
 export const userSchema = model(MODELS_NAME.Users, rawUserSchema);

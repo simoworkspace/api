@@ -40,6 +40,7 @@ export interface UserStructure {
     notifications: Map<string, NotificationBody>;
     bio: string;
     notifications_viewed: boolean;
+    banner_url: string;
 }
 
 /**
