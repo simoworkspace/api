@@ -30,15 +30,12 @@ export const getTeam = async (req: Request, res: Response) => {
             return res.status(HttpStatusCode.NotFound).json(TEAM.UNKNOWN_TEAM);
 
         return res.status(HttpStatusCode.Ok).json(
-            teams.map(
-                (team) =>
-                    ({
-                        ...team,
-                        members: team.members.map((member) =>
-                            getUserByMember(member, users)
-                        ),
-                    })._doc
-            )
+            teams.map((team) => ({
+                ...team._doc,
+                members: team.members.map((member) =>
+                    getUserByMember(member, users)
+                ),
+            }))
         );
     }
 
@@ -47,12 +44,8 @@ export const getTeam = async (req: Request, res: Response) => {
     if (!team)
         return res.status(HttpStatusCode.NotFound).json(TEAM.UNKNOWN_TEAM);
 
-    return res.status(HttpStatusCode.Ok).json(
-        {
-            ...team,
-            members: team.members.map((member) =>
-                getUserByMember(member, users)
-            ),
-        }._doc
-    );
+    return res.status(HttpStatusCode.Ok).json({
+        ...team._doc,
+        members: team.members.map((member) => getUserByMember(member, users)),
+    });
 };
