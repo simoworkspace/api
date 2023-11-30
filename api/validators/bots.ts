@@ -13,7 +13,6 @@ export const botSchemaValidator = object({
     created_at: string().required(),
     verified: boolean().required(),
     tags: array(string()).max(5).required(),
-    banner_url: string().max(200).min(1),
     vote_message: string().min(5).max(30),
 })
     .strict()
@@ -34,7 +33,6 @@ export const patchBotValidator = object({
     prefixes: array(string().max(6)).max(5),
     verified: boolean(),
     tags: array(string()).max(5),
-    banner_url: string().max(200).min(1),
     vote_message: string().min(5).max(30),
 })
     .strict()
