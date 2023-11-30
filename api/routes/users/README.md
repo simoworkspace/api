@@ -87,3 +87,4 @@ do usuário atualizado
 | -------------------- | ------- | ------------------------------------------ |
 | bio                  | string  | A biografia do usuário (1-200)             |
 | notifications_viewed | boolean | Se as notificações do usuário foram vistas |
+| banner_url           | string  | O URL do banner do usuário                 |
