@@ -25,6 +25,34 @@ Busque por um time, retorna uma estrutura de time
 Busque por todos os registros de auditoria de um time, retorna uma array de objetos
 de registro de auditoria
 
+## Get team bots
+
+### GET `/api/teams/{team.id}/bots`
+
+Busque por todos os bots de um time, retorna uma array de objetos parciais
+
+### Example Response Structure
+
+```json
+[
+    {
+        "_id": "504095380166803466",
+        "tags": ["Sharing", "dasdasssada", "asdasdsadasdass"],
+        "name": "Super compiler",
+        "avatar": "873f5737ee82b45caaa34e079f3e164b",
+        "votes": [
+            {
+                "user_id": "955095844275781693",
+                "last_vote": "2023-11-25T19:42:10.999Z",
+                "votes": 27
+            }
+        ],
+        "short_description": "Meu Bot de Receitas é um bot Discord que pode ajudar
+        você a descobrir novas receitas e compartilhar suas próprias criações!"
+    }
+]
+```
+
 ## Change team owner
 
 ### PUT `/api/teams/{team.id}/change-owner/{member.id}`
