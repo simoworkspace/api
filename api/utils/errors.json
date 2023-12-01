@@ -242,6 +242,10 @@
         "MISSING_BOTS_ID_ERROR": {
             "message": "Missing 'bots_id' property in body",
             "code": 6027
+        },
+        "NO_BOTS_IN_TEAM_ERROR": {
+            "message": "There are no bots in the team",
+            "code": 6028
         }
     }
 }
