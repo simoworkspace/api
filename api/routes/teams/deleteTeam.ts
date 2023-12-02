@@ -5,6 +5,7 @@ import { getUserId } from "../../utils/getUserId";
 import { teamModel } from "../../models/Team";
 import { TeamPermissions } from "../../typings/types";
 import { removeBot } from "./removeBot";
+import { auditLogModel } from "../../models/AuditLog";
 
 export const deleteTeam = async (req: Request, res: Response) => {
     if (req.params.inviteCode === "bots") return removeBot(req, res);
@@ -28,6 +29,7 @@ export const deleteTeam = async (req: Request, res: Response) => {
             .json(TEAM.ONLY_THE_OWNER_CAN_DELETE);
 
     await team.deleteOne();
+    await auditLogModel.deleteOne({ team_id: team.id });
 
     return res.status(HttpStatusCode.NoContent).send();
 };
