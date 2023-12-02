@@ -23,7 +23,7 @@ const rawUserSchema = new Schema<UserStructure>(
         },
         bio: {
             type: String,
-            default: "",
+            default: null,
         },
         notifications_viewed: {
             type: Boolean,

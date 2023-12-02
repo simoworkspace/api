@@ -38,7 +38,7 @@ export interface UserStructure {
     username: string;
     avatar: string;
     notifications: Map<string, NotificationBody>;
-    bio: string;
+    bio: string | null;
     notifications_viewed: boolean;
     banner_url: string;
 }
