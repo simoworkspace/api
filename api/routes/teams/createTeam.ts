@@ -7,6 +7,7 @@ import { TeamPermissions } from "../../typings/types";
 import { botSchema } from "../../models/Bot";
 import { createTeamValidator } from "../../validators/user";
 import { addBot } from "./addBot";
+import { auditLogModel } from "../../models/AuditLog";
 
 export const createTeam = async (req: Request, res: Response) => {
     if (req.params.inviteCode === "bots") return addBot(req, res);
@@ -76,6 +77,8 @@ export const createTeam = async (req: Request, res: Response) => {
     }
 
     delete createdTeam.__v;
+
+    await auditLogModel.create({ team_id: teamId });
 
     return res.status(HttpStatusCode.Created).json(createdTeam);
 };
