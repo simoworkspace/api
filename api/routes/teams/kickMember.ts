@@ -4,7 +4,7 @@ import { HttpStatusCode } from "axios";
 import { TEAM } from "../../utils/errors.json";
 import { getUserId } from "../../utils/getUserId";
 import { AuditLogActionType, TeamPermissions } from "../../typings/types";
-import { createAuditLog } from "./createAuditLog";
+import { createAuditLogEntry } from "./createAuditLog";
 
 export const kickMember = async (req: Request, res: Response) => {
     const team = await teamModel.findOne({ id: req.params.teamId });
@@ -56,8 +56,8 @@ export const kickMember = async (req: Request, res: Response) => {
             members: team.members.filter((member) => member.id !== targetId),
         },
     });
-    await createAuditLog({
-        team_id: team.id,
+    await createAuditLogEntry({
+        teamId: team.id,
         executor_id: authorId,
         created_at: new Date().toISOString(),
         action_type: AuditLogActionType.MemberRemove,

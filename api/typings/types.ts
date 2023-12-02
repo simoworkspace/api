@@ -149,7 +149,11 @@ export enum NotificationType {
 
 export interface AuditLogStructure {
     team_id: string;
-    executor_id: string;
+    entries: AuditLogEntryStructure[];
+}
+
+export interface AuditLogEntryStructure {
+    executor_id: Snowflake;
     created_at: string;
     id: string;
     action_type: AuditLogActionType;

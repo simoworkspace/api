@@ -4,7 +4,7 @@ import { HttpStatusCode } from "axios";
 import { TEAM } from "../../utils/errors.json";
 import { AuditLogActionType, TeamPermissions } from "../../typings/types";
 import { updateTeamMemberValidator } from "../../validators/user";
-import { createAuditLog } from "./createAuditLog";
+import { createAuditLogEntry } from "./createAuditLog";
 
 export const updateMember = async (
     req: Request,
@@ -76,8 +76,8 @@ export const updateMember = async (
             },
         }
     );
-    await createAuditLog({
-        team_id: team.id,
+    await createAuditLogEntry({
+        teamId: team.id,
         executor_id: authorId,
         created_at: new Date().toISOString(),
         action_type: AuditLogActionType.MemberUpdate,

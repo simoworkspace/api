@@ -6,7 +6,7 @@ import { HttpStatusCode } from "axios";
 import { TEAM, USER } from "../../utils/errors.json";
 import { AuditLogActionType, TeamPermissions } from "../../typings/types";
 import { changeOwner } from "./changeOwner";
-import { createAuditLog } from "./createAuditLog";
+import { createAuditLogEntry } from "./createAuditLog";
 
 export const joinTeam = async (req: Request, res: Response) => {
     const userId = await getUserId(req.headers);
@@ -42,8 +42,8 @@ export const joinTeam = async (req: Request, res: Response) => {
             members: { id: userId, permission: TeamPermissions.ReadOnly },
         },
     });
-    await createAuditLog({
-        team_id: teamId,
+    await createAuditLogEntry({
+        teamId,
         executor_id: userId,
         created_at: new Date().toISOString(),
         action_type: AuditLogActionType.MemberAdd,

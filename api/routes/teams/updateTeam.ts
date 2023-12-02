@@ -11,7 +11,7 @@ import { updateTeamValidator } from "../../validators/user";
 import { getUserId } from "../../utils/getUserId";
 import { teamModel } from "../../models/Team";
 import { updateMember } from "./updateMember";
-import { createAuditLog } from "./createAuditLog";
+import { createAuditLogEntry } from "./createAuditLog";
 
 export const updateTeam = async (req: Request, res: Response) => {
     const { teamId } = req.params;
@@ -65,8 +65,8 @@ export const updateTeam = async (req: Request, res: Response) => {
         });
     }
 
-    await createAuditLog({
-        team_id: teamId,
+    await createAuditLogEntry({
+        teamId,
         executor_id: userId,
         created_at: new Date().toISOString(),
         action_type: AuditLogActionType.TeamUpdate,

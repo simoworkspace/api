@@ -4,7 +4,7 @@ import { USER, TEAM } from "../../utils/errors.json";
 import { userSchema } from "../../models/User";
 import { TeamPermissions } from "../../typings/types";
 import { teamModel } from "../../models/Team";
-import { createAuditLog } from "./createAuditLog";
+import { createAuditLogEntry } from "./createAuditLog";
 
 export const changeOwner = async (
     res: Response,
@@ -63,8 +63,8 @@ export const changeOwner = async (
         }
     );
 
-    await createAuditLog({
-        team_id: teamId,
+    await createAuditLogEntry({
+        teamId,
         executor_id: authorId,
         created_at: new Date().toISOString(),
         target_id: userId,
