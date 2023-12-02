@@ -6,6 +6,7 @@ import { teamModel } from "../../models/Team";
 import { TeamPermissions } from "../../typings/types";
 import { removeBot } from "./removeBot";
 import { auditLogModel } from "../../models/AuditLog";
+import { botSchema } from "../../models/Bot";
 
 export const deleteTeam = async (req: Request, res: Response) => {
     if (req.params.inviteCode === "bots") return removeBot(req, res);
@@ -30,6 +31,13 @@ export const deleteTeam = async (req: Request, res: Response) => {
 
     await team.deleteOne();
     await auditLogModel.deleteOne({ team_id: team.id });
+
+    const teamBots = await botSchema.find({ _id: { $in: team.bots_id } });
+
+    if (teamBots.length > 0) {
+        for (const bot of teamBots)
+            await bot.updateOne({ $unset: { team_id: 1 } });
+    }
 
     return res.status(HttpStatusCode.NoContent).send();
 };
