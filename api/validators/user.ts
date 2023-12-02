@@ -32,7 +32,6 @@ export const updateTeamValidator = object({
     name: string().min(3).max(15),
     avatar_url: string(),
     description: string().min(5).max(50),
-    invite_code: string().length(6),
 })
     .test("at-least-one-key", "You must pass at least one key", (obj) => {
         return Object.keys(obj).length > 0;
