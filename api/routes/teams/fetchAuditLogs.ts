@@ -26,7 +26,10 @@ export const fetchAuditLogs = async (
             .status(HttpStatusCode.Forbidden)
             .json(TEAM.AUDIT_LOG_VIEW_PERMISSION_ERROR);
 
-    const auditLogs = await auditLogModel.find({ team_id: teamId });
+    const auditLogs = await auditLogModel.findOne(
+        { team_id: teamId },
+        { _id: 0 }
+    );
 
     return res.status(HttpStatusCode.Ok).json(auditLogs);
 };
