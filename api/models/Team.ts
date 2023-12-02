@@ -1,26 +1,29 @@
 import { Schema, model } from "mongoose";
 import type { Team } from "../typings/types";
 
-const rawTeamSchema = new Schema<Team>({
-    bots_id: { type: [String], required: true },
-    description: String,
-    avatar_url: {
-        type: String,
-        required: true,
+const rawTeamSchema = new Schema<Team>(
+    {
+        bots_id: { type: [String], required: true },
+        description: String,
+        avatar_url: {
+            type: String,
+            required: true,
+        },
+        name: { type: String, required: true },
+        invite_code: String,
+        id: { type: String, required: true },
+        members: {
+            type: [
+                {
+                    id: String,
+                    permission: Number,
+                    _id: false,
+                },
+            ],
+            default: [],
+        },
     },
-    name: { type: String, required: true },
-    invite_code: String,
-    id: { type: String, required: true },
-    members: {
-        type: [
-            {
-                id: String,
-                permission: Number,
-                _id: false,
-            },
-        ],
-        default: [],
-    },
-});
+    { versionKey: false }
+);
 
 export const teamModel = model("teams", rawTeamSchema);
