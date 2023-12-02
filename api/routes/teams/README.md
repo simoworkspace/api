@@ -116,6 +116,12 @@ Modifique um membro de um time, retorna o objeto do membro atualizado
     -   Você não pode atualizar um membro que tem a mesma permissão que você
     -   Você não pode atualizar o proprietário do time
 
+## Update invite code
+
+### PATCH `/api/teams/{team.id}/invite`
+
+Atualize o código de convite de um time, retorna um objeto com `invite_code`
+
 ## Create team
 
 ### POST `/api/teams/{team.id}`

@@ -12,9 +12,10 @@ import { getUserId } from "../../utils/getUserId";
 import { teamModel } from "../../models/Team";
 import { updateMember } from "./updateMember";
 import { createAuditLogEntry } from "./createAuditLog";
+import { updateTeamInvite } from "./updateTeamInvite";
 
 export const updateTeam = async (req: Request, res: Response) => {
-    const { teamId } = req.params;
+    const { teamId, inviteCode } = req.params;
     const team = await teamModel.findOne({ id: teamId });
 
     if (!team)
@@ -22,8 +23,8 @@ export const updateTeam = async (req: Request, res: Response) => {
 
     const userId = await getUserId(req.headers);
 
-    if (req.params.inviteCode === "members")
-        return updateMember(req, res, userId);
+    if (inviteCode === "members") return updateMember(req, res, userId);
+    if (inviteCode === "invite") return updateTeamInvite(req, res);
 
     const member = team.members.find((crrMember) => crrMember.id === userId);
 
