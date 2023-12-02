@@ -76,9 +76,7 @@ const rawBotSchema = new Schema<BotStructure>(
         team_id: String,
         vote_message: {
             type: String,
-            default(this: BotStructure) {
-                return `Obrigado por votar em ${this.name}.`;
-            },
+            default: null,
         },
     },
     { versionKey: false }

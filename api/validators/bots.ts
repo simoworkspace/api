@@ -33,7 +33,7 @@ export const patchBotValidator = object({
     prefixes: array(string().max(6)).max(5),
     verified: boolean(),
     tags: array(string()).max(5),
-    vote_message: string().min(5).max(30),
+    vote_message: string().min(5).max(30).nullable(),
 })
     .strict()
     .required()

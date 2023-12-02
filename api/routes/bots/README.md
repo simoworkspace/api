@@ -89,21 +89,21 @@ Este método é usado para editar um bot, retorna o objeto do bot atualizado
 
 #### JSON Params
 
-| FIELD             | TYPE          | DESCRIPTION                                                                 |
-| ----------------- | ------------- | --------------------------------------------------------------------------- |
-| name              | string        | O nome do bot                                                               |
-| avatar            | string        | O URL do avatar do bot                                                      |
-| invite_url        | string        | O URL de invite do bot                                                      |
-| website_url       | string        | O URL do website do bot                                                     |
-| support_server    | string        | O URL de invite do bot (Apenas URL de servidores do Discord são aceitos)    |
-| source_code       | string        | O URL do código-aberto do bot                                               |
-| short_description | string        | A descrição curta (Deve conter entre 50-80 caracteres)                      |
-| long_description  | string        | A descrição longa (Deve conter entre 200-500 caracteres, Markdown é válido) |
-| prefixes          | string[]      | prefixos do bot (Use `/` para se referir a slash-commands)                  |
-| verified          | boolean       | Se o bot é verificado ou não                                                |
-| tags              | string[]      | As tags do bot                                                              |
-| team_id           | string        | O ID do time que o bot pertence                                             |
-| vote_message      | string (5-30) | Uma mensagem para quando um usuário votar                                   |
+| FIELD             | TYPE           | DESCRIPTION                                                                 |
+| ----------------- | -------------- | --------------------------------------------------------------------------- |
+| name              | string         | O nome do bot                                                               |
+| avatar            | string         | O URL do avatar do bot                                                      |
+| invite_url        | string         | O URL de invite do bot                                                      |
+| website_url       | string         | O URL do website do bot                                                     |
+| support_server    | string         | O URL de invite do bot (Apenas URL de servidores do Discord são aceitos)    |
+| source_code       | string         | O URL do código-aberto do bot                                               |
+| short_description | string         | A descrição curta (Deve conter entre 50-80 caracteres)                      |
+| long_description  | string         | A descrição longa (Deve conter entre 200-500 caracteres, Markdown é válido) |
+| prefixes          | string[]       | prefixos do bot (Use `/` para se referir a slash-commands)                  |
+| verified          | boolean        | Se o bot é verificado ou não                                                |
+| tags              | string[]       | As tags do bot                                                              |
+| team_id           | string         | O ID do time que o bot pertence                                             |
+| vote_message      | ?string (5-30) | Uma mensagem para quando um usuário votar                                   |
 
 -   Todas as propriedades são opicionais
 
