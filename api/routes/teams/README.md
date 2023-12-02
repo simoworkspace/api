@@ -22,8 +22,8 @@ Busque por um time, retorna uma estrutura de time
 
 ### GET `/api/teams/{team.id}/audit-logs`
 
-Busque por todos os registros de auditoria de um time, retorna uma array de objetos
-de registro de auditoria
+Busque por todos os registros de auditoria de um time, retorna o objeto de registro
+de auditoria do time
 
 ## Get team bots
 
