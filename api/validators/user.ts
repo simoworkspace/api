@@ -42,7 +42,7 @@ export const updateTeamValidator = object({
 export const updateUserValidator = object({
     bio: string().max(200).min(1).nullable(),
     notifications_viewed: boolean(),
-    banner_url: string().url(),
+    banner_url: string().url().nullable(),
 })
     .noUnknown()
     .strict()
