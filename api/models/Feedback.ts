@@ -1,5 +1,4 @@
 import { Schema, model } from "mongoose";
-import { MODELS_NAME } from "../../constants.json";
 import type { FeedbackStructure } from "../typings/types";
 
 const rawFeedbackSchema = new Schema<FeedbackStructure>(
@@ -32,4 +31,4 @@ const rawFeedbackSchema = new Schema<FeedbackStructure>(
     { versionKey: false }
 );
 
-export const feedbackSchema = model(MODELS_NAME.Feedbacks, rawFeedbackSchema);
+export const feedbackSchema = model("Feedbacks", rawFeedbackSchema);

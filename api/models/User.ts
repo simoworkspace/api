@@ -1,5 +1,4 @@
 import { Schema, model } from "mongoose";
-import { MODELS_NAME } from "../../constants.json";
 import type { UserStructure } from "../typings/types";
 
 const rawUserSchema = new Schema<UserStructure>(
@@ -37,4 +36,4 @@ const rawUserSchema = new Schema<UserStructure>(
     { versionKey: false }
 );
 
-export const userSchema = model(MODELS_NAME.Users, rawUserSchema);
+export const userSchema = model("User", rawUserSchema);

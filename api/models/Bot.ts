@@ -1,5 +1,4 @@
 import { Schema, model } from "mongoose";
-import { MODELS_NAME } from "../../constants.json";
 import type { BotStructure } from "../typings/types";
 
 const rawBotSchema = new Schema<BotStructure>(
@@ -82,4 +81,4 @@ const rawBotSchema = new Schema<BotStructure>(
     { versionKey: false }
 );
 
-export const botSchema = model(MODELS_NAME.Bots, rawBotSchema);
+export const botSchema = model("bots", rawBotSchema);
