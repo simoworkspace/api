@@ -26,7 +26,9 @@ Todas as rotas são aplicados rate-limits.
 
 # Bem vindo a Simo-API
 
-Simo-API deixa você adicionar, editar, deletar e pegar informações sobre algo um bot ou algo. É uma ferramenta de trabalho para desenvolvedores referentes ao projeto Simo.
+Simo-API deixa você adicionar, editar, deletar e pegar informações sobre algo um
+bot ou algo. É uma ferramenta de trabalho para desenvolvedores referentes ao
+projeto Simo.
 
 ## Engajamento
 
@@ -34,7 +36,7 @@ Compartilhe ideias, informações etc com outros usuário no [servidor](https://
 
 ## Onde Está a Documentação?
 
-Todas as documentações estão no README de cada pasta de rota, [veja](/src/routers/)
+Todas as documentações estão no README de cada pasta de rota, [veja](/api/routes/)
 
 ### Rate Limit
 
@@ -42,6 +44,6 @@ Todas as rotas são aplicados os mesmo rate-limits e globalmente.
 
 | Rota | Max. Requisições | Atordoamento |
 | ---- | ---------------- | ------------ |
-| \*   | 25               | 1 min.       |
+| \*   | 25               | 1 min       |
 
--   Simo
+-   Rate limite foi desabilitado
