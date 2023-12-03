@@ -44,7 +44,6 @@ export const joinTeam = async (req: Request, res: Response) => {
     await createAuditLogEntry({
         teamId,
         executor_id: userId,
-        created_at: new Date().toISOString(),
         action_type: AuditLogActionType.MemberAdd,
         target_id: userId,
         changes: [],

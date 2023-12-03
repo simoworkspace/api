@@ -66,7 +66,6 @@ export const changeOwner = async (
     await createAuditLogEntry({
         teamId,
         executor_id: authorId,
-        created_at: new Date().toISOString(),
         target_id: userId,
         changes: [
             {

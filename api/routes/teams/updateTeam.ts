@@ -71,7 +71,6 @@ export const updateTeam = async (req: Request, res: Response) => {
     await createAuditLogEntry({
         teamId,
         executor_id: userId,
-        created_at: new Date().toISOString(),
         action_type: AuditLogActionType.TeamUpdate,
         target_id: null,
         changes: changes,

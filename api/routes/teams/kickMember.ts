@@ -62,7 +62,6 @@ export const kickMember = async (req: Request, res: Response) => {
     await createAuditLogEntry({
         teamId: team.id,
         executor_id: authorId,
-        created_at: new Date().toISOString(),
         action_type: AuditLogActionType.MemberRemove,
         target_id: targetId,
         changes: [],
