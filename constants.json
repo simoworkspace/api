@@ -1,6 +1,6 @@
 {
     "MODELS_NAME": {
-        "Bots": "addbots",
+        "Bots": "bots",
         "Users": "User",
         "Feedbacks": "Feedbacks"
     },
