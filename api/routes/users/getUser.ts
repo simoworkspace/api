@@ -10,14 +10,17 @@ import { getUserId } from "../../utils/getUserId";
  */
 export const getUser = async (req: Request, res: Response) => {
     const { method } = req.params;
-    const authorId = await getUserId(req.headers);
+    const authorId = await getUserId(req.headers.authorization, res);
 
+    if (typeof authorId !== "string") return;
     if (method === "notifications")
         return fetchUserNotifications(res, authorId);
     if (!method)
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
 
-    const user = await userSchema.findById(method === "@me" ? authorId : method, { __v: 0 });
+    const user = await userSchema.findById(
+        method === "@me" ? authorId : method
+    );
 
     if (!user)
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);

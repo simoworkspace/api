@@ -21,7 +21,9 @@ export const updateTeam = async (req: Request, res: Response) => {
     if (!team)
         return res.status(HttpStatusCode.NotFound).json(TEAM.UNKNOWN_TEAM);
 
-    const userId = await getUserId(req.headers);
+    const userId = await getUserId(req.headers.authorization, res);
+
+    if (typeof userId !== "string") return;
 
     if (inviteCode === "members") return updateMember(req, res, userId);
     if (inviteCode === "invite") return updateTeamInvite(req, res);

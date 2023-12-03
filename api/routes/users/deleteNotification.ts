@@ -10,7 +10,7 @@ export const deleteNotification = async (req: Request, res: Response) => {
             .status(HttpStatusCode.MethodNotAllowed)
             .json(GENERICS.METHOD_NOT_ALLOWED);
 
-    const userId = await getUserId(req.headers);
+    const userId = await getUserId(req.headers.authorization, res);
     const user = await userSchema.findById(userId);
 
     if (!user)

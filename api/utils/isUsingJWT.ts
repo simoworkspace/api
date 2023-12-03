@@ -1,9 +1,9 @@
 import { verify } from "jsonwebtoken";
 
-export const isUsingJWT = (headers: Record<string, unknown>) => {
+export const isUsingJWT = (auth: string) => {
     try {
         verify(
-            headers.authorization as string,
+            auth,
             process.env.JWT_SECRET as string
         );
 

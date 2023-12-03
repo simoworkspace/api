@@ -3,16 +3,15 @@ import { getUserId } from "../../utils/getUserId";
 import { kickMember } from "./kickMember";
 import { teamModel } from "../../models/Team";
 import { HttpStatusCode } from "axios";
-import { TEAM, USER } from "../../utils/errors.json";
+import { TEAM } from "../../utils/errors.json";
 import { AuditLogActionType, TeamPermissions } from "../../typings/types";
 import { changeOwner } from "./changeOwner";
 import { createAuditLogEntry } from "./createAuditLog";
 
 export const joinTeam = async (req: Request, res: Response) => {
-    const userId = await getUserId(req.headers);
+    const userId = await getUserId(req.headers.authorization, res);
 
-    if (!userId)
-        return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
+    if (typeof userId !== "string") return;
 
     const { teamId, inviteCode } = req.params;
 

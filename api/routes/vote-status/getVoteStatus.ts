@@ -7,7 +7,7 @@ import { JwtPayload, decode } from "jsonwebtoken";
 import { userSchema } from "../../models/User";
 
 export const getVoteStatus = async (req: Request, res: Response) => {
-    const isUsingJwt = isUsingJWT(req.headers);
+    const isUsingJwt = isUsingJWT(req.headers.authorization as string);
 
     const userId = isUsingJwt
         ? (decode(req.headers.authorization as string) as JwtPayload).id

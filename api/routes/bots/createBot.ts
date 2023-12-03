@@ -13,7 +13,9 @@ import { createVote } from "./createVote";
  */
 export const createBot = async (req: Request, res: Response) => {
     const { id: botId, method } = req.params;
-    const userId = await getUserId(req.headers);
+    const userId = await getUserId(req.headers.authorization, res);
+
+    if (typeof userId !== "string") return;
 
     const exists = await botSchema.exists({ _id: botId });
 

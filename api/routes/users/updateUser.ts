@@ -6,7 +6,10 @@ import { updateUserValidator } from "../../validators/user";
 import { getUserId } from "../../utils/getUserId";
 
 export const updateUser = async (req: Request, res: Response) => {
-    const userId = await getUserId(req.headers);
+    const userId = await getUserId(req.headers.authorization, res);
+
+    if (typeof userId !== "string") return;
+
     const { method } = req.params;
 
     if (method)

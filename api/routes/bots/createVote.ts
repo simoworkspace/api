@@ -11,7 +11,11 @@ export const createVote = async (
     res: Response,
     botId: string
 ) => {
-    const user = await userSchema.findById(await getUserId(req.headers));
+    const userId = await getUserId(req.headers.authorization, res);
+
+    if (typeof userId !== "string") return;
+
+    const user = await userSchema.findById(userId);
 
     if (!user)
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);

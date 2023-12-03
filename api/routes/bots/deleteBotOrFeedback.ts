@@ -11,7 +11,9 @@ import { teamModel } from "../../models/Team";
  */
 export const deleteBotOrFeedback = async (req: Request, res: Response) => {
     const { id: botId, method } = req.params;
-    const userId = await getUserId(req.headers);
+    const userId = await getUserId(req.headers.authorization, res);
+
+    if (typeof userId !== "string") return;
 
     if (method === "feedbacks") {
         const feedback = await feedbackSchema.findOne({

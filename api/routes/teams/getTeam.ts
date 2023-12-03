@@ -12,8 +12,9 @@ import { fetchTeamBots } from "./fetchTeamBots";
 
 export const getTeam = async (req: Request, res: Response) => {
     const { teamId, inviteCode } = req.params;
-    const userId = await getUserId(req.headers);
+    const userId = await getUserId(req.headers.authorization, res);
 
+    if (typeof userId !== "string") return;
     if (teamId === "@all") return fetchUserTeams(res, userId);
     if (inviteCode === "audit-logs") return fetchAuditLogs(res, teamId, userId);
     if (inviteCode === "bots") return fetchTeamBots(req, res);

@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import { getUserId } from "../../utils/getUserId";
 import { HttpStatusCode } from "axios";
-import { GENERICS, TEAM, BOT } from "../../utils/errors.json";
+import { TEAM, BOT } from "../../utils/errors.json";
 import { teamModel } from "../../models/Team";
 import { TeamPermissions } from "../../typings/types";
 import { botSchema } from "../../models/Bot";
@@ -12,10 +12,9 @@ import { auditLogModel } from "../../models/AuditLog";
 export const createTeam = async (req: Request, res: Response) => {
     if (req.params.inviteCode === "bots") return addBot(req, res);
 
-    const userId = await getUserId(req.headers);
+    const userId = await getUserId(req.headers.authorization, res);
 
-    if (!userId)
-        return res.status(HttpStatusCode.NotFound).json(GENERICS.INVALID_AUTH);
+    if (typeof userId !== "string") return;
 
     const userTeams = await teamModel.find({
         members: {

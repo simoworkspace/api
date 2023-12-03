@@ -11,7 +11,9 @@ import { botSchema } from "../../models/Bot";
 export const deleteTeam = async (req: Request, res: Response) => {
     if (req.params.inviteCode === "bots") return removeBot(req, res);
 
-    const userId = await getUserId(req.headers);
+    const userId = await getUserId(req.headers.authorization, res);
+
+    if (typeof userId !== "string") return;
 
     const team = await teamModel.findOne({ id: req.params.teamId });
 

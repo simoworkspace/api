@@ -11,7 +11,9 @@ export const fetchTeamBots = async (req: Request, res: Response) => {
     if (!team)
         return res.status(HttpStatusCode.NotFound).json(TEAM.UNKNOWN_TEAM);
 
-    const userId = await getUserId(req.headers);
+    const userId = await getUserId(req.headers.authorization, res);
+
+    if (typeof userId !== "string") return;
 
     if (!team.members.some((member) => member.id === userId))
         return res

@@ -11,7 +11,9 @@ import { getUserId } from "../../utils/getUserId";
  */
 export const updateBotOrFeedback = async (req: Request, res: Response) => {
     const { id: botId, method } = req.params;
-    const userId = await getUserId(req.headers);
+    const userId = await getUserId(req.headers.authorization, res);
+
+    if (typeof userId !== "string") return;
 
     if (method === "feedbacks")
         return updateFeedback(req, res, { botId, authorId: userId });
