@@ -8,10 +8,12 @@ export const createAuditLogEntry = async (
     const auditLog = await auditLogModel.findOne({ team_id: teamId });
 
     const rawEntryData = {
-        ...data,
+        ...(data as { teamId?: string }),
         id: Math.random().toString(36).slice(2, 8),
         created_at: new Date().toISOString(),
     };
+
+    delete rawEntryData.teamId;
 
     if (!auditLog)
         return await auditLogModel.create({
