@@ -22,14 +22,14 @@ export const botSchemaValidator = object({
 export const patchBotValidator = object({
     name: string(),
     avatar: string(),
-    invite_url: string(),
-    website_url: string(),
+    invite_url: string().url(),
+    website_url: string().url(),
     support_server: string().matches(
         /^https:\/\/discord\.(gg|invite)\/[a-z0-9]+$/i
     ),
     source_code: string().url(),
     short_description: string().min(50).max(80),
-    long_description: string().max(2048),
+    long_description: string().min(200).max(2048),
     prefixes: array(string().max(6)).max(5),
     verified: boolean(),
     tags: array(string()).max(5),
