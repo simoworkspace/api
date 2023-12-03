@@ -9,11 +9,11 @@ export type Snowflake = string;
 export interface BotStructure {
     _id: Snowflake;
     name: string;
-    avatar: string;
+    avatar: string | null;
     invite_url: string;
-    website_url: string;
-    support_server: string;
-    source_code: string;
+    website_url?: string;
+    support_server?: string;
+    source_code?: string;
     short_description: string;
     long_description: string;
     prefixes: string[];
@@ -36,11 +36,11 @@ export interface BotStructure {
 export interface UserStructure {
     _id: Snowflake;
     username: string;
-    avatar: string;
+    avatar: string | null;
     notifications: Map<string, NotificationBody>;
     bio: string | null;
     notifications_viewed: boolean;
-    banner_url: string;
+    banner_url: string | null;
 }
 
 /**
