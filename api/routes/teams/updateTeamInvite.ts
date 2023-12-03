@@ -3,7 +3,8 @@ import { teamModel } from "../../models/Team";
 import { HttpStatusCode } from "axios";
 import { TEAM } from "../../utils/errors.json";
 import { getUserId } from "../../utils/getUserId";
-import { TeamPermissions } from "../../typings/types";
+import { AuditLogActionType, TeamPermissions } from "../../typings/types";
+import { createAuditLogEntry } from "./createAuditLog";
 
 export const updateTeamInvite = async (req: Request, res: Response) => {
     const team = await teamModel.findOne({ id: req.params.teamId });
@@ -27,6 +28,19 @@ export const updateTeamInvite = async (req: Request, res: Response) => {
     const inviteCode = Math.random().toString(36).slice(2, 8);
 
     await team.updateOne({ $set: { invite_code: inviteCode } });
+    await createAuditLogEntry({
+        executor_id: userId,
+        target_id: null,
+        teamId: team.id,
+        action_type: AuditLogActionType.InviteUpdate,
+        changes: [
+            {
+                changed_key: "invite_code",
+                old_value: team.invite_code,
+                new_value: inviteCode,
+            },
+        ],
+    });
 
     return res.status(HttpStatusCode.Ok).json({ invite_code: inviteCode });
 };
