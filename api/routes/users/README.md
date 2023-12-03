@@ -13,9 +13,6 @@ Busque por um usuário na database, retorna uma estrutura de usuário
 
 ```json
 {
-    "team": {
-        "members": []
-    },
     "_id": "963124227911860264",
     "username": "meunreal",
     "avatar": "1f42e6dc5631724994ee7ea819371036",
@@ -87,4 +84,4 @@ do usuário atualizado
 | -------------------- | ------- | ------------------------------------------ |
 | bio                  | ?string | A biografia do usuário (1-200)             |
 | notifications_viewed | boolean | Se as notificações do usuário foram vistas |
-| banner_url           | string  | O URL do banner do usuário                 |
+| banner_url           | ?string | O URL do banner do usuário                 |
