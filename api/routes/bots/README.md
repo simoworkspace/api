@@ -10,7 +10,8 @@ Este método é usado para buscar um bot no banco de dado, retorna uma [estrutur
 
 ### GET `/api/bots/{bot._id}`
 
-Este método é usado para buscar vários bots no banco de dados, retorna uma Array de [estrutura](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/typings/index.d.ts#L7)
+Este método é usado para buscar vários bots no banco de dados, retorna uma Array
+de [estrutura](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/typings/index.d.ts#L7)
 
 #### Query String Params
 
@@ -71,7 +72,8 @@ Este método é usada para pegar todos os feedbacks já feitos em um bot, retorn
 
 ### DELETE `/api/bots/{bot._id}`
 
-Este método é usado para deletar um bot no banco de dados, retorna uma estrutura de [bot](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/typings/index.d.ts#L7)
+Este método é usado para deletar um bot no banco de dados, retorna uma estrutura
+de [bot](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/typings/index.d.ts#L7)
 
 ## Delete Feedback
 
@@ -127,7 +129,8 @@ Este método é usado para editar um feedback em um bot, retorna uma estrutura d
 
 ### POST `/api/bots/{bot._id}`
 
-Este método é usado para adicionar um bot no banco de dados, retorna uma estrutura de [bot](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/typings/index.d.ts#L7)
+Este método é usado para adicionar um bot no banco de dados, retorna uma estrutura
+de [bot](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/typings/index.d.ts#L7)
 
 #### JSON Params
 
