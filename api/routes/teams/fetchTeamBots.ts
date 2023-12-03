@@ -35,5 +35,5 @@ export const fetchTeamBots = async (req: Request, res: Response) => {
         }
     );
 
-    return res.status(HttpStatusCode.Found).json(bots);
+    return res.status(HttpStatusCode.Ok).json(bots);
 };
