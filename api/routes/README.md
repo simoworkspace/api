@@ -59,7 +59,7 @@ Erro normal:
 
 ```json
 {
-    "message": "Unknwon user",
+    "message": "Unknown user",
     "code": 5001
 }
 ```
