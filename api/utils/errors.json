@@ -75,6 +75,10 @@
         "BAD_ROUTE": {
             "message": "Bad route",
             "code": 2009
+        },
+        "MISSING_AUTHORIZATION_ERROR": {
+            "message": "Authorization header is missing. Use an api-key or Json Web Token",
+            "code": 2010
         }
     },
     "GUILD": {
