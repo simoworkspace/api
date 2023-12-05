@@ -46,13 +46,9 @@ export const updateUserValidator = object({
 })
     .noUnknown()
     .strict()
-    .test(
-        "at-least-one-options",
-        "you must pass at least one option",
-        (obj) => {
-            return Object.keys(obj).length > 0;
-        }
-    );
+    .test("at-least-one-key", "You must pass at least one key", (object) => {
+        return Object.keys(object).length > 0;
+    });
 
 export const updateTeamMemberValidator = object({
     permission: number()

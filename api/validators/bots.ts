@@ -37,4 +37,7 @@ export const patchBotValidator = object({
 })
     .strict()
     .required()
-    .noUnknown();
+    .noUnknown()
+    .test("at-least-one-key", "You must pass at least one key", (object) => {
+        return Object.keys(object).length > 0;
+    });
