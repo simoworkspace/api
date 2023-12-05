@@ -4,6 +4,7 @@ import { botSchema } from "../../models/Bot";
 import { BOT } from "../../utils/errors.json";
 import { fetchBotFeedbacks } from "./fetchBotFeedbacks";
 import { getUserId } from "../../utils/getUserId";
+import { fetchAPIKey } from "./fetchAPIKey";
 
 /**
  * Gets a bot from Discord API or from the database
@@ -38,6 +39,7 @@ export const getBot = async (req: Request, res: Response) => {
 
     const { id: botId, method } = req.params;
 
+    if (method === "api-key") return fetchAPIKey(req, res);
     if (method === "feedbacks") return fetchBotFeedbacks(req, res);
 
     const userId = await getUserId(req.headers.authorization, res);
