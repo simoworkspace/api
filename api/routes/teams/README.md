@@ -91,11 +91,11 @@ Modifique um time, retorna o objeto do time atualizado
 
 ### JSON Params
 
-| NAME        | TYPE          | DESCRIPTION                |
-| ----------- | ------------- | -------------------------- |
-| name        | string (3-15) | O nome do time             |
-| description | string (5-50) | A descrição do time        |
-| avatar_url  | string        | O URL do avatar do time    |
+| NAME        | TYPE          | DESCRIPTION             |
+| ----------- | ------------- | ----------------------- |
+| name        | string (3-15) | O nome do time          |
+| description | string (5-50) | A descrição do time     |
+| avatar_url  | string        | O URL do avatar do time |
 
 -   Todos os parâmetros são opicionais
 
@@ -134,7 +134,7 @@ Crie um time, retorna o objeto do time criado
 | name         | string (3-15) | O nome do time                 |
 | avatar_url   | string        | O URL do avatar do time        |
 | description? | string        | A descrição do time            |
-| bot_ids      | Snowflake[]   | O bot que pertence a esse time |
+| bots_id?     | Snowflake[]   | O bot que pertence a esse time |
 
 -   Ressalvas
     -   Você só pode ter 2 times no máximo

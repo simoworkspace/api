@@ -23,7 +23,7 @@ export const createTeamValidator = object({
     name: string().required().min(3).max(15).required(),
     avatar_url: string().required(),
     description: string().min(5).max(50),
-    bots_id: array(string().matches(idPattern)).max(3).required(),
+    bots_id: array(string().matches(idPattern)).max(3),
 })
     .required()
     .noUnknown();
