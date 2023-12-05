@@ -158,8 +158,7 @@ de [bot](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/typings/ind
 
 ### POST `/api/bots/{bot._id}/votes`
 
-Este método é usado para adicionar um voto no bot, retorna todos os votos do bot
-com o novo voto adicionado
+Este método é usado para adicionar um voto no bot, retorna o objeto do voto
 
 -   O ID do usuário será pego do JWT ou api_key usado
 

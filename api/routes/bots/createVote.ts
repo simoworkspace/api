@@ -57,7 +57,9 @@ export const createVote = async (
     }
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const { last_vote } = votes.votes.find((vote) => vote.user_id === user._id)!;
+    const { last_vote } = votes.votes.find(
+        (vote) => vote.user_id === user._id
+    )!;
 
     const twelveHours = 4.32e7;
     const timeLeft = new Date().getTime() - new Date(last_vote).getTime();
@@ -82,5 +84,7 @@ export const createVote = async (
         { new: true }
     );
 
-    return res.status(HttpStatusCode.Ok).json(vote?.votes);
+    return res
+        .status(HttpStatusCode.Ok)
+        .json(vote?.votes.find((vote) => vote.user_id === userId));
 };
