@@ -123,7 +123,7 @@ Atualize o código de convite de um time, retorna um objeto com `invite_code`
 
 ## Create team
 
-### POST `/api/teams/{team.id}`
+### POST `/api/teams`
 
 Crie um time, retorna o objeto do time criado
 
