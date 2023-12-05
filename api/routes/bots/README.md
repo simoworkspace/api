@@ -68,6 +68,12 @@ Este método é usado para pegar todos os votos de um bot, retorna uma array de 
 
 Este método é usada para pegar todos os feedbacks já feitos em um bot, retorna uma array de [feedbacks](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/core/types/types.d.ts#L113) com `author.username`, `author.avatar` e `author.id`
 
+## Get Bot Api-key
+
+### GET `/api/bots/{bot._id}/api-key`
+
+Pegue a api-key de um bot, retorna um objeto com `api-key`
+
 ## Delete Bot
 
 ### DELETE `/api/bots/{bot._id}`
