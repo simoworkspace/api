@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import type { Request, Response } from "express";
 import { HttpStatusCode } from "axios";
-import { TEAM } from "../../utils/errors.json";
+import { TEAM, GENERICS } from "../../utils/errors.json";
 import {
     AnyAuditLogChange,
     AuditLogActionType,
@@ -13,6 +13,7 @@ import { teamModel } from "../../models/Team";
 import { updateMember } from "./updateMember";
 import { createAuditLogEntry } from "./createAuditLog";
 import { updateTeamInvite } from "./updateTeamInvite";
+import { isDifferent } from "../../utils/isDifferent";
 
 export const updateTeam = async (req: Request, res: Response) => {
     const { teamId, inviteCode } = req.params;
@@ -49,6 +50,10 @@ export const updateTeam = async (req: Request, res: Response) => {
         return res
             .status(HttpStatusCode.BadRequest)
             .json({ errors: validation });
+    if (!isDifferent(team._doc, body))
+        return res
+            .status(HttpStatusCode.BadRequest)
+            .json(GENERICS.UPDATE_VALUE_ERROR);
 
     const updatedTeam = await teamModel.findOneAndUpdate(
         { id: teamId },

@@ -2,9 +2,10 @@ import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
 import { botModel } from "../../models/Bot";
 import { patchBotValidator } from "../../validators/bots";
-import { BOT } from "../../utils/errors.json";
+import { BOT, GENERICS } from "../../utils/errors.json";
 import { updateFeedback } from "./updateFeedback";
 import { getUserId } from "../../utils/getUserId";
+import { isDifferent } from "../../utils/isDifferent";
 
 /**
  * Updates a bot or feedback
@@ -33,6 +34,10 @@ export const updateBotOrFeedback = async (req: Request, res: Response) => {
 
     if (Array.isArray(validation))
         return res.status(HttpStatusCode.BadRequest).json(validation);
+    if (!isDifferent(bot._doc, body))
+        return res
+            .status(HttpStatusCode.BadRequest)
+            .json(GENERICS.UPDATE_VALUE_ERROR);
 
     const updatedBot = await botModel.findByIdAndUpdate(
         botId,
