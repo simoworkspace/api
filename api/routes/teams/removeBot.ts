@@ -4,7 +4,7 @@ import { HttpStatusCode } from "axios";
 import { TEAM, BOT } from "../../utils/errors.json";
 import { TeamPermissions } from "../../typings/types";
 import { getUserId } from "../../utils/getUserId";
-import { botSchema } from "../../models/Bot";
+import { botModel } from "../../models/Bot";
 
 export const removeBot = async (req: Request, res: Response) => {
     const team = await teamModel.findOne({ id: req.params.teamId });
@@ -32,7 +32,7 @@ export const removeBot = async (req: Request, res: Response) => {
     if (!team.bots_id.includes(botId))
         return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_BOT);
 
-    const bot = await botSchema.findById(botId);
+    const bot = await botModel.findById(botId);
 
     if (bot) await bot.updateOne({ team_id: null });
 

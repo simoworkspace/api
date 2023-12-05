@@ -36,4 +36,4 @@ const rawUserSchema = new Schema<UserStructure>(
     { versionKey: false }
 );
 
-export const userSchema = model("User", rawUserSchema);
+export const userModel = model("User", rawUserSchema);

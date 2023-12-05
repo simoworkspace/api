@@ -1,6 +1,6 @@
 import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
-import { botSchema } from "../../models/Bot";
+import { botModel } from "../../models/Bot";
 import { BOT } from "../../utils/errors.json";
 import { fetchBotFeedbacks } from "./fetchBotFeedbacks";
 import { getUserId } from "../../utils/getUserId";
@@ -21,7 +21,7 @@ export const getBot = async (req: Request, res: Response) => {
         delete query.endAt;
         delete query.startAt;
 
-        const botsFound = await botSchema
+        const botsFound = await botModel
             .find(query, null, {
                 limit: queryLimit,
             })
@@ -47,8 +47,8 @@ export const getBot = async (req: Request, res: Response) => {
     if (typeof userId !== "string") return;
 
     const targetBot = await (botId
-        ? botSchema.findById(botId).select("-api_key")
-        : botSchema
+        ? botModel.findById(botId).select("-api_key")
+        : botModel
             .find({ owner_id: userId })
             .sort({ votes_count: -1 })
             .select("-api_key"));
@@ -73,7 +73,7 @@ export const getBot = async (req: Request, res: Response) => {
 
             const botData = await request.json();
 
-            await botSchema.findByIdAndUpdate(botId, {
+            await botModel.findByIdAndUpdate(botId, {
                 name: botData.username,
                 avatar: botData.avatar,
             });

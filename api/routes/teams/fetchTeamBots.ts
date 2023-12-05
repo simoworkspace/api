@@ -3,7 +3,7 @@ import { teamModel } from "../../models/Team";
 import { TEAM } from "../../utils/errors.json";
 import { HttpStatusCode } from "axios";
 import { getUserId } from "../../utils/getUserId";
-import { botSchema } from "../../models/Bot";
+import { botModel } from "../../models/Bot";
 
 export const fetchTeamBots = async (req: Request, res: Response) => {
     const team = await teamModel.findOne({ id: req.params.teamId });
@@ -24,7 +24,7 @@ export const fetchTeamBots = async (req: Request, res: Response) => {
             .status(HttpStatusCode.NotFound)
             .json(TEAM.NO_BOTS_IN_TEAM_ERROR);
 
-    const bots = await botSchema.find(
+    const bots = await botModel.find(
         { _id: { $in: team.bots_id } },
         {
             tags: 1,

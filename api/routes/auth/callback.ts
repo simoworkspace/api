@@ -1,6 +1,6 @@
 import { sign, verify } from "jsonwebtoken";
 import { HttpStatusCode } from "axios";
-import { userSchema } from "../../models/User";
+import { userModel } from "../../models/User";
 import type { Request, Response } from "express";
 import { GENERICS } from "../../utils/errors.json";
 import { webhooks } from "../../utils/webhooks";
@@ -95,7 +95,7 @@ export const callback = async (req: Request, res: Response) => {
                 }
             );
 
-            await userSchema.findOneAndUpdate(
+            await userModel.findOneAndUpdate(
                 { _id: id },
                 { username, avatar },
                 { new: true, upsert: true }

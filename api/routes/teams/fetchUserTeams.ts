@@ -2,13 +2,13 @@ import { HttpStatusCode } from "axios";
 import { teamModel } from "../../models/Team";
 import type { Response } from "express";
 import { getUserByMember } from "../../utils/getUserByMember";
-import { userSchema } from "../../models/User";
+import { userModel } from "../../models/User";
 
 export const fetchUserTeams = async (res: Response, userId: string) => {
     const teams = await teamModel.find({
         members: { $elemMatch: { id: userId } },
     });
-    const users = await userSchema.find({});
+    const users = await userModel.find({});
 
     return res.status(HttpStatusCode.Ok).json(
         teams.map(

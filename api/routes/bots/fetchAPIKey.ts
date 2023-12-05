@@ -1,11 +1,11 @@
 import type { Request, Response } from "express";
-import { botSchema } from "../../models/Bot";
+import { botModel } from "../../models/Bot";
 import { HttpStatusCode } from "axios";
 import { BOT } from "../../utils/errors.json";
 import { getUserId } from "../../utils/getUserId";
 
 export const fetchAPIKey = async (req: Request, res: Response) => {
-    const bot = await botSchema.findById(req.params.id, {
+    const bot = await botModel.findById(req.params.id, {
         owner_id: 1,
         api_key: 1,
     });

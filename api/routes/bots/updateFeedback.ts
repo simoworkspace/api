@@ -1,5 +1,5 @@
 import { HttpStatusCode } from "axios";
-import { feedbackSchema } from "../../models/Feedback";
+import { feedbackModel } from "../../models/Feedback";
 import { FEEDBACK } from "../../utils/errors.json";
 import type { Request, Response } from "express";
 import { patchFeedbackValidator } from "../../validators/feedback";
@@ -10,7 +10,7 @@ export const updateFeedback = async (
     { botId, authorId }: { botId: string; authorId: string }
 ) => {
     const { body } = req;
-    const feedback = await feedbackSchema.findOne({
+    const feedback = await feedbackModel.findOne({
         author_id: authorId,
         target_bot_id: botId,
     });
@@ -29,7 +29,7 @@ export const updateFeedback = async (
             .status(HttpStatusCode.BadRequest)
             .json({ errors: validation });
 
-    const updatedFeedback = await feedbackSchema.findOneAndUpdate(
+    const updatedFeedback = await feedbackModel.findOneAndUpdate(
         {
             author_id: authorId,
             target_bot_id: botId,

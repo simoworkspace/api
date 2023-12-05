@@ -1,7 +1,7 @@
 import { HttpStatusCode } from "axios";
 import { GENERICS } from "../utils/errors.json";
 import type { Request, Response, NextFunction } from "express";
-import { botSchema } from "../models/Bot";
+import { botModel } from "../models/Bot";
 
 export const apiKeyAuth = async (
     req: Request,
@@ -9,7 +9,7 @@ export const apiKeyAuth = async (
     next: NextFunction
 ) => {
     const key = req.headers.authorization;
-    const botData = await botSchema.findOne({
+    const botData = await botModel.findOne({
         api_key: key,
     });
 

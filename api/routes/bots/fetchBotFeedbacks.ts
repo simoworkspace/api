@@ -1,11 +1,11 @@
 import { HttpStatusCode } from "axios";
 import { FEEDBACK } from "../../utils/errors.json";
 import type { Request, Response } from "express";
-import { feedbackSchema } from "../../models/Feedback";
-import { userSchema } from "../../models/User";
+import { feedbackModel } from "../../models/Feedback";
+import { userModel } from "../../models/User";
 
 export const fetchBotFeedbacks = async (req: Request, res: Response) => {
-    const feedbacks = await feedbackSchema.find({
+    const feedbacks = await feedbackModel.find({
         target_bot_id: req.params.id,
     });
 
@@ -23,7 +23,7 @@ export const fetchBotFeedbacks = async (req: Request, res: Response) => {
                 reply_message,
                 posted_at,
             }) => {
-                const author = await userSchema.findById(author_id, {
+                const author = await userModel.findById(author_id, {
                     username: 1,
                     avatar: 1,
                 });

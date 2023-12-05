@@ -4,7 +4,7 @@ import { teamModel } from "../../models/Team";
 import { TeamPermissions } from "../../typings/types";
 import { HttpStatusCode } from "axios";
 import { getUserByMember } from "../../utils/getUserByMember";
-import { userSchema } from "../../models/User";
+import { userModel } from "../../models/User";
 import { TEAM } from "../../utils/errors.json";
 import { fetchUserTeams } from "./fetchUserTeams";
 import { fetchAuditLogs } from "./fetchAuditLogs";
@@ -19,7 +19,7 @@ export const getTeam = async (req: Request, res: Response) => {
     if (inviteCode === "audit-logs") return fetchAuditLogs(res, teamId, userId);
     if (inviteCode === "bots") return fetchTeamBots(req, res);
 
-    const users = await userSchema.find({}, { avatar: 1, username: 1 });
+    const users = await userModel.find({}, { avatar: 1, username: 1 });
 
     if (!teamId) {
         const teams = await teamModel.find({

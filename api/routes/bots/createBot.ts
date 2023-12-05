@@ -1,6 +1,6 @@
 import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
-import { botSchema } from "../../models/Bot";
+import { botModel } from "../../models/Bot";
 import { botSchemaValidator } from "../../validators/bots";
 import { GENERICS, BOT } from "../../utils/errors.json";
 import { webhooks } from "../../utils/webhooks";
@@ -17,7 +17,7 @@ export const createBot = async (req: Request, res: Response) => {
 
     if (typeof userId !== "string") return;
 
-    const exists = await botSchema.exists({ _id: botId });
+    const exists = await botModel.exists({ _id: botId });
 
     if (method === "feedbacks") {
         if (!exists)
@@ -36,7 +36,7 @@ export const createBot = async (req: Request, res: Response) => {
     if (exists)
         return res.status(HttpStatusCode.Conflict).json(BOT.BOT_ALREADY_EXISTS);
 
-    const userBots = await botSchema.find({ owner_id: userId });
+    const userBots = await botModel.find({ owner_id: userId });
 
     if (userBots.length === 2)
         return res
@@ -62,7 +62,7 @@ export const createBot = async (req: Request, res: Response) => {
     if ("message" in data)
         return res.status(HttpStatusCode.BadRequest).json(BOT.UNKNOWN_BOT);
 
-    const createdBot = await botSchema.create({
+    const createdBot = await botModel.create({
         ...body,
         avatar: data.avatar,
         name: data.username,

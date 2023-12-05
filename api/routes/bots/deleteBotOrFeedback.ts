@@ -1,7 +1,7 @@
 import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
-import { botSchema } from "../../models/Bot";
-import { feedbackSchema } from "../../models/Feedback";
+import { botModel } from "../../models/Bot";
+import { feedbackModel } from "../../models/Feedback";
 import { BOT, FEEDBACK, GENERICS } from "../../utils/errors.json";
 import { getUserId } from "../../utils/getUserId";
 import { teamModel } from "../../models/Team";
@@ -16,7 +16,7 @@ export const deleteBotOrFeedback = async (req: Request, res: Response) => {
     if (typeof userId !== "string") return;
 
     if (method === "feedbacks") {
-        const feedback = await feedbackSchema.findOne({
+        const feedback = await feedbackModel.findOne({
             target_bot_id: botId,
             author_id: userId,
         });
@@ -31,7 +31,7 @@ export const deleteBotOrFeedback = async (req: Request, res: Response) => {
         return res.status(HttpStatusCode.Ok).json(GENERICS.SUCCESS);
     }
 
-    const bot = await botSchema.findById(botId);
+    const bot = await botModel.findById(botId);
 
     if (!bot) return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_BOT);
     if (bot.owner_id !== userId)

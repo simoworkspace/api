@@ -31,4 +31,4 @@ const rawFeedbackSchema = new Schema<FeedbackStructure>(
     { versionKey: false }
 );
 
-export const feedbackSchema = model("Feedbacks", rawFeedbackSchema);
+export const feedbackModel = model("Feedbacks", rawFeedbackSchema);

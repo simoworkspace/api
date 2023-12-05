@@ -1,7 +1,7 @@
 import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
 import { JwtPayload, verify } from "jsonwebtoken";
-import { botSchema } from "../../models/Bot";
+import { botModel } from "../../models/Bot";
 import { BOT } from "../../utils/errors.json";
 
 const generateHash = (): string => Math.random().toString(20).substring(2);
@@ -17,10 +17,10 @@ export const createToken = async (req: Request, res: Response) => {
 
         const apikey = `${generateHash()}-${generateHash()}-${generateHash()}`;
 
-        const bot = await botSchema.findById(botId);
+        const bot = await botModel.findById(botId);
 
         if (bot && bot.owner_id === userData.id) {
-            await botSchema.findByIdAndUpdate(botId, {
+            await botModel.findByIdAndUpdate(botId, {
                 api_key: apikey,
             });
 

@@ -2,8 +2,8 @@ import { HttpStatusCode } from "axios";
 import type { Request, Response } from "express";
 import parseMs from "ms";
 import { BOT, USER } from "../../utils/errors.json";
-import { botSchema } from "../../models/Bot";
-import { userSchema } from "../../models/User";
+import { botModel } from "../../models/Bot";
+import { userModel } from "../../models/User";
 import { getUserId } from "../../utils/getUserId";
 
 export const createVote = async (
@@ -15,7 +15,7 @@ export const createVote = async (
 
     if (typeof userId !== "string") return;
 
-    const user = await userSchema.findById(userId);
+    const user = await userModel.findById(userId);
 
     if (!user)
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
@@ -35,7 +35,7 @@ export const createVote = async (
             .status(HttpStatusCode.BadRequest)
             .json(BOT.BOT_CANNOT_VOTE_IN_A_BOT);
 
-    const votes = await botSchema.findOne({
+    const votes = await botModel.findOne({
         _id: botId,
         "votes.user_id": user._id,
     });
@@ -47,7 +47,7 @@ export const createVote = async (
             votes: 1,
         };
 
-        const newVote = await botSchema.findOneAndUpdate(
+        const newVote = await botModel.findOneAndUpdate(
             { _id: botId },
             { $push: { votes: voteBody } },
             { new: true }
@@ -71,7 +71,7 @@ export const createVote = async (
             code: BOT.COOLDOWN_VOTE.code,
         });
 
-    const vote = await botSchema.findOneAndUpdate(
+    const vote = await botModel.findOneAndUpdate(
         { _id: botId, "votes.user_id": user._id },
         {
             $inc: { "votes.$.votes": 1, votes_count: 1 },

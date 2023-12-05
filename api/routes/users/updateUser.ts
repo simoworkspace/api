@@ -1,7 +1,7 @@
 import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
 import { USER, GENERICS } from "../../utils/errors.json";
-import { userSchema } from "../../models/User";
+import { userModel } from "../../models/User";
 import { updateUserValidator } from "../../validators/user";
 import { getUserId } from "../../utils/getUserId";
 
@@ -17,7 +17,7 @@ export const updateUser = async (req: Request, res: Response) => {
             .status(HttpStatusCode.MethodNotAllowed)
             .json(GENERICS.METHOD_NOT_ALLOWED);
 
-    const user = await userSchema.findById(userId);
+    const user = await userModel.findById(userId);
 
     if (!user)
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
@@ -33,7 +33,7 @@ export const updateUser = async (req: Request, res: Response) => {
             .status(HttpStatusCode.BadRequest)
             .json({ errors: validation });
 
-    const updatedUser = await userSchema.findByIdAndUpdate(
+    const updatedUser = await userModel.findByIdAndUpdate(
         userId,
         { $set: body },
         { new: true }

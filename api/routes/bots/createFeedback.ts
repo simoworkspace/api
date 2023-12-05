@@ -1,12 +1,12 @@
 import { HttpStatusCode } from "axios";
 import type { Request, Response } from "express";
 import { FEEDBACK } from "../../utils/errors.json";
-import { feedbackSchema } from "../../models/Feedback";
+import { feedbackModel } from "../../models/Feedback";
 import { feedbackValidator } from "../../validators/feedback";
-import { userSchema } from "../../models/User";
+import { userModel } from "../../models/User";
 import { createNotification } from "../users/createNotification";
 import { NotificationType } from "../../typings/types";
-import { botSchema } from "../../models/Bot";
+import { botModel } from "../../models/Bot";
 
 export const createFeedback = async (
     req: Request,
@@ -16,7 +16,7 @@ export const createFeedback = async (
     if (!authorId)
         return res.status(HttpStatusCode.NotFound).json(FEEDBACK.UNKNOWN_USER);
 
-    const exists = await feedbackSchema.exists({
+    const exists = await feedbackModel.exists({
         author_id: authorId,
         target_bot_id: botId,
     });
@@ -42,20 +42,20 @@ export const createFeedback = async (
             .status(HttpStatusCode.BadRequest)
             .json({ errors: validation });
 
-    const author = await userSchema.findById(authorId);
+    const author = await userModel.findById(authorId);
 
     if (!author)
         return res.status(HttpStatusCode.Ok).json(FEEDBACK.UNKNOWN_AUTHOR);
 
-    const createdFeedback = await feedbackSchema.create({
+    const createdFeedback = await feedbackModel.create({
         ...body,
         posted_at: new Date().toISOString(),
         author_id: authorId,
         target_bot_id: botId,
     });
 
-    const bot = await botSchema.findById(botId);
-    const owner = await userSchema.findById(bot?.owner_id);
+    const bot = await botModel.findById(botId);
+    const owner = await userModel.findById(bot?.owner_id);
 
     await createNotification(res, owner?.id as string, {
         content: `**${owner?.username}** Comentou no seu bot **${bot?.name}**\n${body.content}`,

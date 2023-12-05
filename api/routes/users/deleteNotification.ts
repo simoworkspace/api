@@ -1,5 +1,5 @@
 import { HttpStatusCode } from "axios";
-import { userSchema } from "../../models/User";
+import { userModel } from "../../models/User";
 import type { Request, Response } from "express";
 import { GENERICS, USER } from "../../utils/errors.json";
 import { getUserId } from "../../utils/getUserId";
@@ -11,7 +11,7 @@ export const deleteNotification = async (req: Request, res: Response) => {
             .json(GENERICS.METHOD_NOT_ALLOWED);
 
     const userId = await getUserId(req.headers.authorization, res);
-    const user = await userSchema.findById(userId);
+    const user = await userModel.findById(userId);
 
     if (!user)
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);

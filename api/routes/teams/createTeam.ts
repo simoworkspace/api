@@ -4,7 +4,7 @@ import { HttpStatusCode } from "axios";
 import { TEAM, BOT } from "../../utils/errors.json";
 import { teamModel } from "../../models/Team";
 import { TeamPermissions } from "../../typings/types";
-import { botSchema } from "../../models/Bot";
+import { botModel } from "../../models/Bot";
 import { createTeamValidator } from "../../validators/user";
 import { addBot } from "./addBot";
 import { auditLogModel } from "../../models/AuditLog";
@@ -44,7 +44,7 @@ export const createTeam = async (req: Request, res: Response) => {
             .json(TEAM.BOT_ALREADY_IN_A_TEAM);
 
     for (const botId of body.bots_id) {
-        const bot = await botSchema.findById(botId);
+        const bot = await botModel.findById(botId);
 
         if (!bot)
             return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_BOT);
@@ -72,7 +72,7 @@ export const createTeam = async (req: Request, res: Response) => {
     });
 
     for (const botId of body.bots_id) {
-        await botSchema.findByIdAndUpdate(botId, { team_id: teamId });
+        await botModel.findByIdAndUpdate(botId, { team_id: teamId });
     }
 
     delete createdTeam.__v;

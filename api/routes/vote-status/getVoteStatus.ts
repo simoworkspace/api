@@ -1,10 +1,10 @@
 import { HttpStatusCode } from "axios";
-import { botSchema } from "../../models/Bot";
+import { botModel } from "../../models/Bot";
 import { BOT, USER } from "../../utils/errors.json";
 import type { Request, Response } from "express";
 import { isUsingJWT } from "../../utils/isUsingJWT";
 import { JwtPayload, decode } from "jsonwebtoken";
-import { userSchema } from "../../models/User";
+import { userModel } from "../../models/User";
 
 export const getVoteStatus = async (req: Request, res: Response) => {
     const isUsingJwt = isUsingJWT(req.headers.authorization as string);
@@ -16,17 +16,17 @@ export const getVoteStatus = async (req: Request, res: Response) => {
     if (!userId)
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
 
-    const userExists = await userSchema.exists({ _id: userId });
+    const userExists = await userModel.exists({ _id: userId });
 
     if (!userExists)
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
 
     const botId = isUsingJwt
         ? req.params.userId
-        : (await botSchema.findOne({ api_key: req.headers.authorization }))
+        : (await botModel.findOne({ api_key: req.headers.authorization }))
             ?._id;
 
-    const bot = await botSchema.findById(botId);
+    const bot = await botModel.findById(botId);
 
     if (!bot) return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_BOT);
 

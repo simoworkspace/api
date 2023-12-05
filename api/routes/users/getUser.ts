@@ -1,5 +1,5 @@
 import { HttpStatusCode } from "axios";
-import { userSchema } from "../../models/User";
+import { userModel } from "../../models/User";
 import type { Request, Response } from "express";
 import { USER } from "../../utils/errors.json";
 import { fetchUserNotifications } from "./fetchUserNotifications";
@@ -18,7 +18,7 @@ export const getUser = async (req: Request, res: Response) => {
     if (!method)
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
 
-    const user = await userSchema.findById(
+    const user = await userModel.findById(
         method === "@me" ? authorId : method
     );
 

@@ -1,6 +1,6 @@
 import { decode } from "jsonwebtoken";
 import { isUsingJWT } from "./isUsingJWT";
-import { botSchema } from "../models/Bot";
+import { botModel } from "../models/Bot";
 import type { Response } from "express";
 import { HttpStatusCode } from "axios";
 import { GENERICS } from "../utils/errors.json";
@@ -18,7 +18,7 @@ export const getUserId = async (auth: string | undefined, res: Response) => {
 
         if (typeof decoded === "object" && decoded !== null)
             userId = decoded.id;
-    } else userId = (await botSchema.findOne({ api_key: auth }))?.owner_id;
+    } else userId = (await botModel.findOne({ api_key: auth }))?.owner_id;
 
     if (!userId)
         return res

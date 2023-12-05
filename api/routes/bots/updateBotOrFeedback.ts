@@ -1,6 +1,6 @@
 import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
-import { botSchema } from "../../models/Bot";
+import { botModel } from "../../models/Bot";
 import { patchBotValidator } from "../../validators/bots";
 import { BOT } from "../../utils/errors.json";
 import { updateFeedback } from "./updateFeedback";
@@ -18,7 +18,7 @@ export const updateBotOrFeedback = async (req: Request, res: Response) => {
     if (method === "feedbacks")
         return updateFeedback(req, res, { botId, authorId: userId });
 
-    const bot = await botSchema.findById({
+    const bot = await botModel.findById({
         _id: botId,
     });
 
@@ -34,7 +34,7 @@ export const updateBotOrFeedback = async (req: Request, res: Response) => {
     if (Array.isArray(validation))
         return res.status(HttpStatusCode.BadRequest).json(validation);
 
-    const updatedBot = await botSchema.findByIdAndUpdate(
+    const updatedBot = await botModel.findByIdAndUpdate(
         botId,
         { $set: body },
         {

@@ -81,4 +81,4 @@ const rawBotSchema = new Schema<BotStructure>(
     { versionKey: false }
 );
 
-export const botSchema = model("bots", rawBotSchema);
+export const botModel = model("bots", rawBotSchema);
