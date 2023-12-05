@@ -83,6 +83,10 @@
         "MISSING_AUTHORIZATION_ERROR": {
             "message": "Authorization header is missing. Use an api-key or Json Web Token",
             "code": 2010
+        },
+        "UPDATE_VALUE_ERROR": {
+            "message": "The provided value for the key is identical to the current value",
+            "code": 2011
         }
     },
     "GUILD": {
