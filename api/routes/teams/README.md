@@ -129,12 +129,12 @@ Crie um time, retorna o objeto do time criado
 
 ### JSON Params
 
-| NAME         | TYPE          | DESCRIPTION                    |
-| ------------ | ------------- | ------------------------------ |
-| name         | string (3-15) | O nome do time                 |
-| avatar_url   | string        | O URL do avatar do time        |
-| description? | string        | A descrição do time            |
-| bots_id?     | Snowflake[]   | O bot que pertence a esse time |
+| NAME         | TYPE          | DESCRIPTION                               |
+| ------------ | ------------- | ----------------------------------------- |
+| name         | string (3-15) | O nome do time                            |
+| avatar_url   | string        | O URL do avatar do time                   |
+| description? | string        | A descrição do time                       |
+| bots_id?     | Snowflake[]   | Os IDs dos bots que pertencem a esse time |
 
 -   Ressalvas
     -   Você só pode ter 2 times no máximo
