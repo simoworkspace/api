@@ -24,7 +24,6 @@ export interface BotStructure {
     approved: boolean;
     api_key?: string;
     votes: VoteStructure[];
-    votes_count: number;
     banner_url: string;
     team_id: string;
     vote_message: string | null;

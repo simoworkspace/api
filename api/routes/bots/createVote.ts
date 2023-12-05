@@ -74,7 +74,7 @@ export const createVote = async (
     const vote = await botModel.findOneAndUpdate(
         { _id: botId, "votes.user_id": user._id },
         {
-            $inc: { "votes.$.votes": 1, votes_count: 1 },
+            $inc: { "votes.$.votes": 1 },
             $set: {
                 "votes.$.last_vote": new Date().toISOString(),
             },

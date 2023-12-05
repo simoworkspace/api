@@ -67,11 +67,6 @@ const rawBotSchema = new Schema<BotStructure>(
             required: true,
             default: [],
         },
-        votes_count: {
-            type: Number,
-            required: true,
-            default: 0,
-        },
         team_id: String,
         vote_message: {
             type: String,
