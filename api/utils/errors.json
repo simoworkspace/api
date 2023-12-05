@@ -31,6 +31,10 @@
         "BOT_CREATE_LIMIT_ERROR": {
             "message": "You reached the limit of bots",
             "code": 1008
+        },
+        "ONLY_BOT_OWNER_CAN_VIEW_API_KEY_ERROR": {
+            "message": "Only the bot owner can view the api-key of this bot",
+            "code": 1009
         }
     },
     "GENERICS": {
