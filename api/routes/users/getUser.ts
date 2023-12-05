@@ -24,7 +24,7 @@ export const getUser = async (req: Request, res: Response) => {
 
     if (!user)
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
-    if (method !== authorId) user.notifications = null as any;
+    if (![authorId, "@me"].includes(method)) user.notifications = null as any;
 
     return res.status(HttpStatusCode.Ok).json(user);
 };
