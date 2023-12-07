@@ -258,6 +258,10 @@
         "NO_BOTS_IN_TEAM_ERROR": {
             "message": "There are no bots in the team",
             "code": 6028
+        },
+        "UNKNOWN_AUDIT_LOGS": {
+            "message": "Unknown audit logs",
+            "code": 6029
         }
     }
 }
