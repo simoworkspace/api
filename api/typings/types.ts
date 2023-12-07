@@ -40,6 +40,7 @@ export interface UserStructure {
     bio: string | null;
     notifications_viewed: boolean;
     banner_url: string | null;
+    flags: UserFlags;
 }
 
 /**
@@ -239,3 +240,10 @@ export type BaseAuditLogChange<Key, Data> = {
     old_data: Data;
     new_data?: Data;
 };
+
+export enum UserFlags {
+    BugHunter,
+    Contributor,
+    PremiumPartner,
+    Developer,
+}

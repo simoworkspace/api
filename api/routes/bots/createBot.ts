@@ -7,6 +7,8 @@ import { webhooks } from "../../utils/webhooks";
 import { getUserId } from "../../utils/getUserId";
 import { createFeedback } from "./createFeedback";
 import { createVote } from "./createVote";
+import { userModel } from "../../models/User";
+import { UserFlags } from "../../typings/types";
 
 /**
  * Creates a bot, vote, or submit a feedback
@@ -82,6 +84,13 @@ export const createBot = async (req: Request, res: Response) => {
     await webhooks.bot(createdBot, createdAt);
     await webhooks.logs(createdBot);
     await webhooks.raw(createdBot);
+
+    const user = await userModel.findById(userId);
+
+    if (user)
+        await user.updateOne({
+            $set: { flags: user.flags | UserFlags.Developer },
+        });
 
     return res.status(HttpStatusCode.Ok).json(createdBot);
 };

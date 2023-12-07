@@ -32,6 +32,11 @@ const rawUserSchema = new Schema<UserStructure>(
             type: String,
             default: null,
         },
+        flags: {
+            type: Number,
+            required: true,
+            default: 0,
+        },
     },
     { versionKey: false }
 );
