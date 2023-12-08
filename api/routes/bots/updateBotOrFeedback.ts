@@ -2,10 +2,9 @@ import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
 import { botModel } from "../../models/Bot";
 import { patchBotValidator } from "../../validators/bots";
-import { BOT, GENERICS } from "../../utils/errors.json";
+import { BOT } from "../../utils/errors.json";
 import { updateFeedback } from "./updateFeedback";
 import { getUserId } from "../../utils/getUserId";
-import { isDifferent } from "../../utils/isDifferent";
 
 /**
  * Updates a bot or feedback
