@@ -34,10 +34,6 @@ export const updateBotOrFeedback = async (req: Request, res: Response) => {
 
     if (Array.isArray(validation))
         return res.status(HttpStatusCode.BadRequest).json(validation);
-    if (!isDifferent(bot._doc, body))
-        return res
-            .status(HttpStatusCode.BadRequest)
-            .json(GENERICS.UPDATE_VALUE_ERROR);
 
     const updatedBot = await botModel.findByIdAndUpdate(
         botId,
