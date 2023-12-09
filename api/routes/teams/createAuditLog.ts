@@ -21,7 +21,14 @@ export const createAuditLogEntry = async (
             entries: [rawEntryData],
         });
 
-    await auditLog.updateOne({ $push: { entries: rawEntryData } });
+    await auditLog.updateOne({
+        $push: {
+            entries: {
+                $each: [rawEntryData],
+                $slice: -50,
+            },
+        },
+    });
 
     return rawEntryData;
 };
