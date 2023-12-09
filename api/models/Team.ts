@@ -22,6 +22,7 @@ const rawTeamSchema = new Schema<Team>(
             ],
             default: [],
         },
+        vanity_url: Object,
     },
     { versionKey: false }
 );

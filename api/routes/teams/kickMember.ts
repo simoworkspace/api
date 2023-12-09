@@ -22,17 +22,34 @@ export const kickMember = async (req: Request, res: Response) => {
         return res
             .status(HttpStatusCode.NotFound)
             .json(TEAM.AUTHOR_IS_NOT_A_MEMBER);
+
+    const { targetId } = req.params;
+
+    if (targetId === "@me" || targetId === authorId) {
+        const realTargetId = targetId === "@me" ? authorId : targetId;
+
+        await team.updateOne({
+            $set: {
+                members: team.members.filter(
+                    (member) => member.id !== realTargetId
+                ),
+            },
+        });
+        await createAuditLogEntry({
+            teamId: team.id,
+            executor_id: authorId,
+            action_type: AuditLogActionType.MemberAutoKick,
+            target_id: null,
+            changes: [],
+        });
+
+        return res.status(HttpStatusCode.NoContent).send();
+    }
+
     if (member.permission === TeamPermissions.ReadOnly)
         return res
             .status(HttpStatusCode.BadRequest)
             .json(TEAM.USER_IS_READONLY);
-
-    const { targetId } = req.params;
-
-    if (targetId === authorId)
-        return res
-            .status(HttpStatusCode.Conflict)
-            .json(TEAM.CANNOT_REMOVE_YOURSELF);
 
     const memberToRemove = team.members.find(
         (member) => member.id === targetId

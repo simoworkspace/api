@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import type { Request, Response } from "express";
 import { HttpStatusCode } from "axios";
-import { TEAM, GENERICS } from "../../utils/errors.json";
+import { TEAM } from "../../utils/errors.json";
 import {
     AnyAuditLogChange,
     AuditLogActionType,
@@ -13,7 +13,6 @@ import { teamModel } from "../../models/Team";
 import { updateMember } from "./updateMember";
 import { createAuditLogEntry } from "./createAuditLog";
 import { updateTeamInvite } from "./updateTeamInvite";
-import { isDifferent } from "../../utils/isDifferent";
 
 export const updateTeam = async (req: Request, res: Response) => {
     const { teamId, inviteCode } = req.params;
@@ -42,7 +41,7 @@ export const updateTeam = async (req: Request, res: Response) => {
 
     const { body } = req;
 
-    const validation = updateTeamValidator
+    const validation = await updateTeamValidator
         .validate(body)
         .catch((error) => error.errors);
 
@@ -50,10 +49,25 @@ export const updateTeam = async (req: Request, res: Response) => {
         return res
             .status(HttpStatusCode.BadRequest)
             .json({ errors: validation });
-    if (!isDifferent(team._doc, body))
-        return res
-            .status(HttpStatusCode.BadRequest)
-            .json(GENERICS.UPDATE_VALUE_ERROR);
+    if ("vanity_url_code" in body) {
+        const { vanity_url_code: vanityCode } = body;
+
+        if (vanityCode === team.vanity_url?.code)
+            return res
+                .status(HttpStatusCode.Conflict)
+                .json(TEAM.VANITY_URL_MUST_DIFFER_FROM_CURRENT);
+
+        const isUsed = await teamModel.exists({
+            "vanity_url.code": vanityCode,
+        });
+
+        if (isUsed)
+            return res
+                .status(HttpStatusCode.Conflict)
+                .json(TEAM.VANITY_URL_IS_ALREADY_BEING_USED);
+
+        body.vanity_url = { code: vanityCode };
+    }
 
     const updatedTeam = await teamModel.findOneAndUpdate(
         { id: teamId },

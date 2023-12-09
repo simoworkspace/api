@@ -206,6 +206,11 @@ export enum AuditLogActionType {
      * Invite was updated
      */
     InviteUpdate,
+
+    /**
+     * The member kicked himself
+     */
+    MemberAutoKick,
 }
 
 export type AnyAuditLogChange =

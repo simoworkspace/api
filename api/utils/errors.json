@@ -262,6 +262,14 @@
         "UNKNOWN_AUDIT_LOGS": {
             "message": "Unknown audit logs",
             "code": 6029
+        },
+        "VANITY_URL_MUST_DIFFER_FROM_CURRENT": {
+            "message": "New vanity url code must differ from the current one",
+            "code": 6030
+        },
+        "VANITY_URL_IS_ALREADY_BEING_USED": {
+            "message": "This vanity URL is already being used",
+            "code": 6031
         }
     }
 }

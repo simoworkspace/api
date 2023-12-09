@@ -21,13 +21,17 @@ export const joinTeam = async (req: Request, res: Response) => {
             authorId: userId,
             teamId,
         });
-    if (inviteCode === "remove-member") return kickMember(req, res);
+    if (inviteCode === "members") return kickMember(req, res);
 
     const team = await teamModel.findOne({ id: teamId });
 
     if (!team) return res.status(HttpStatusCode.Ok).json(TEAM.UNKNOWN_TEAM);
 
-    if (team.invite_code !== inviteCode)
+    if (
+        team.invite_code !== inviteCode &&
+        team.vanity_url &&
+        team.vanity_url.code !== inviteCode
+    )
         return res
             .status(HttpStatusCode.BadRequest)
             .json(TEAM.INVALID_INVITE_HASH);
@@ -48,6 +52,9 @@ export const joinTeam = async (req: Request, res: Response) => {
         target_id: userId,
         changes: [],
     });
+
+    if (team.vanity_url && inviteCode === team.vanity_url.code)
+        await team.updateOne({ "vanity_url.uses": { $inc: 1 } });
 
     return res.status(HttpStatusCode.NoContent).send();
 };

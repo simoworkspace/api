@@ -32,12 +32,16 @@ export const updateTeamValidator = object({
     name: string().min(3).max(15),
     avatar_url: string().url(),
     description: string().min(5).max(50),
+    vanity_url_code: string()
+        .min(1, "Invite code can't be empty")
+        .max(16, "Vanity URL maximum length is 16 characters"),
 })
     .test("at-least-one-key", "You must pass at least one key", (obj) => {
         return Object.keys(obj).length > 0;
     })
     .noUnknown()
-    .strict();
+    .strict()
+    .required();
 
 export const updateUserValidator = object({
     bio: string().max(200).min(1).nullable(),

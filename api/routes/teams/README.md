@@ -91,11 +91,12 @@ Modifique um time, retorna o objeto do time atualizado
 
 ### JSON Params
 
-| NAME        | TYPE          | DESCRIPTION             |
-| ----------- | ------------- | ----------------------- |
-| name        | string (3-15) | O nome do time          |
-| description | string (5-50) | A descrição do time     |
-| avatar_url  | string        | O URL do avatar do time |
+| NAME            | TYPE          | DESCRIPTION                       |
+| --------------- | ------------- | --------------------------------- |
+| name            | string (3-15) | O nome do time                    |
+| description     | string (5-50) | A descrição do time               |
+| avatar_url      | string        | O URL do avatar do time           |
+| vanity_url_code | string (1-16) | O URL de invite intuitivo do time |
 
 -   Todos os parâmetros são opicionais
 
