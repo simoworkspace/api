@@ -24,10 +24,22 @@ export const kickMember = async (req: Request, res: Response) => {
             .json(TEAM.AUTHOR_IS_NOT_A_MEMBER);
 
     const { targetId } = req.params;
+    const realTargetId = targetId === "@me" ? authorId : targetId;
 
-    if (targetId === "@me" || targetId === authorId) {
-        const realTargetId = targetId === "@me" ? authorId : targetId;
+    const memberToRemove = team.members.find(
+        (member) => member.id === realTargetId
+    );
 
+    if (!memberToRemove)
+        return res
+            .status(HttpStatusCode.NotFound)
+            .json(TEAM.USER_IS_NOT_A_MEMBER);
+    if (memberToRemove.permission === TeamPermissions.Owner)
+        return res
+            .status(HttpStatusCode.BadRequest)
+            .json(TEAM.CANT_REMOVE_THE_OWNER);
+
+    if (realTargetId === authorId) {
         await team.updateOne({
             $set: {
                 members: team.members.filter(
@@ -50,19 +62,6 @@ export const kickMember = async (req: Request, res: Response) => {
         return res
             .status(HttpStatusCode.BadRequest)
             .json(TEAM.USER_IS_READONLY);
-
-    const memberToRemove = team.members.find(
-        (member) => member.id === targetId
-    );
-
-    if (!memberToRemove)
-        return res
-            .status(HttpStatusCode.NotFound)
-            .json(TEAM.USER_IS_NOT_A_MEMBER);
-    if (memberToRemove.permission === TeamPermissions.Owner)
-        return res
-            .status(HttpStatusCode.BadRequest)
-            .json(TEAM.CANT_REMOVE_THE_OWNER);
     if (
         memberToRemove.permission === TeamPermissions.Administrator &&
         member.permission === TeamPermissions.Administrator
