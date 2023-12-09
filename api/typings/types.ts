@@ -75,6 +75,15 @@ export interface Team {
      * The bot ID that belongs to the team
      */
     bots_id: Snowflake[];
+    /**
+     * The vanity URL of the team
+     */
+    vanity_url?: VanityURLStructure;
+}
+
+export interface VanityURLStructure {
+    code: string;
+    uses: number;
 }
 
 /**
