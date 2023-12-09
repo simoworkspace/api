@@ -41,6 +41,7 @@ export interface UserStructure {
     notifications_viewed: boolean;
     banner_url: string | null;
     flags: UserFlags;
+    premium_type: PremiumType;
 }
 
 /**
@@ -260,4 +261,19 @@ export enum UserFlags {
     Contributor,
     PremiumPartner,
     Developer,
+}
+
+export enum PremiumType {
+    /**
+     * User has no premium
+     */
+    None,
+    /**
+     * User has basic premium
+     */
+    Basic,
+    /**
+     * User has advanced premium
+     */
+    Advanced,
 }
