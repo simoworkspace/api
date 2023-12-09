@@ -59,12 +59,6 @@ Busque por todos os bots de um time, retorna uma array de objetos parciais
 
 Transfira a posse de um time para outro usuário, retorna o time atualizado
 
-## Kick member
-
-### PUT `/api/teams/{team.id}/members/{member.id}`
-
-Expulse um membro do time, retorna a estrutura do membro removido
-
 ## Join team
 
 ### PUT `/api/teams/{team.id}/{team.invite_code}`
@@ -82,6 +76,18 @@ Delete um time, retorna uma resposta `204: No Content` vazia
 ### DELETE `/api/teams/{team.id}/bots/{bot._id}`
 
 Remova um bot do time, retorna uma resposta `204: No Content` vazia
+
+## Kick member
+
+### DELETE `/api/teams/{team.id}/members/{member.id}`
+
+Expulse um membro do time, retorna a estrutura do membro removido
+
+## Kick me
+
+### DELETE `/api/teams/{team.id}/members/@me`
+
+Se auto expulse de um time, retorna uma resposta `204: No Content` vazia
 
 ## Modify team
 

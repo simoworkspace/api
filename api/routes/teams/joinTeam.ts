@@ -1,6 +1,5 @@
 import type { Request, Response } from "express";
 import { getUserId } from "../../utils/getUserId";
-import { kickMember } from "./kickMember";
 import { teamModel } from "../../models/Team";
 import { HttpStatusCode } from "axios";
 import { TEAM } from "../../utils/errors.json";
@@ -21,7 +20,6 @@ export const joinTeam = async (req: Request, res: Response) => {
             authorId: userId,
             teamId,
         });
-    if (inviteCode === "members") return kickMember(req, res);
 
     const team = await teamModel.findOne({ id: teamId });
 

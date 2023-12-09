@@ -7,9 +7,13 @@ import { TeamPermissions } from "../../typings/types";
 import { removeBot } from "./removeBot";
 import { auditLogModel } from "../../models/AuditLog";
 import { botModel } from "../../models/Bot";
+import { kickMember } from "./kickMember";
 
 export const deleteTeam = async (req: Request, res: Response) => {
-    if (req.params.inviteCode === "bots") return removeBot(req, res);
+    const { inviteCode: method } = req.params;
+
+    if (method === "bots") return removeBot(req, res);
+    if (method === "members") return kickMember(req, res);
 
     const userId = await getUserId(req.headers.authorization, res);
 
