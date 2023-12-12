@@ -9,6 +9,7 @@ import { createFeedback } from "./createFeedback";
 import { createVote } from "./createVote";
 import { userModel } from "../../models/User";
 import { UserFlags } from "../../typings/types";
+import { PremiumConfigurations } from "../../utils/PremiumConfigurations";
 
 /**
  * Creates a bot, vote, or submit a feedback
@@ -39,8 +40,10 @@ export const createBot = async (req: Request, res: Response) => {
         return res.status(HttpStatusCode.Conflict).json(BOT.BOT_ALREADY_EXISTS);
 
     const userBots = await botModel.find({ owner_id: userId });
+    const user = await userModel.findById(userId);
 
-    if (userBots.length === 2)
+    if (!user) return;
+    if (PremiumConfigurations[user.premium_type].bots_count === userBots.length)
         return res
             .status(HttpStatusCode.BadRequest)
             .json(BOT.BOT_CREATE_LIMIT_ERROR);
@@ -85,12 +88,9 @@ export const createBot = async (req: Request, res: Response) => {
     await webhooks.logs(createdBot);
     await webhooks.raw(createdBot);
 
-    const user = await userModel.findById(userId);
-
-    if (user)
-        await user.updateOne({
-            $set: { flags: user.flags | UserFlags.Developer },
-        });
+    await user.updateOne({
+        $set: { flags: user.flags | UserFlags.Developer },
+    });
 
     return res.status(HttpStatusCode.Ok).json(createdBot);
 };

@@ -5,6 +5,7 @@ import type { Request, Response } from "express";
 import { isUsingJWT } from "../../utils/isUsingJWT";
 import { JwtPayload, decode } from "jsonwebtoken";
 import { userModel } from "../../models/User";
+import { PremiumConfigurations } from "../../utils/PremiumConfigurations";
 
 export const getVoteStatus = async (req: Request, res: Response) => {
     const isUsingJwt = isUsingJWT(req.headers.authorization as string);
@@ -16,15 +17,14 @@ export const getVoteStatus = async (req: Request, res: Response) => {
     if (!userId)
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
 
-    const userExists = await userModel.exists({ _id: userId });
+    const user = await userModel.findById(userId);
 
-    if (!userExists)
+    if (!user)
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
 
     const botId = isUsingJwt
         ? req.params.userId
-        : (await botModel.findOne({ api_key: req.headers.authorization }))
-            ?._id;
+        : (await botModel.findOne({ api_key: req.headers.authorization }))?._id;
 
     const bot = await botModel.findById(botId);
 
@@ -37,11 +37,11 @@ export const getVoteStatus = async (req: Request, res: Response) => {
             .status(HttpStatusCode.Ok)
             .json({ can_vote: true, rest_time: null });
 
-    const twelveHours = 4.32e7;
+    const baseHours = PremiumConfigurations[user.premium_type].cooldown_vote;
     const timeLeft = Date.now() - new Date(vote.last_vote).getTime();
 
     return res.status(HttpStatusCode.Ok).json({
-        can_vote: timeLeft > twelveHours,
-        rest_time: timeLeft > twelveHours ? null : twelveHours - timeLeft,
+        can_vote: timeLeft > baseHours,
+        rest_time: timeLeft > baseHours ? null : baseHours - timeLeft,
     });
 };

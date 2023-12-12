@@ -8,6 +8,8 @@ import { botModel } from "../../models/Bot";
 import { createTeamValidator } from "../../validators/user";
 import { addBot } from "./addBot";
 import { auditLogModel } from "../../models/AuditLog";
+import { PremiumConfigurations } from "../../utils/PremiumConfigurations";
+import { userModel } from "../../models/User";
 
 export const createTeam = async (req: Request, res: Response) => {
     if (req.params.inviteCode === "bots") return addBot(req, res);
@@ -21,11 +23,15 @@ export const createTeam = async (req: Request, res: Response) => {
             $elemMatch: { id: userId, permission: TeamPermissions.Owner },
         },
     });
+    const user = await userModel.findById(userId);
 
-    if (userTeams.length === 2)
+    if (!user) return;
+    if (
+        PremiumConfigurations[user.premium_type].bots_count === userTeams.length
+    )
         return res
             .status(HttpStatusCode.BadRequest)
-            .json(TEAM.USER_REACHED_TWO_TEAMS);
+            .json(TEAM.USER_REACHED_TEAM_LIMIT);
 
     const { body } = req;
 
