@@ -1,9 +1,10 @@
 import type { Request, Response } from "express";
 import { HttpStatusCode } from "axios";
-import { TEAM } from "../../utils/errors.json";
+import { TEAM, USER } from "../../utils/errors.json";
 import {
     AnyAuditLogChange,
     AuditLogActionType,
+    PremiumType,
     TeamPermissions,
 } from "../../typings/types";
 import { updateTeamValidator } from "../../validators/user";
@@ -12,6 +13,7 @@ import { teamModel } from "../../models/Team";
 import { updateMember } from "./updateMember";
 import { createAuditLogEntry } from "./createAuditLog";
 import { updateTeamInvite } from "./updateTeamInvite";
+import { userModel } from "../../models/User";
 
 export const updateTeam = async (req: Request, res: Response) => {
     const { teamId, inviteCode } = req.params;
@@ -64,6 +66,25 @@ export const updateTeam = async (req: Request, res: Response) => {
             return res
                 .status(HttpStatusCode.Conflict)
                 .json(TEAM.VANITY_URL_IS_ALREADY_BEING_USED);
+
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const ownerId = team.members.find(
+            (member) => member.permission === TeamPermissions.Owner
+        )!.id;
+
+        if (ownerId !== userId)
+            return res
+                .status(HttpStatusCode.Forbidden)
+                .json(TEAM.ONLY_OWNER_CAN_UPDATE_VANITY_URL);
+
+        const owner = await userModel.findById(ownerId);
+
+        if (!owner)
+            return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
+        if (owner.premium_type !== PremiumType.Advanced)
+            return res
+                .status(HttpStatusCode.Forbidden)
+                .json(TEAM.OWNER_MUST_HAVE_ADVANCED_PREMIUM);
 
         body.vanity_url = { code: vanityCode };
     }
