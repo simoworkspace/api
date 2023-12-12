@@ -1,7 +1,7 @@
 import { HttpStatusCode } from "axios";
 import type { Response } from "express";
 import { USER, TEAM } from "../../utils/errors.json";
-import { userSchema } from "../../models/User";
+import { userModel } from "../../models/User";
 import { TeamPermissions } from "../../typings/types";
 import { teamModel } from "../../models/Team";
 import { createAuditLogEntry } from "./createAuditLog";
@@ -14,7 +14,7 @@ export const changeOwner = async (
         teamId,
     }: { userId: string; authorId: string; teamId: string }
 ) => {
-    const user = await userSchema.findById(userId);
+    const user = await userModel.findById(userId);
 
     if (!user)
         return res.status(HttpStatusCode.BadRequest).json(USER.UNKNOWN_USER);
