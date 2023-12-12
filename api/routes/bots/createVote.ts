@@ -57,15 +57,11 @@ export const createVote = async (
             votes: 1,
         };
 
-        const newVote = await botModel.findOneAndUpdate(
-            { _id: botId },
-            { $push: { votes: voteBody } },
-            { new: true }
-        );
+        await bot?.updateOne({ $push: { votes: voteBody } }, { new: true });
 
         await sendRequest(voteBody);
 
-        return res.status(HttpStatusCode.Ok).json(newVote?.votes);
+        return res.status(HttpStatusCode.Ok).json(voteBody);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
