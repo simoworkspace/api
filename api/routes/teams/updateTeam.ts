@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import type { Request, Response } from "express";
 import { HttpStatusCode } from "axios";
 import { TEAM } from "../../utils/errors.json";
@@ -79,9 +78,7 @@ export const updateTeam = async (req: Request, res: Response) => {
 
     for (const [key, value] of Object.entries(body)) {
         changes.push({
-            // @ts-ignore
             changed_key: key,
-            // @ts-ignore
             old_value: team[key],
             new_value: value,
         });
