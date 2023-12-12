@@ -27,6 +27,7 @@ export interface BotStructure {
     banner_url: string;
     team_id: string;
     vote_message: string | null;
+    webhook_url?: string;
 }
 
 /**

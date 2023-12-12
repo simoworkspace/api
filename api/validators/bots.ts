@@ -14,6 +14,7 @@ export const botSchemaValidator = object({
     verified: boolean().required(),
     tags: array(string()).max(5).required(),
     vote_message: string().min(5).max(30),
+    webhook_url: string().url(),
 })
     .strict()
     .required()
@@ -34,6 +35,7 @@ export const patchBotValidator = object({
     verified: boolean(),
     tags: array(string()).max(5),
     vote_message: string().min(5).max(30).nullable(),
+    webhook_url: string().url(),
 })
     .strict()
     .required()

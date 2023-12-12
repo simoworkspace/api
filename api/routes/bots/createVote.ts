@@ -35,6 +35,16 @@ export const createVote = async (
             .status(HttpStatusCode.BadRequest)
             .json(BOT.BOT_CANNOT_VOTE_IN_A_BOT);
 
+    const bot = await botModel.findById(botId);
+
+    const sendRequest = async (data: Record<string, unknown>) => {
+        if (bot?.webhook_url)
+            await fetch(bot.webhook_url, {
+                method: "POST",
+                body: JSON.stringify(data),
+            });
+    };
+
     const votes = await botModel.findOne({
         _id: botId,
         "votes.user_id": user._id,
@@ -52,6 +62,8 @@ export const createVote = async (
             { $push: { votes: voteBody } },
             { new: true }
         );
+
+        await sendRequest(voteBody);
 
         return res.status(HttpStatusCode.Ok).json(newVote?.votes);
     }
@@ -84,7 +96,9 @@ export const createVote = async (
         { new: true }
     );
 
-    return res
-        .status(HttpStatusCode.Ok)
-        .json(vote?.votes.find((vote) => vote.user_id === userId));
+    const rawVote = vote?.votes.find((vote) => vote.user_id === userId);
+
+    await sendRequest(rawVote as unknown as Record<string, unknown>);
+
+    return res.status(HttpStatusCode.Ok).json(rawVote);
 };

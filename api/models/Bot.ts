@@ -72,6 +72,7 @@ const rawBotSchema = new Schema<BotStructure>(
             type: String,
             default: null,
         },
+        webhook_url: String,
     },
     { versionKey: false }
 );
