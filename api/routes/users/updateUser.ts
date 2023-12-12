@@ -4,7 +4,6 @@ import { USER, GENERICS } from "../../utils/errors.json";
 import { userModel } from "../../models/User";
 import { updateUserValidator } from "../../validators/user";
 import { getUserId } from "../../utils/getUserId";
-import { isDifferent } from "../../utils/isDifferent";
 
 export const updateUser = async (req: Request, res: Response) => {
     const userId = await getUserId(req.headers.authorization, res);
@@ -33,10 +32,6 @@ export const updateUser = async (req: Request, res: Response) => {
         return res
             .status(HttpStatusCode.BadRequest)
             .json({ errors: validation });
-    if (!isDifferent(user._doc, body))
-        return res
-            .status(HttpStatusCode.BadRequest)
-            .json(GENERICS.UPDATE_VALUE_ERROR);
 
     const updatedUser = await userModel.findByIdAndUpdate(
         userId,
