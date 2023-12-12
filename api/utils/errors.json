@@ -151,8 +151,8 @@
             "message": "Unknown team",
             "code": 6001
         },
-        "USER_REACHED_TWO_TEAMS": {
-            "message": "User can't have more than 2 teams",
+        "USER_REACHED_TEAM_LIMIT": {
+            "message": "You reached the limit of teams",
             "code": 6002
         },
         "BOT_ALREADY_IN_A_TEAM": {
@@ -270,6 +270,14 @@
         "VANITY_URL_IS_ALREADY_BEING_USED": {
             "message": "This vanity URL is already being used",
             "code": 6031
+        },
+        "ONLY_OWNER_CAN_UPDATE_VANITY_URL": {
+            "message": "Only team owner can update vanity url code",
+            "code": 6032
+        },
+        "OWNER_MUST_HAVE_ADVANCED_PREMIUM": {
+            "message": "The owner must have advanced premium to update vanity url",
+            "code": 6033
         }
     }
 }
