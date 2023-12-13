@@ -50,7 +50,7 @@ export const getBot = async (req: Request, res: Response) => {
 
     const targetBot = await (botId
         ? botModel.findById(botId, { api_key: 0, webhook_url: 0 })
-        : botModel.find({ owner_id: userId }, { api_key: 0, webhook_url: 1 }));
+        : botModel.find({ owner_id: userId }, { api_key: 0, webhook_url: 0 }));
 
     if (botId) {
         if (Array.isArray(targetBot)) return;
