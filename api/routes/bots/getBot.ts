@@ -21,11 +21,9 @@ export const getBot = async (req: Request, res: Response) => {
         delete query.endAt;
         delete query.startAt;
 
-        const botsFound = await botModel
-            .find(query, null, {
-                limit: queryLimit,
-            })
-            .sort({ votes_count: -1 });
+        const botsFound = await botModel.find(query, null, {
+            limit: queryLimit,
+        });
 
         return res
             .status(HttpStatusCode.Ok)
@@ -49,9 +47,9 @@ export const getBot = async (req: Request, res: Response) => {
     const targetBot = await (botId
         ? botModel.findById(botId).select("-api_key")
         : botModel
-            .find({ owner_id: userId })
-            .sort({ votes_count: -1 })
-            .select("-api_key"));
+              .find({ owner_id: userId })
+              .sort({ votes_count: -1 })
+              .select("-api_key"));
 
     if (botId) {
         if (Array.isArray(targetBot)) return;
