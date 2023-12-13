@@ -21,9 +21,13 @@ export const getBot = async (req: Request, res: Response) => {
         delete query.endAt;
         delete query.startAt;
 
-        const botsFound = await botModel.find(query, null, {
-            limit: queryLimit,
-        });
+        const botsFound = await botModel.find(
+            query,
+            { webhook_url: 0 },
+            {
+                limit: queryLimit,
+            }
+        );
 
         return res
             .status(HttpStatusCode.Ok)
@@ -45,11 +49,8 @@ export const getBot = async (req: Request, res: Response) => {
     if (typeof userId !== "string") return;
 
     const targetBot = await (botId
-        ? botModel.findById(botId).select("-api_key")
-        : botModel
-              .find({ owner_id: userId })
-              .sort({ votes_count: -1 })
-              .select("-api_key"));
+        ? botModel.findById(botId, { api_key: 0, webhook_url: 0 })
+        : botModel.find({ owner_id: userId }, { api_key: 0, webhook_url: 1 }));
 
     if (botId) {
         if (Array.isArray(targetBot)) return;
