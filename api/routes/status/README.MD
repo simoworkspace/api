@@ -15,6 +15,6 @@ Este método é usado para retornar os status da API
     "users": 7,
     "bots": 9,
     "uptime": 5591,
-    "requestCount": 4
+    "request_count": 4
 }
 ```
