@@ -53,6 +53,18 @@ Busque por todos os bots de um time, retorna uma array de objetos parciais
 ]
 ```
 
+## Get team members
+
+### GET `/api/teams/{team.id}/members`
+
+Busque por todos os membros de um time, retorna uma array de membros
+
+## Get me
+
+### GET `/api/teams/{team.id}/members/@me`
+
+Busque pelo membro que corresponde ao Json Web Token ou api-key
+
 ## Change team owner
 
 ### PUT `/api/teams/{team.id}/change-owner/{member.id}`

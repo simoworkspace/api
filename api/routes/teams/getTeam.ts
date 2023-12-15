@@ -9,6 +9,7 @@ import { TEAM } from "../../utils/errors.json";
 import { fetchUserTeams } from "./fetchUserTeams";
 import { fetchAuditLogs } from "./fetchAuditLogs";
 import { fetchTeamBots } from "./fetchTeamBots";
+import { fetchTeamMembers } from "./fetchTeamMembers";
 
 export const getTeam = async (req: Request, res: Response) => {
     const { teamId, inviteCode } = req.params;
@@ -18,6 +19,7 @@ export const getTeam = async (req: Request, res: Response) => {
     if (teamId === "@all") return fetchUserTeams(res, userId);
     if (inviteCode === "audit-logs") return fetchAuditLogs(res, teamId, userId);
     if (inviteCode === "bots") return fetchTeamBots(req, res);
+    if (inviteCode === "members") return fetchTeamMembers(req, res);
 
     const users = await userModel.find({}, { avatar: 1, username: 1 });
 
