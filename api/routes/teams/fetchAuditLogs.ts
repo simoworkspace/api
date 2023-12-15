@@ -40,7 +40,7 @@ export const fetchAuditLogs = async (
     const users = await userModel.find({}, { username: 1, avatar: 1, _id: 1 });
 
     return res.status(HttpStatusCode.Ok).json({
-        ...auditLogs._doc,
+        ...auditLogs.toObject(),
         entries: auditLogs?.entries.map((entry) => {
             const executor = users.find(
                 (user) => user._id === entry.executor_id

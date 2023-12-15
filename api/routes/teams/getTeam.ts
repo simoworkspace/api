@@ -35,7 +35,7 @@ export const getTeam = async (req: Request, res: Response) => {
 
         return res.status(HttpStatusCode.Ok).json(
             teams.map((team) => ({
-                ...team._doc,
+                ...team.toObject(),
                 members: team.members.map((member) =>
                     getUserByMember(member, users)
                 ),
@@ -49,7 +49,7 @@ export const getTeam = async (req: Request, res: Response) => {
         return res.status(HttpStatusCode.NotFound).json(TEAM.UNKNOWN_TEAM);
 
     return res.status(HttpStatusCode.Ok).json({
-        ...team._doc,
+        ...team.toObject(),
         members: team.members.map((member) => getUserByMember(member, users)),
     });
 };
