@@ -278,6 +278,10 @@
         "OWNER_MUST_HAVE_ADVANCED_PREMIUM": {
             "message": "The owner must have advanced premium to update vanity url",
             "code": 6033
+        },
+        "MEMBERS_LIMIT_EXCEEDED_ERROR": {
+            "message": "Members limit was exceeded",
+            "code": 6034
         }
     }
 }
