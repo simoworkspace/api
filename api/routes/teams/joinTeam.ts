@@ -6,6 +6,8 @@ import { TEAM } from "../../utils/errors.json";
 import { AuditLogActionType, TeamPermissions } from "../../typings/types";
 import { changeOwner } from "./changeOwner";
 import { createAuditLogEntry } from "./createAuditLog";
+import { userModel } from "../../models/User";
+import { PremiumConfigurations } from "../../utils/PremiumConfigurations";
 
 export const joinTeam = async (req: Request, res: Response) => {
     const userId = await getUserId(req.headers.authorization, res);
@@ -24,6 +26,20 @@ export const joinTeam = async (req: Request, res: Response) => {
     const team = await teamModel.findOne({ id: teamId });
 
     if (!team) return res.status(HttpStatusCode.Ok).json(TEAM.UNKNOWN_TEAM);
+
+    const ownerId = team.members.find(
+        (member) => member.permission === TeamPermissions.Owner
+    )?.id;
+    const owner = await userModel.findById(ownerId, { premium_type: 1 });
+
+    if (!owner) return;
+    if (
+        team.members.length ===
+        PremiumConfigurations[owner.premium_type].max_members_in_team
+    )
+        return res
+            .status(HttpStatusCode.Forbidden)
+            .json(TEAM.MEMBERS_LIMIT_EXCEEDED_ERROR);
 
     if (
         team.invite_code !== inviteCode &&
