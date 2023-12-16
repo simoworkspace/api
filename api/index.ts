@@ -4,7 +4,7 @@ import { connect } from "mongoose";
 import cookieParser from "cookie-parser";
 import { default as express } from "express";
 import { getBot } from "./routes/bots/getBot";
-import { PORT, ROUTES } from "../constants.json";
+import { ROUTES } from "../constants.json";
 import { getUser } from "./routes/users/getUser";
 import { getToken } from "./routes/auth/getToken";
 import { callback } from "./routes/auth/callback";
@@ -67,12 +67,12 @@ export let requestCount = 0;
 
 export let uptime: number;
 
-app.listen(PORT, async () => {
+app.listen(80, async () => {
     uptime = Date.now();
 
     await connect(process.env.MONGOOSE_URL as string).catch(console.error);
 
-    console.info(`API iniciada na porta ${PORT}`);
+    console.info("API iniciada na porta 80");
 });
 
 process.on("uncaughtException", console.error);
