@@ -12,10 +12,12 @@ export const botSchemaValidator = object({
     source_code: string().url("Invalid source code URL"),
     short_description: string()
         .min(50, "Short description must be greater than or equal to 50")
-        .max(80, "Short description must be less than or equal to 80"),
+        .max(80, "Short description must be less than or equal to 80")
+        .required("\"short_description\" property is missing"),
     long_description: string()
         .min(200, "Long description must be greater than or equal to 200")
-        .max(2048, "Long description must be less than or equal to 2048"),
+        .max(2048, "Long description must be less than or equal to 2048")
+        .required("\"long_description\" property is missing"),
     prefixes: array(
         string().max(6, "Prefix name must be less than or equal to 6")
     )
