@@ -10,21 +10,29 @@ import { getUserId } from "../../utils/getUserId";
  */
 export const getUser = async (req: Request, res: Response) => {
     const { method } = req.params;
-    const authorId = await getUserId(req.headers.authorization, res);
+    let authorId: string | undefined;
 
-    if (typeof authorId !== "string") return;
-    if (method === "notifications")
+    if (["@me", "notifications"].includes(method)) {
+        authorId = (await getUserId(req.headers.authorization, res)) as
+            | string
+            | undefined;
+
+        if (typeof authorId !== "string") return;
+
+        if (method === "@me")
+            return res
+                .status(HttpStatusCode.Ok)
+                .json(await userModel.findById(authorId));
+
         return fetchUserNotifications(res, authorId);
+    }
     if (!method)
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
 
-    const user = await userModel.findById(
-        method === "@me" ? authorId : method
-    );
+    const user = await userModel.findById(method);
 
     if (!user)
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
-    if (![authorId, "@me"].includes(method)) user.notifications = null as any;
 
     return res.status(HttpStatusCode.Ok).json(user);
 };
