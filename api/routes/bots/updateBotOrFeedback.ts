@@ -32,7 +32,9 @@ export const updateBotOrFeedback = async (req: Request, res: Response) => {
         .catch((error) => error.errors);
 
     if (Array.isArray(validation))
-        return res.status(HttpStatusCode.BadRequest).json(validation);
+        return res
+            .status(HttpStatusCode.BadRequest)
+            .json({ errors: validation });
 
     const updatedBot = await botModel.findByIdAndUpdate(
         botId,
