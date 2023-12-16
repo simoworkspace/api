@@ -31,7 +31,12 @@ export const botSchemaValidator = object({
     verified: boolean().required("\"verified\" property is missing"),
     tags: array(string())
         .max(5, "Tags limit excedded")
-        .required("\"tags\" property is missing"),
+        .required("\"tags\" property is missing")
+        .test(
+            "no-equal-tag",
+            "Cannot have 2 same tags",
+            (tags) => tags && new Set(tags).size === tags.length
+        ),
     vote_message: string()
         .min(5, "Vote message must be greater than or equal to 5")
         .max(30, "Vote message must be less than or equal to 30"),
@@ -67,7 +72,14 @@ export const patchBotValidator = object({
             (prefixes) => prefixes && new Set(prefixes).size === prefixes.length
         ),
     verified: boolean(),
-    tags: array(string()).max(5, "Tags limit excedded"),
+    tags: array(string())
+        .min(1, "A bot must have at least 1 tag")
+        .max(5, "Tags limit excedded")
+        .test(
+            "no-equal-tag",
+            "Cannot have 2 same tags",
+            (tags) => tags && new Set(tags).size === tags.length
+        ),
     vote_message: string()
         .min(5, "Vote message must be greater than or equal to 5")
         .max(30, "Vote message must be less than or equal to 30")
