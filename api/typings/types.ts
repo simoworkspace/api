@@ -101,6 +101,10 @@ export interface TeamMember {
      * Permission of the member in the team
      */
     permission: TeamPermissions;
+    /**
+     * The date this member joined to the team
+     */
+    joined_at: string;
 }
 
 /**

@@ -18,6 +18,10 @@ const rawTeamSchema = new Schema<Team>(
                     id: String,
                     permission: Number,
                     _id: false,
+                    joined_at: {
+                        type: String,
+                        default: new Date().toISOString(),
+                    },
                 },
             ],
             default: [],
