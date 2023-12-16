@@ -2,7 +2,7 @@ import cors from "cors";
 import { load } from "env-smart";
 import { connect } from "mongoose";
 import cookieParser from "cookie-parser";
-import { default as express } from "express";
+import express from "express";
 import { getBot } from "./routes/bots/getBot";
 import { getUser } from "./routes/users/getUser";
 import { getToken } from "./routes/auth/getToken";
