@@ -1,29 +1,107 @@
 # Team Resources
 
+## Team Structure
+
+| KEY         | TYPE                                   | DESCRIPTION                                                        |
+| ----------- | -------------------------------------- | ------------------------------------------------------------------ |
+| members     | [TeamMember](#team-member-structure)[] | Os membros do time                                                 |
+| id          | string                                 | O ID único do time                                                 |
+| invite_code | string                                 | O código de convite do time                                        |
+| name        | string                                 | O nome do time                                                     |
+| avatar_url  | string                                 | O URL do avatar do time                                            |
+| description | ?string                                | A descrição do time                                                |
+| bots_id     | Snowflake[]                            | Os IDs dos bots que estão no time                                  |
+| vanity_url? | object                                 | O objeto do [convite personalizado](#vanity-url-structure) do time |
+| created_at  | string                                 | Uma data ISO string de quando o time foi criado                    |
+
+## Team Member Structure
+
+| KEY        | TYPE      | DESCRIPTION                                               |
+| ---------- | --------- | --------------------------------------------------------- |
+| id         | Snowflake | O ID do membro                                            |
+| permission | number    | A [permissão](#team-member-permissions) do membro no time |
+| joined_at  | string    | Uma data ISO string de quando o membro entrou no time     |
+
+## Team Member Permissions
+
+| KEY           | VALUE |
+| ------------- | ----- |
+| Administrator | 0     |
+| ReadOnly      | 1     |
+| Owner         | 2     |
+
+## Vanity URL Structure
+
+| KEY  | TYPE   | DESCRIPTION                              |
+| ---- | ------ | ---------------------------------------- |
+| code | string | O código de convite **único** do time    |
+| uses | number | O tanto de vezes que o convite foi usado |
+
+## Audit-Log Structure
+
+| KEY     | TYPE                                          | DESCRIPTION                           |
+| ------- | --------------------------------------------- | ------------------------------------- |
+| team_id | string                                        | O ID do time que o audit-log pertence |
+| entries | [AuditLogEntry](#audit-log-entry-structure)[] | As entradas do time                   |
+
+## Audit-Log Entry Structure
+
+| KEY         | TYPE                                                       | DESCRIPTION                                                |
+| ----------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
+| executor_id | Snowflake                                                  | O ID do usuário que criou a entrada                        |
+| created_at  | string                                                     | A data ISO string de quando a entrada foi criada           |
+| id          | string                                                     | O ID da entrada                                            |
+| action_type | number                                                     | O [tipo da ação](#audit-log-entry-action-types) da entrada |
+| changes     | [AuditLogEntryChange](#audit-log-entry-change-structure)[] | As alterações feita na entrada                             |
+| target_id   | Snowflake?                                                 | O ID do alvo da entrada                                    |
+
+## Audit-Log Entry Action Types
+
+| NAME                  | VALUE | DESCRIPTION                                |
+| --------------------- | ----- | ------------------------------------------ |
+| MemberAdd             | 0     | Um membro foi adicionado no time           |
+| MemberRemove          | 1     | Um membro foi expulso do time              |
+| MemberUpdate          | 2     | As permissões de um membro foi alterada    |
+| TeamOwnershipTransfer | 3     | A posse do time foi transferida            |
+| TeamUpdate            | 4     | O time foi editado                         |
+| BotAdd                | 5     | Um bot foi adicionado ao time              |
+| BotRemove             | 6     | Um bot foi expulso do time                 |
+| InviteUpdate          | 7     | O código de convite do time foi atualizado |
+| MemberAutoKick        | 8     | Um membro saiu do time                     |
+
+## Audit-Log Entry Change Structure
+
+| KEY         | TYPE             | DESCRIPTION                      |
+| ----------- | ---------------- | -------------------------------- |
+| changed_key | string           | A chave que foi alterada         |
+| old_data    | string \| number | O valor antido da chave alterada |
+| new_data?   | string \| number | O novo valor da chave alterada   |
+
 ## Get teams user is in
 
 ### GET `/api/teams/@all`
 
 Busque por todos os times onde o usuário é um membro, retorna uma array de times
+de objeto de [times](#team-structure)
 
 ## Get teams user owns
 
 ### GET `/api/teams`
 
-Busque por todos os times onde o usuário é o proprietário, retorna uma array de times
+Busque por todos os times onde o usuário é o proprietário, retorna uma array de
+objeto de [times](#team-structure)
 
 ## Get team
 
 ### GET `/api/teams/{team.id}`
 
-Busque por um time, retorna uma estrutura de time
+Busque por um time, retorna o objeto do [time](#team-structure)
 
 ## Get team audit-logs
 
 ### GET `/api/teams/{team.id}/audit-logs`
 
-Busque por todos os registros de auditoria de um time, retorna o objeto de registro
-de auditoria do time com `_id`, `avatar` e `username` do `target` e `executor`
+Busque por todos os registros de auditoria de um time, retorna o objeto de [registro de auditoria](#audit-log-structure) do time com `_id`, `avatar` e `username` do `target` e `executor`
 
 ## Get team bots
 
@@ -57,19 +135,21 @@ Busque por todos os bots de um time, retorna uma array de objetos parciais
 
 ### GET `/api/teams/{team.id}/members`
 
-Busque por todos os membros de um time, retorna uma array de membros
+Busque por todos os membros de um time, retorna uma array de objeto de [membros](#team-member-structure)
 
 ## Get me
 
 ### GET `/api/teams/{team.id}/members/@me`
 
-Busque pelo membro que corresponde ao Json Web Token ou api-key
+Busque pelo membro que corresponde ao Json Web Token ou api-key, retorna o objeto
+do [membro](#team-member-structure)
 
 ## Change team owner
 
 ### PUT `/api/teams/{team.id}/change-owner/{member.id}`
 
-Transfira a posse de um time para outro usuário, retorna o time atualizado
+Transfira a posse de um time para outro usuário, retorna o objeto do
+[time](#team-structure) atualizado
 
 ## Join team
 
@@ -93,7 +173,7 @@ Remova um bot do time, retorna uma resposta `204: No Content` vazia
 
 ### DELETE `/api/teams/{team.id}/members/{member.id}`
 
-Expulse um membro do time, retorna a estrutura do membro removido
+Expulse um membro do time, retorna o objeto do [membro](#team-member-structure) removido
 
 ## Kick me
 
@@ -105,7 +185,7 @@ Se auto expulse de um time, retorna uma resposta `204: No Content` vazia
 
 ### PATCH `/api/teams/{team.id}`
 
-Modifique um time, retorna o objeto do time atualizado
+Modifique um time, retorna o objeto do [time](#team-structure) atualizado
 
 ### JSON Params
 
@@ -122,7 +202,7 @@ Modifique um time, retorna o objeto do time atualizado
 
 ### PATCH `/api/teams/{team.id}/members/{member.id}`
 
-Modifique um membro de um time, retorna o objeto do membro atualizado
+Modifique um membro de um time, retorn um objeto de [membro](#team-member-structure)
 
 ### JSON Params
 
@@ -144,7 +224,7 @@ Atualize o código de convite de um time, retorna um objeto com `invite_code`
 
 ### POST `/api/teams`
 
-Crie um time, retorna o objeto do time criado
+Crie um time, retorna um objeto de [time](#team-structure)
 
 ### JSON Params
 
@@ -163,4 +243,4 @@ Crie um time, retorna o objeto do time criado
 
 ### POST `/api/teams/{team.id}/bots/{bot._id}`
 
-Adicione um bot em um time, retorna o objeto do time desatualizado
+Adicione um bot em um time, retorn um objeto de [time](#team-structure) desatualizado

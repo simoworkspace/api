@@ -1,19 +1,74 @@
 # Bot Resources
 
+## Bot Structure
+
+| KEY               | TYPE                      | DESCRIPTION                                    |
+| ----------------- | ------------------------- | ---------------------------------------------- |
+| \_id              | Snowflake                 | O ID do bot                                    |
+| name              | string                    | O nome do bot                                  |
+| avatar            | ?string                   | O hash do avatar do bot                        |
+| invite_url        | string                    | O URL do convite do bot                        |
+| website_url?      | string                    | O URL do website do bot                        |
+| support_server?   | string                    | O URL do servidor de suporte do bot            |
+| source_code?      | string                    | O URL do código fonte do bot                   |
+| short_description | string (50-80)            | A descrição curta do bot                       |
+| long_description  | string (200-2048)         | A descrição longa do bot                       |
+| prefixes          | string[]                  | Os prefixos do bot                             |
+| owner_id          | Snowflake                 | O ID do dono do bot                            |
+| created_at        | string                    | Uma data ISO string de quando o bot foi criado |
+| verified          | boolean                   | Se o bot é verificado pelo Discord ou não      |
+| tags              | string[]                  | As tags do bot                                 |
+| approved          | boolean                   | Se o bot foi aprovado pela Simo Botlist ou não |
+| api_key?          | string                    | A api-key **única** do bot                     |
+| votes             | [Vote](#vote-structure)[] | Os votos do bot                                |
+| banner_url        | ?string                   | O URL do banner do bot                         |
+| team_id?          | string                    | O ID do time que o bot pertence                |
+| vote_message      | ?string                   | A mensagem de voto personalizada do bot        |
+| webhook_url?      | string                    | O URL do webhook usado para requisições do bot |
+
+## Vote Structure
+
+| KEY       | TYPE      | DESCRIPTION                                              |
+| --------- | --------- | -------------------------------------------------------- |
+| votes     | number    | O número total de votos que o usuário já fez no bot      |
+| user_id   | Snowflake | O ID do usuário que o voto pertence                      |
+| last_vote | string    | Uma data ISO string de quando o usuário votou por último |
+
+## Feedback Structure
+
+| KEY            | TYPE         | DESCRIPTION                                                         |
+| -------------- | ------------ | ------------------------------------------------------------------- |
+| author_id      | Snowflake    | O ID do autor do feedback                                           |
+| stars          | number (1-5) | As estrelas do feedback                                             |
+| posted_at      | string       | Uma data ISO string de quando o feedback foi postado                |
+| content        | string       | O conteúdo do feedback                                              |
+| target_bot_id  | Snowflake    | O ID do bot que o feedback pertence                                 |
+| edited?        | boolean      | Se o feedback já foi editado alguma vez                             |
+| reply_message? | object       | O objeto da [mensagem replicada](#feedback-message-reply-structure) |
+
+## Feedback Message Reply Structure
+
+| KEY       | TYPE    | DESCRIPTION                                                    |
+| --------- | ------- | -------------------------------------------------------------- |
+| content   | string  | O conteúdo da mensagem replicada                               |
+| posted_at | string  | Uma data ISO string de quando a mensagem replicada foi postada |
+| edited?   | boolean | Se a mensagem replicada já foi editada                         |
+
 ## Get Bot
 
 ### GET `/api/bots/{bot._id}`
 
-Este método é usado para buscar um bot no banco de dado, retorna uma [estrutura](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/typings/index.d.ts#L7) de bot
+Este método é usado para buscar um bot no banco de dado, retorna o objeto do
+[bot](#bot-structure) encontrado
 
-- O cabeçalho `Authorization` não é necessário para essa rota
+-   O cabeçalho `Authorization` não é necessário para essa rota
 
 ## Get Bots By Query
 
-### GET `/api/bots/{bot._id}`
+### GET `/api/bots`
 
-Este método é usado para buscar vários bots no banco de dados, retorna uma Array
-de [estrutura](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/typings/index.d.ts#L7)
+Este método é usado para buscar vários bots no banco de dados, retorna uma array
+de objeto de [bot](#bot-structure)
 
 #### Query String Params
 
@@ -37,15 +92,14 @@ de [estrutura](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/typin
 ### GET `/api/bots`
 
 Este método é usado para pegar todos os bots do banco de dados que o autor da
-requisição é o proprietário, retorna uma array de
-[estrutura](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/typings/index.d.ts#L7)
-de bot
+requisição é o proprietário, retorna uma array de objeto de [bot](#bot-structure)
 
 ## Get Bot Votes
 
 ### GET `/api/bots/{bot._id}/votes`
 
-Este método é usado para pegar todos os votos de um bot, retorna uma array de votos
+Este método é usado para pegar todos os votos de um bot, retorna uma array de
+objeto de [votos](#vote-structure)
 
 ### Example Response
 
@@ -68,7 +122,9 @@ Este método é usado para pegar todos os votos de um bot, retorna uma array de 
 
 ### GET `/api/bots/{bot._id}/feedbacks`
 
-Este método é usada para pegar todos os feedbacks já feitos em um bot, retorna uma array de [feedbacks](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/core/types/types.d.ts#L113) com `author.username`, `author.avatar` e `author.id`
+Este método é usada para pegar todos os feedbacks já feitos em um bot, retorna
+uma array de [feedbacks](#feedback-structure) com `author.username`,
+`author.avatar` e `author.id`
 
 ## Get Bot Api-key
 
@@ -80,8 +136,8 @@ Pegue a api-key de um bot, retorna um objeto com `api-key`
 
 ### DELETE `/api/bots/{bot._id}`
 
-Este método é usado para deletar um bot no banco de dados, retorna uma estrutura
-de [bot](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/typings/index.d.ts#L7)
+Este método é usado para deletar um bot no banco de dados, retorna o objeto do
+[bot](#bot-structure) deletado
 
 ## Delete Feedback
 
@@ -95,7 +151,8 @@ Este método é usado para deletar um feedback de um bot, retorna uma estrutura 
 
 ### PATCH `/api/bots/{bot._id}`
 
-Este método é usado para editar um bot, retorna o objeto do bot atualizado
+Este método é usado para editar um bot, retorna o objeto do [bot](#bot-structure)
+atualizado
 
 #### JSON Params
 
@@ -114,6 +171,7 @@ Este método é usado para editar um bot, retorna o objeto do bot atualizado
 | tags              | string[]       | As tags do bot                                                              |
 | team_id           | string         | O ID do time que o bot pertence                                             |
 | vote_message      | ?string (5-30) | Uma mensagem para quando um usuário votar                                   |
+| webhook_url       | string         | O URL do webhook usado para requisições do bot                              |
 
 -   Todas as propriedades são opicionais
 
@@ -121,7 +179,8 @@ Este método é usado para editar um bot, retorna o objeto do bot atualizado
 
 ### PATCH `/api/bots/{bot._id}/feedbacks`
 
-Este método é usado para editar um feedback em um bot, retorna uma estrutura de [feedback](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/core/types/types.d.ts#L113)
+Este método é usado para editar um feedback em um bot, retorna o objeto do
+[feedback](#feedback-structure) atualizado
 
 -   O ID do usuário será pego do JWT ou api_key usado
 
@@ -137,30 +196,31 @@ Este método é usado para editar um feedback em um bot, retorna uma estrutura d
 
 ### POST `/api/bots/{bot._id}`
 
-Este método é usado para adicionar um bot no banco de dados, retorna uma estrutura
-de [bot](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/typings/index.d.ts#L7)
+Este método é usado para adicionar um bot no banco de dados, retorna o objeto do
+[bot](#bot-structure) criado
 
 #### JSON Params
 
-| FIELD             | TYPE              | DEFAULT | DESCRIPTION                                                                                       |
-| ----------------- | ----------------- | ------- | ------------------------------------------------------------------------------------------------- |
-| invite_url        | string            |         | O URL de convite do bot (Deve ser um URL válido)                                                  |
-| website_url?      | string            |         | O URL do website do bot                                                                           |
-| support_server?   | string            |         | O URL de convite do servidor de suporte do bot (Apenas URLs de servidores do Discord são aceitas) |
-| source_code?      | string            |         | O URL do código-fonte do bot                                                                      |
-| short_description | string            |         | A descrição curta (Deve conter entre 50-80 caracteres)                                            |
-| long_description  | string            |         | A descrição longa (Deve conter entre 200-500 caracteres, Markdown é válido)                       |
-| prefixes          | string[]          |         | Os prefixos do bot (Use `/` para se referir a slash-commands)                                     |
-| created_at        | ISO8601 timestamp |         | A data de criação do bot                                                                          |
-| verified          | boolean           |         | Se o bot é verificado ou não                                                                      |
-| tags              | string[]          |         | As tags do bot                                                                                    |
-| vote_message?     | string (5-30)     | null    | Uma mensagem para quando alguém votar no bot                                                      |
+| FIELD             | TYPE              | DEFAULT                                        | DESCRIPTION                                                                                       |
+| ----------------- | ----------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| invite_url        | string            |                                                | O URL de convite do bot (Deve ser um URL válido)                                                  |
+| website_url?      | string            |                                                | O URL do website do bot                                                                           |
+| support_server?   | string            |                                                | O URL de convite do servidor de suporte do bot (Apenas URLs de servidores do Discord são aceitas) |
+| source_code?      | string            |                                                | O URL do código-fonte do bot                                                                      |
+| short_description | string            |                                                | A descrição curta (Deve conter entre 50-80 caracteres)                                            |
+| long_description  | string            |                                                | A descrição longa (Deve conter entre 200-500 caracteres, Markdown é válido)                       |
+| prefixes          | string[]          |                                                | Os prefixos do bot (Use `/` para se referir a slash-commands)                                     |
+| created_at        | ISO8601 timestamp |                                                | A data de criação do bot                                                                          |
+| verified          | boolean           |                                                | Se o bot é verificado ou não                                                                      |
+| tags              | string[]          |                                                | As tags do bot                                                                                    |
+| vote_message?     | string (5-30)     | null                                           | Uma mensagem para quando alguém votar no bot                                                      |
+| webhook_url?      | string            | O URL do webhook usado para requisições do bot |
 
 ## Add Vote
 
 ### POST `/api/bots/{bot._id}/votes`
 
-Este método é usado para adicionar um voto no bot, retorna o objeto do voto
+Este método é usado para adicionar um voto no bot, retorna o objeto do [voto](#vote-structure)
 
 -   O ID do usuário será pego do JWT ou api_key usado
 
@@ -179,7 +239,7 @@ fetch(url, {
 
 ### POST `/api/bots/{bot._id}/feedbacks`
 
-Este método é usado para postar um feedback em um bot, retorna uma estrutura de [feedback](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/core/types/types.d.ts#L113)
+Este método é usado para postar um feedback em um bot, retorna o objeto do [feedback](#feedback-structure)
 
 #### JSON Params
 

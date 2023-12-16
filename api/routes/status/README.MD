@@ -1,12 +1,17 @@
 # API Resources
 
-## Get API status
+## API Status Structure
 
-### GET `/api/status`
+| KEY           | TYPE   | DESCRIPTION                                                       |
+| ------------- | ------ | ----------------------------------------------------------------- |
+| total_mem     | number | A memória RAM total da API                                        |
+| free_mem      | number | A memória RAM livre da API                                        |
+| users         | number | O número total de usuários logados na API                         |
+| bots          | number | O número total bots adicionados na API                            |
+| uptime        | number | O uptime da API                                                   |
+| request_count | number | O número total de requisições feitas desde que a API ficou online |
 
-Este método é usado para retornar os status da API
-
-#### Example Response Structure
+### Example Response
 
 ```json
 {
@@ -18,3 +23,9 @@ Este método é usado para retornar os status da API
     "request_count": 4
 }
 ```
+
+## Get API status
+
+### GET `/api/status`
+
+Este método é usado para retornar os status da API, retorna um objeto de [api status](#api-status-structure)
