@@ -23,6 +23,10 @@ const rawTeamSchema = new Schema<Team>(
             default: [],
         },
         vanity_url: Object,
+        created_at: {
+            type: String,
+            default: new Date().toISOString(),
+        },
     },
     { versionKey: false }
 );

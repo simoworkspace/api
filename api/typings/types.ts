@@ -81,6 +81,7 @@ export interface Team {
      * The vanity URL of the team
      */
     vanity_url?: VanityURLStructure;
+    created_at: string;
 }
 
 export interface VanityURLStructure {
