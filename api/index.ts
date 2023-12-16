@@ -35,7 +35,7 @@ app.use(
         origin: ["https://simo-botlist.vercel.app", "http://localhost:5173"],
     }),
     cookieParser(),
-    (req, res, next) => {
+    (_req, _res, next) => {
         requestCount++;
 
         next();
