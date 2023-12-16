@@ -43,44 +43,47 @@ export const getBot = async (req: Request, res: Response) => {
 
     if (method === "api-key") return fetchAPIKey(req, res);
     if (method === "feedbacks") return fetchBotFeedbacks(req, res);
+    if (!botId) {
+        const userId = await getUserId(req.headers.authorization, res);
 
-    const userId = await getUserId(req.headers.authorization, res);
+        if (typeof userId !== "string") return;
 
-    if (typeof userId !== "string") return;
+        const bots = await botModel.find({ owner_id: userId });
 
-    const targetBot = await (botId
-        ? botModel.findById(botId, { api_key: 0, webhook_url: 0 })
-        : botModel.find({ owner_id: userId }, { api_key: 0, webhook_url: 0 }));
-
-    if (botId) {
-        if (Array.isArray(targetBot)) return;
-
-        const botImage = await fetch(
-            `https://cdn.discordapp.com/avatars/${targetBot?._id}/${targetBot?.avatar}.png`
-        );
-
-        if (botImage.status === HttpStatusCode.NotFound) {
-            const request = await fetch(
-                `https://discord.com/api/v10/users/${botId}`,
-                {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bot ${process.env.CLIENT_TOKEN}`,
-                    },
-                }
-            );
-
-            const botData = await request.json();
-
-            await botModel.findByIdAndUpdate(botId, {
-                name: botData.username,
-                avatar: botData.avatar,
-            });
-        }
+        return res.status(HttpStatusCode.Ok).json(bots);
     }
+
+    const targetBot = await botModel.findById(botId, {
+        api_key: 0,
+        webhook_url: 0,
+    });
 
     if (!targetBot)
         return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_BOT);
+
+    const botImage = await fetch(
+        `https://cdn.discordapp.com/avatars/${targetBot?._id}/${targetBot?.avatar}.png`
+    );
+
+    if (botImage.status === HttpStatusCode.NotFound) {
+        const request = await fetch(
+            `https://discord.com/api/v10/users/${botId}`,
+            {
+                method: "GET",
+                headers: {
+                    Authorization: `Bot ${process.env.CLIENT_TOKEN}`,
+                },
+            }
+        );
+
+        const botData = await request.json();
+
+        await botModel.findByIdAndUpdate(botId, {
+            name: botData.username,
+            avatar: botData.avatar,
+        });
+    }
+
     if (method === "votes") {
         if (Array.isArray(targetBot))
             return res

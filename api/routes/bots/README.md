@@ -6,6 +6,8 @@
 
 Este método é usado para buscar um bot no banco de dado, retorna uma [estrutura](https://github.com/Simo-Workspace/Botlist-Api/blob/main/src/typings/index.d.ts#L7) de bot
 
+- O cabeçalho `Authorization` não é necessário para essa rota
+
 ## Get Bots By Query
 
 ### GET `/api/bots/{bot._id}`
