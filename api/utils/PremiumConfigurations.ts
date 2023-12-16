@@ -6,17 +6,20 @@ export const PremiumConfigurations = {
         teams_count: 12,
         bots_count: 12,
         max_members_in_team: 25,
+        team_capacity_limit: 50,
     },
     [PremiumType.Basic]: {
         cooldown_vote: 4.32e7,
         teams_count: 6,
         bots_count: 6,
         max_members_in_team: 10,
+        team_capacity_limit: 25,
     },
     [PremiumType.None]: {
         cooldown_vote: 4.32e7,
         teams_count: 2,
         bots_count: 2,
         max_members_in_team: 10,
+        team_capacity_limit: 25,
     },
 };

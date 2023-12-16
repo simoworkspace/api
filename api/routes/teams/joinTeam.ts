@@ -41,6 +41,17 @@ export const joinTeam = async (req: Request, res: Response) => {
             .status(HttpStatusCode.Forbidden)
             .json(TEAM.MEMBERS_LIMIT_EXCEEDED_ERROR);
 
+    const user = await userModel.findById(userId, { premium_type: 1 });
+    const userTeams = await teamModel.find({ members: { id: userId } });
+
+    if (
+        user &&
+        userTeams.length ===
+            PremiumConfigurations[user.premium_type].team_capacity_limit
+    )
+        return res
+            .status(HttpStatusCode.Forbidden)
+            .json(TEAM.TEAM_LIMIT_EXCEEDED);
     if (
         team.invite_code !== inviteCode &&
         team.vanity_url &&

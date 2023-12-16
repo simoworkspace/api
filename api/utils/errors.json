@@ -282,6 +282,10 @@
         "MEMBERS_LIMIT_EXCEEDED_ERROR": {
             "message": "Members limit was exceeded",
             "code": 6034
+        },
+        "TEAM_LIMIT_EXCEEDED": {
+            "message": "Team limit exceeded. Go premium to increase limit",
+            "code": 6035
         }
     }
 }
