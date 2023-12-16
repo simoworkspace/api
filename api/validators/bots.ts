@@ -23,7 +23,6 @@ export const botSchemaValidator = object({
     )
         .max(5, "Prefix limit excedded")
         .required("\"prefixes\" property is missing"),
-    created_at: string().required("\"created_at\" property is missing"),
     verified: boolean().required("\"verified\" property is missing"),
     tags: array(string())
         .max(5, "Tags limit excedded")

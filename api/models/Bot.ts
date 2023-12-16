@@ -40,7 +40,11 @@ const rawBotSchema = new Schema<BotStructure>(
         },
         created_at: {
             type: String,
-            required: true,
+            default(this) {
+                return new Date(
+                    Number(this._id) / 4194304 + 1420070400000
+                ).toISOString();
+            },
         },
         verified: {
             type: Boolean,
