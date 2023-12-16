@@ -8,6 +8,7 @@ Busque por um usuário na database, retorna uma estrutura de usuário
 
 -   `notifications` será `null` se o ID do usuário for diferente do ID do autor da
     requisição
+-   O cabeçalho `Authorization` não é necessário para essa rota
 
 ### Example Response
 
