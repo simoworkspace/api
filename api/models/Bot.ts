@@ -25,14 +25,10 @@ const rawBotSchema = new Schema<BotStructure>(
         short_description: {
             type: String,
             required: true,
-            minlength: 50,
-            maxlength: 80,
         },
         long_description: {
             type: String,
             required: true,
-            minlength: 200,
-            maxlength: 2048,
         },
         prefixes: {
             type: [String],
