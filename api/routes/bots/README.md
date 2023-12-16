@@ -204,7 +204,6 @@ Este método é usado para adicionar um bot no banco de dados, retorna o objeto 
 | short_description | string            |                                                | A descrição curta (Deve conter entre 50-80 caracteres)                                            |
 | long_description  | string            |                                                | A descrição longa (Deve conter entre 200-500 caracteres, Markdown é válido)                       |
 | prefixes          | string[]          |                                                | Os prefixos do bot (Use `/` para se referir a slash-commands)                                     |
-| created_at        | ISO8601 timestamp |                                                | A data de criação do bot                                                                          |
 | verified          | boolean           |                                                | Se o bot é verificado ou não                                                                      |
 | tags              | string[]          |                                                | As tags do bot                                                                                    |
 | vote_message?     | string (5-30)     | null                                           | Uma mensagem para quando alguém votar no bot                                                      |
