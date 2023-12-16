@@ -19,6 +19,11 @@ export const getBot = async (req: Request, res: Response) => {
             parseBooleans: true,
         });
 
+        const { start_at, end_at } = parsedQuery;
+
+        delete parsedQuery.start_at;
+        delete parsedQuery.end_at;
+
         const botsFound = await botModel.find(
             parsedQuery,
             { webhook_url: 0, api_key: 0 },
@@ -29,8 +34,6 @@ export const getBot = async (req: Request, res: Response) => {
                         : 100,
             }
         );
-
-        const { start_at, end_at } = parsedQuery;
 
         return res
             .status(HttpStatusCode.Ok)
