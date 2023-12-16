@@ -5,6 +5,7 @@ import { BOT } from "../../utils/errors.json";
 import { fetchBotFeedbacks } from "./fetchBotFeedbacks";
 import { getUserId } from "../../utils/getUserId";
 import { fetchAPIKey } from "./fetchAPIKey";
+import queryString from "query-string";
 
 /**
  * Gets a bot from Discord API or from the database
@@ -13,28 +14,30 @@ export const getBot = async (req: Request, res: Response) => {
     const query = req.query;
 
     if (Object.keys(query).length > 0) {
-        const queryLimit =
-            typeof query.limit === "string" ? parseInt(query.limit) : 500;
-
-        const { startAt, endAt } = query;
-
-        delete query.endAt;
-        delete query.startAt;
+        const parsedQuery = queryString.parse(queryString.stringify(query), {
+            parseNumbers: true,
+            parseBooleans: true,
+        });
 
         const botsFound = await botModel.find(
-            query,
-            { webhook_url: 0 },
+            parsedQuery,
+            { webhook_url: 0, api_key: 0 },
             {
-                limit: queryLimit,
+                limit:
+                    typeof parsedQuery.limit === "number"
+                        ? parsedQuery.limit
+                        : 100,
             }
         );
+
+        const { start_at, end_at } = parsedQuery;
 
         return res
             .status(HttpStatusCode.Ok)
             .json(
                 botsFound.slice(
-                    parseInt(startAt as string),
-                    parseInt(endAt as string) || botsFound.length
+                    typeof start_at === "number" ? start_at : 0,
+                    typeof end_at === "number" ? end_at : botsFound.length
                 )
             );
     }

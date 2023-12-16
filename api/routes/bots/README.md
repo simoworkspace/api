@@ -72,20 +72,14 @@ de objeto de [bot](#bot-structure)
 
 #### Query String Params
 
-| FIELD             | TYPE              | DEFAULT |
-| ----------------- | ----------------- | ------- |
-| \_id              | Snowflake         | None    |
-| limit             | integer           | 500     |
-| name              | string            | None    |
-| avatar            | string            | None    |
-| invite_url        | string            | None    |
-| website_url       | string            | None    |
-| source_code       | string            | None    |
-| short_description | string            | None    |
-| long_description  | string            | None    |
-| created_at        | ISO8601 timestamp | None    |
-| startAt           | integer           | None    |
-| endAt             | integer           | None    |
+| FIELD    | TYPE      | DEFAULT |
+| -------- | --------- | ------- |
+| limit    | number    | 100     |
+| verified | boolean   |         |
+| start_at | number    | 0       |
+| end_at   | number    |         |
+| owner_id | Snowflake |         |
+| team_id  | string    |         |
 
 ## List all user bots
 
