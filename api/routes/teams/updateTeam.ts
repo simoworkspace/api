@@ -98,6 +98,8 @@ export const updateTeam = async (req: Request, res: Response) => {
     const changes = [] as AnyAuditLogChange[];
 
     for (const [key, value] of Object.entries(body)) {
+        if (key === "vanity_url_code") continue;
+
         changes.push({
             changed_key: key,
             old_value: team[key],
