@@ -60,7 +60,8 @@ export const changeOwner = async (
                 members: { id: userId, permission: TeamPermissions.Owner },
             },
             $pull: { members: { id: authorId } },
-        }
+        },
+        { new: true, projection: { _id: 0 } }
     );
 
     await createAuditLogEntry({

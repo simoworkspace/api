@@ -92,7 +92,7 @@ export const updateTeam = async (req: Request, res: Response) => {
     const updatedTeam = await teamModel.findOneAndUpdate(
         { id: teamId },
         { $set: body },
-        { new: true }
+        { new: true, projection: { _id: 0 } }
     );
 
     const changes = [] as AnyAuditLogChange[];

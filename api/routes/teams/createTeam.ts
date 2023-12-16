@@ -81,9 +81,9 @@ export const createTeam = async (req: Request, res: Response) => {
         await botModel.findByIdAndUpdate(botId, { team_id: teamId });
     }
 
-    delete createdTeam.__v;
-
     await auditLogModel.create({ team_id: teamId });
+
+    delete (createdTeam as any)._id;
 
     return res.status(HttpStatusCode.Created).json(createdTeam);
 };

@@ -47,12 +47,14 @@ export const createFeedback = async (
     if (!author)
         return res.status(HttpStatusCode.Ok).json(FEEDBACK.UNKNOWN_AUTHOR);
 
-    const createdFeedback = await feedbackModel.create({
-        ...body,
-        posted_at: new Date().toISOString(),
-        author_id: authorId,
-        target_bot_id: botId,
-    });
+    const createdFeedback = (
+        await feedbackModel.create({
+            ...body,
+            posted_at: new Date().toISOString(),
+            author_id: authorId,
+            target_bot_id: botId,
+        })
+    ).toObject();
 
     const bot = await botModel.findById(botId);
     const owner = await userModel.findById(bot?.owner_id);
@@ -61,6 +63,8 @@ export const createFeedback = async (
         content: `**${owner?.username}** Comentou no seu bot **${bot?.name}**\n${body.content}`,
         type: NotificationType.Comment,
     });
+
+    delete (createdFeedback as any)._id;
 
     return res.status(HttpStatusCode.Created).json(createdFeedback);
 };

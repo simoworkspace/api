@@ -7,7 +7,7 @@ import { TeamPermissions } from "../../typings/types";
 import { botModel } from "../../models/Bot";
 
 export const addBot = async (req: Request, res: Response) => {
-    const team = await teamModel.findOne({ id: req.params.teamId });
+    const team = await teamModel.findOne({ id: req.params.teamId }, { _id: 0 });
 
     if (!team)
         return res.status(HttpStatusCode.NotFound).json(TEAM.UNKNOWN_TEAM);

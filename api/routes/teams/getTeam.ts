@@ -24,11 +24,17 @@ export const getTeam = async (req: Request, res: Response) => {
     const users = await userModel.find({}, { avatar: 1, username: 1 });
 
     if (!teamId) {
-        const teams = await teamModel.find({
-            members: {
-                $elemMatch: { id: userId, permission: TeamPermissions.Owner },
+        const teams = await teamModel.find(
+            {
+                members: {
+                    $elemMatch: {
+                        id: userId,
+                        permission: TeamPermissions.Owner,
+                    },
+                },
             },
-        });
+            { _id: 0 }
+        );
 
         if (teams.length === 0)
             return res.status(HttpStatusCode.NotFound).json(TEAM.UNKNOWN_TEAM);
@@ -43,7 +49,7 @@ export const getTeam = async (req: Request, res: Response) => {
         );
     }
 
-    const team = await teamModel.findOne({ id: teamId });
+    const team = await teamModel.findOne({ id: teamId }, { _id: 0 });
 
     if (!team)
         return res.status(HttpStatusCode.NotFound).json(TEAM.UNKNOWN_TEAM);

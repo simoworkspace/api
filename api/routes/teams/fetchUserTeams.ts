@@ -5,9 +5,12 @@ import { getUserByMember } from "../../utils/getUserByMember";
 import { userModel } from "../../models/User";
 
 export const fetchUserTeams = async (res: Response, userId: string) => {
-    const teams = await teamModel.find({
-        members: { $elemMatch: { id: userId } },
-    });
+    const teams = await teamModel.find(
+        {
+            members: { $elemMatch: { id: userId } },
+        },
+        { _id: 0 }
+    );
     const users = await userModel.find({});
 
     return res.status(HttpStatusCode.Ok).json(

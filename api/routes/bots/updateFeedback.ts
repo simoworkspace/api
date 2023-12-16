@@ -35,7 +35,7 @@ export const updateFeedback = async (
             target_bot_id: botId,
         },
         { $set: { ...body, edited: true } },
-        { new: true }
+        { new: true, projection: { _id: 0 } }
     );
 
     return res.status(HttpStatusCode.Ok).json(updatedFeedback);
