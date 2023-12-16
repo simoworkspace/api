@@ -7,13 +7,6 @@ export const feedbackValidator = object({
         .min(1, "Stars must be greater than or equal to 1")
         .max(5, "Stars must be less than or equal to 5")
         .required("\"stars\" property is missing"),
-    author: object({
-        id: string()
-            .matches(idPattern, "Invalid author ID")
-            .required("\"author.id\" property is missing or invalid"),
-        username: string(),
-        avatar: string(),
-    }),
     content: string()
         .max(500, "Content must be at most 500 characters")
         .required("\"content\" property is missing"),
