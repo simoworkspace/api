@@ -22,7 +22,12 @@ export const botSchemaValidator = object({
         string().max(6, "Prefix name must be less than or equal to 6")
     )
         .max(5, "Prefix limit excedded")
-        .required("\"prefixes\" property is missing"),
+        .required("\"prefixes\" property is missing")
+        .test(
+            "no-equal-prefix",
+            "Cannot have 2 same prefixes",
+            (prefixes) => prefixes && new Set(prefixes).size === prefixes.length
+        ),
     verified: boolean().required("\"verified\" property is missing"),
     tags: array(string())
         .max(5, "Tags limit excedded")
@@ -54,7 +59,13 @@ export const patchBotValidator = object({
         .max(2048, "Long description must be less than or equal to 2048"),
     prefixes: array(
         string().max(6, "Prefix name must be less than or equal to 6")
-    ).max(5, "Prefix limit excedded"),
+    )
+        .max(5, "Prefix limit excedded")
+        .test(
+            "no-equal-prefix",
+            "Cannot have 2 same prefixes",
+            (prefixes) => prefixes && new Set(prefixes).size === prefixes.length
+        ),
     verified: boolean(),
     tags: array(string()).max(5, "Tags limit excedded"),
     vote_message: string()
