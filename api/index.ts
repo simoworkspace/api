@@ -4,7 +4,6 @@ import { connect } from "mongoose";
 import cookieParser from "cookie-parser";
 import { default as express } from "express";
 import { getBot } from "./routes/bots/getBot";
-import { ROUTES } from "../constants.json";
 import { getUser } from "./routes/users/getUser";
 import { getToken } from "./routes/auth/getToken";
 import { callback } from "./routes/auth/callback";
@@ -22,6 +21,7 @@ import { deleteTeam } from "./routes/teams/deleteTeam";
 import { updateTeam } from "./routes/teams/updateTeam";
 import { joinTeam } from "./routes/teams/joinTeam";
 import { fetchDiscordUser } from "./routes/discord/fetchDiscordUser";
+import { Routes } from "./utils/Routes";
 
 load();
 
@@ -42,26 +42,26 @@ app.use(
     }
 );
 
-app.route(ROUTES.USER)
+app.route(Routes.Users)
     .get(getUser)
     .delete(deleteNotification)
     .patch(updateUser);
-app.route(ROUTES.AUTH).get(callback);
-app.route(ROUTES.TOKEN).get(getToken).post(createToken);
-app.route(ROUTES.BOTS)
+app.route(Routes.Auth).get(callback);
+app.route(Routes.Token).get(getToken).post(createToken);
+app.route(Routes.Bots)
     .get(getBot)
     .delete(deleteBotOrFeedback)
     .patch(updateBotOrFeedback)
     .post(createBot);
-app.route(ROUTES.STATUS).get(getStatus);
-app.route(ROUTES.VOTE_STATUS).get(getVoteStatus);
-app.route(ROUTES.TEAM)
+app.route(Routes.APIStatus).get(getStatus);
+app.route(Routes.VoteStatus).get(getVoteStatus);
+app.route(Routes.Teams)
     .get(getTeam)
     .post(createTeam)
     .delete(deleteTeam)
     .patch(updateTeam)
     .put(joinTeam);
-app.route(ROUTES.DISCORD).get(fetchDiscordUser);
+app.route(Routes.Discord).get(fetchDiscordUser);
 
 export let requestCount = 0;
 
