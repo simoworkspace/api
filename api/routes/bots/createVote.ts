@@ -42,6 +42,9 @@ export const createVote = async (
             await fetch(bot.webhook_url, {
                 method: "POST",
                 body: JSON.stringify(data),
+                headers: {
+                    "Content-Type": "application/json",
+                },
             });
     };
 
