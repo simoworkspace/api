@@ -30,7 +30,6 @@ export const updateTeamInvite = async (req: Request, res: Response) => {
     await team.updateOne({ $set: { invite_code: inviteCode } });
     await createAuditLogEntry({
         executor_id: userId,
-        target_id: null,
         teamId: team.id,
         action_type: AuditLogActionType.InviteUpdate,
         changes: [

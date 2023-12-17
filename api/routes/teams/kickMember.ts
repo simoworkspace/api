@@ -51,7 +51,6 @@ export const kickMember = async (req: Request, res: Response) => {
             teamId: team.id,
             executor_id: authorId,
             action_type: AuditLogActionType.MemberAutoKick,
-            target_id: null,
             changes: [],
         });
 

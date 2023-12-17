@@ -20,18 +20,12 @@ const rawUserSchema = new Schema<UserStructure>(
             of: Object,
             default: new Map(),
         },
-        bio: {
-            type: String,
-            default: null,
-        },
+        bio: String,
         notifications_viewed: {
             type: Boolean,
             default: true,
         },
-        banner_url: {
-            type: String,
-            default: null,
-        },
+        banner_url: String,
         flags: {
             type: Number,
             required: true,

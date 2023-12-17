@@ -24,9 +24,8 @@ export interface BotStructure {
     approved: boolean;
     api_key?: string;
     votes: VoteStructure[];
-    banner_url: string;
-    team_id: string;
-    vote_message: string | null;
+    team_id?: string;
+    vote_message?: string | null;
     webhook_url?: string;
 }
 
@@ -38,9 +37,9 @@ export interface UserStructure {
     username: string;
     avatar: string | null;
     notifications: Map<string, NotificationBody>;
-    bio: string | null;
+    bio?: string;
     notifications_viewed: boolean;
-    banner_url: string | null;
+    banner_url?: string;
     flags: UserFlags;
     premium_type: PremiumType;
 }
@@ -174,7 +173,7 @@ export interface AuditLogEntryStructure {
     id: string;
     action_type: AuditLogActionType;
     changes: AnyAuditLogChange[];
-    target_id: Snowflake | null;
+    target_id?: Snowflake;
 }
 
 export enum AuditLogActionType {
@@ -228,7 +227,13 @@ export type AnyAuditLogChange =
     | AuditLogMemberAddChange
     | AuditLogMemberRemoveChange
     | AuditLogMemberUpdateChange
-    | AuditLogTeamOwnershipTransferChange;
+    | AuditLogTeamOwnershipTransferChange
+    | AuditLogVanityURLUpdateChange;
+
+export type AuditLogVanityURLUpdateChange = BaseAuditLogChange<
+    "vanity_url",
+    { code: string }
+>;
 
 export type AuditLogMemberAddChange = BaseAuditLogChange<never, never>;
 export type AuditLogMemberRemoveChange = AuditLogMemberAddChange;
@@ -258,8 +263,8 @@ export type AuditLogInviteUpdateChange = BaseAuditLogChange<
 
 export type BaseAuditLogChange<Key, Data> = {
     changed_key: Key;
-    old_data: Data;
-    new_data?: Data;
+    old_value: Data;
+    new_value?: Data;
 };
 
 export enum UserFlags {

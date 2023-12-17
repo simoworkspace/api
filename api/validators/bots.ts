@@ -29,13 +29,21 @@ export const botSchemaValidator = object({
             (prefixes) => prefixes && new Set(prefixes).size === prefixes.length
         ),
     verified: boolean().required("\"verified\" property is missing"),
-    tags: array(string())
+    tags: array(
+        string().max(24, "Invalid tag name, must be maximum 24 characters long")
+    )
         .max(5, "Tags limit excedded")
         .required("\"tags\" property is missing")
         .test(
             "no-equal-tag",
             "Cannot have 2 same tags",
             (tags) => tags && new Set(tags).size === tags.length
+        )
+        .test(
+            "valid-tag",
+            "Invalid tag name found, the tag must match \"/^[\\w\\-À-ÿ]+$/u\"",
+            (tags) =>
+                tags && tags.every((tag) => tag && /^[\w\-À-ÿ]+$/u.test(tag))
         ),
     vote_message: string()
         .min(5, "Vote message must be greater than or equal to 5")
@@ -72,18 +80,25 @@ export const patchBotValidator = object({
             (prefixes) => prefixes && new Set(prefixes).size === prefixes.length
         ),
     verified: boolean(),
-    tags: array(string())
+    tags: array(
+        string().max(24, "Invalid tag name, must be maximum 24 characters long")
+    )
         .min(1, "A bot must have at least 1 tag")
         .max(5, "Tags limit excedded")
         .test(
             "no-equal-tag",
             "Cannot have 2 same tags",
             (tags) => tags && new Set(tags).size === tags.length
+        )
+        .test(
+            "valid-tag",
+            "Invalid tag name found, the tag must match \"/^[\\w\\-À-ÿ]+$/u\"",
+            (tags) =>
+                tags && tags.every((tag) => tag && /^[\w\-À-ÿ]+$/u.test(tag))
         ),
     vote_message: string()
         .min(5, "Vote message must be greater than or equal to 5")
-        .max(30, "Vote message must be less than or equal to 30")
-        .nullable(),
+        .max(30, "Vote message must be less than or equal to 30"),
     webhook_url: string().url("Invalid webhook URL"),
 })
     .strict()

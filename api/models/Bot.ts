@@ -68,10 +68,7 @@ const rawBotSchema = new Schema<BotStructure>(
             default: [],
         },
         team_id: String,
-        vote_message: {
-            type: String,
-            default: null,
-        },
+        vote_message: String,
         webhook_url: String,
     },
     { versionKey: false }

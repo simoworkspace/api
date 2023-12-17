@@ -111,8 +111,7 @@ export const updateTeam = async (req: Request, res: Response) => {
         teamId,
         executor_id: userId,
         action_type: AuditLogActionType.TeamUpdate,
-        target_id: null,
-        changes: changes,
+        changes,
     });
 
     return res.status(HttpStatusCode.Ok).json(updatedTeam);

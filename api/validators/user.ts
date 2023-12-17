@@ -62,9 +62,9 @@ export const updateTeamValidator = object({
     .required("Empty team data received");
 
 export const updateUserValidator = object({
-    bio: string().max(200).min(1).nullable(),
+    bio: string().max(200).min(1),
     notifications_viewed: boolean(),
-    banner_url: string().url("Invalid banner URL").nullable(),
+    banner_url: string().url("Invalid banner URL"),
 })
     .noUnknown("Unknown property found")
     .strict()
