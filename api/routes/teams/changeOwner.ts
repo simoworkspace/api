@@ -2,7 +2,7 @@ import { HttpStatusCode } from "axios";
 import type { Response } from "express";
 import { USER, TEAM } from "../../utils/errors.json";
 import { userModel } from "../../models/User";
-import { TeamPermissions } from "../../typings/types";
+import { AuditLogActionType, TeamPermissions } from "../../typings/types";
 import { teamModel } from "../../models/Team";
 import { createAuditLogEntry } from "./createAuditLog";
 
@@ -28,7 +28,7 @@ export const changeOwner = async (
     if (userTeams.length === 2)
         return res
             .status(HttpStatusCode.BadRequest)
-            .json(TEAM.USER_REACHED_TWO_TEAMS);
+            .json(TEAM.USER_REACHED_TEAM_LIMIT);
 
     const team = await teamModel.findOne({ id: teamId });
 
@@ -75,6 +75,7 @@ export const changeOwner = async (
                 new_value: authorId,
             },
         ],
+        action_type: AuditLogActionType.TeamOwnershipTransfer,
     });
 
     return res.status(HttpStatusCode.Ok).json(updatedTeam);
