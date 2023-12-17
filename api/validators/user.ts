@@ -32,7 +32,7 @@ export const createTeamValidator = object({
         .required("\"avatar_url\" property is missing")
         .url("Invalid avatar URL"),
     description: string()
-        .min(5, "Description must be grater than or equal to 5")
+        .min(5, "Description must be greater than or equal to 5")
         .max(50, "Description must be less than or equal to 50"),
     bots_id: array(string().matches(idPattern, "Invalid bot ID")).max(
         3,
@@ -48,29 +48,39 @@ export const updateTeamValidator = object({
         .max(15, "Team name must be less than or equal to 15"),
     avatar_url: string().url("Invalid avatar URL"),
     description: string()
-        .min(5, "Description must be grater than or equal to 5")
+        .min(5, "Description must be greater than or equal to 5")
         .max(50, "Description must be less than or equal to 50"),
     vanity_url_code: string()
         .min(1, "Invite code can't be empty")
         .max(16, "Vanity URL maximum length is 16 characters"),
 })
-    .test("at-least-one-key", "At least one property must be provided", (obj) => {
-        return Object.keys(obj).length > 0;
-    })
+    .test(
+        "at-least-one-key",
+        "At least one property must be provided",
+        (obj) => {
+            return Object.keys(obj).length > 0;
+        }
+    )
     .noUnknown("Unknown property found")
     .strict()
     .required("Empty team data received");
 
 export const updateUserValidator = object({
-    bio: string().max(200).min(1),
+    bio: string()
+        .max(200, "Biography must be less than or equal to 200")
+        .min(1, "Biography must be greater than or equal to 1"),
     notifications_viewed: boolean(),
     banner_url: string().url("Invalid banner URL"),
 })
     .noUnknown("Unknown property found")
     .strict()
-    .test("at-least-one-key", "At least one property must be provided", (object) => {
-        return Object.keys(object).length > 0;
-    });
+    .test(
+        "at-least-one-key",
+        "At least one property must be provided",
+        (object) => {
+            return Object.keys(object).length > 0;
+        }
+    );
 
 export const updateTeamMemberValidator = object({
     permission: number()
