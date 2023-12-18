@@ -125,6 +125,10 @@
         "UNKNOWN_AUTHOR": {
             "message": "Unknown author",
             "code": 4005
+        },
+        "BOT_OWNER_CANNOT_SEND_FEEDBACK": {
+            "message": "You can't give feedback on the bot",
+            "code": 4006
         }
     },
     "USER": {
