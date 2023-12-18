@@ -1,4 +1,4 @@
-import { HttpStatusCode } from "axios";
+import axios, { HttpStatusCode } from "axios";
 import type { Request, Response } from "express";
 import parseMs from "ms";
 import { BOT, USER } from "../../utils/errors.json";
@@ -39,11 +39,10 @@ export const createVote = async (
 
     const sendRequest = async (data: Record<string, unknown>) => {
         if (bot?.webhook_url)
-            await fetch(bot.webhook_url, {
-                method: "POST",
-                body: JSON.stringify(data),
+            await axios.post(bot.webhook_url, data, {
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization: bot.api_key,
                 },
             });
     };
