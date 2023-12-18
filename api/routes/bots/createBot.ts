@@ -73,6 +73,9 @@ export const createBot = async (req: Request, res: Response) => {
         name: data.username,
         _id: botId,
         owner_id: userId,
+        prefixes: body.prefixes.map(t=>String(t).trim()),
+        tags: body.tags.map(t=>String(t).trim()),
+        
     });
 
     if (!createdBot)
