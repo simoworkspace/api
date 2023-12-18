@@ -1,6 +1,6 @@
 import { HttpStatusCode } from "axios";
 import type { Request, Response } from "express";
-import { FEEDBACK } from "../../utils/errors.json";
+import { FEEDBACK, BOT } from "../../utils/errors.json";
 import { feedbackModel } from "../../models/Feedback";
 import { feedbackValidator } from "../../validators/feedback";
 import { userModel } from "../../models/User";
@@ -42,10 +42,18 @@ export const createFeedback = async (
             .status(HttpStatusCode.BadRequest)
             .json({ errors: validation });
 
+    const bot = await botModel.findById(botId);
+
+    if (!bot) return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_BOT);
+
     const author = await userModel.findById(authorId);
 
     if (!author)
         return res.status(HttpStatusCode.Ok).json(FEEDBACK.UNKNOWN_AUTHOR);
+    if (bot.owner_id === authorId)
+        return res
+            .status(HttpStatusCode.Forbidden)
+            .json(FEEDBACK.BOT_OWNER_CANNOT_SEND_FEEDBACK);
 
     const createdFeedback = (
         await feedbackModel.create({
@@ -56,7 +64,6 @@ export const createFeedback = async (
         })
     ).toObject();
 
-    const bot = await botModel.findById(botId);
     const owner = await userModel.findById(bot?.owner_id);
 
     await createNotification(res, owner?.id as string, {
