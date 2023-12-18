@@ -35,6 +35,10 @@
         "ONLY_BOT_OWNER_CAN_VIEW_API_KEY_ERROR": {
             "message": "Only the bot owner can view the api-key of this bot",
             "code": 1009
+        },
+        "WEBHOOK_URL_IS_NOT_DEFINED": {
+            "message": "Webhook URL not found",
+            "code": 1010
         }
     },
     "GENERICS": {
