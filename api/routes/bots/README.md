@@ -126,6 +126,16 @@ uma array de [feedbacks](#feedback-structure) com `author.username`,
 
 Pegue a api-key de um bot, retorna um objeto com `api-key`
 
+-   Você deve ser o dono do bot para pegar essa propriedade
+
+## Get Bot Webhook URL
+
+### GET `/api/bots/{bot._id}/webhook`
+
+Busque pelo webhook URL de um bot, retorna o webhook URL
+
+-   Você deve ser o dono do bot para pegar essa propriedade
+
 ## Delete Bot
 
 ### DELETE `/api/bots/{bot._id}`
@@ -195,19 +205,19 @@ Este método é usado para adicionar um bot no banco de dados, retorna o objeto 
 
 #### JSON Params
 
-| FIELD             | TYPE              | DEFAULT                                        | DESCRIPTION                                                                                       |
-| ----------------- | ----------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| invite_url        | string            |                                                | O URL de convite do bot (Deve ser um URL válido)                                                  |
-| website_url?      | string            |                                                | O URL do website do bot                                                                           |
-| support_server?   | string            |                                                | O URL de convite do servidor de suporte do bot (Apenas URLs de servidores do Discord são aceitas) |
-| source_code?      | string            |                                                | O URL do código-fonte do bot                                                                      |
-| short_description | string            |                                                | A descrição curta (Deve conter entre 50-80 caracteres)                                            |
-| long_description  | string            |                                                | A descrição longa (Deve conter entre 200-500 caracteres, Markdown é válido)                       |
-| prefixes          | string[]          |                                                | Os prefixos do bot (Use `/` para se referir a slash-commands)                                     |
-| verified          | boolean           |                                                | Se o bot é verificado ou não                                                                      |
-| tags              | string[]          |                                                | As tags do bot                                                                                    |
-| vote_message?     | string (5-30)     | null                                           | Uma mensagem para quando alguém votar no bot                                                      |
-| webhook_url?      | string            | O URL do webhook usado para requisições do bot |
+| FIELD             | TYPE          | DEFAULT                                        | DESCRIPTION                                                                                       |
+| ----------------- | ------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| invite_url        | string        |                                                | O URL de convite do bot (Deve ser um URL válido)                                                  |
+| website_url?      | string        |                                                | O URL do website do bot                                                                           |
+| support_server?   | string        |                                                | O URL de convite do servidor de suporte do bot (Apenas URLs de servidores do Discord são aceitas) |
+| source_code?      | string        |                                                | O URL do código-fonte do bot                                                                      |
+| short_description | string        |                                                | A descrição curta (Deve conter entre 50-80 caracteres)                                            |
+| long_description  | string        |                                                | A descrição longa (Deve conter entre 200-500 caracteres, Markdown é válido)                       |
+| prefixes          | string[]      |                                                | Os prefixos do bot (Use `/` para se referir a slash-commands)                                     |
+| verified          | boolean       |                                                | Se o bot é verificado ou não                                                                      |
+| tags              | string[]      |                                                | As tags do bot                                                                                    |
+| vote_message?     | string (5-30) | null                                           | Uma mensagem para quando alguém votar no bot                                                      |
+| webhook_url?      | string        | O URL do webhook usado para requisições do bot |
 
 ## Add Vote
 
@@ -252,3 +262,13 @@ fetch(url, {
     }),
 });
 ```
+
+## Test Vote Webhook
+
+### POST `/api/bots/{bot._id}/webhook/test`
+
+Essa rota ira mandar uma requisição para o `webhook_url` definido no objeto do bot.
+O corpo da requisição será um objeto de [voto](#vote-structure)
+
+-   A [api key](#bot-structure) do bot será mandada no cabeçalho `Authorization`
+    da requisição

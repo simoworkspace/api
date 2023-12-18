@@ -10,12 +10,16 @@ import { createVote } from "./createVote";
 import { userModel } from "../../models/User";
 import { UserFlags } from "../../typings/types";
 import { PremiumConfigurations } from "../../utils/PremiumConfigurations";
+import { testWebhook } from "./testWebhook";
 
 /**
  * Creates a bot, vote, or submit a feedback
  */
 export const createBot = async (req: Request, res: Response) => {
     const { id: botId, method } = req.params;
+
+    if (req.params.wmethod === "test") return testWebhook(req, res);
+
     const userId = await getUserId(req.headers.authorization, res);
 
     if (typeof userId !== "string") return;
