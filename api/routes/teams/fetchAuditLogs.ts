@@ -27,10 +27,7 @@ export const fetchAuditLogs = async (
             .status(HttpStatusCode.Forbidden)
             .json(TEAM.AUDIT_LOG_VIEW_PERMISSION_ERROR);
 
-    const auditLogs = await auditLogModel.findOne(
-        { team_id: teamId },
-        { _id: 0 }
-    );
+    const auditLogs = await auditLogModel.findById(teamId);
 
     if (!auditLogs)
         return res
@@ -40,8 +37,8 @@ export const fetchAuditLogs = async (
     const users = await userModel.find({}, { username: 1, avatar: 1, _id: 1 });
 
     return res.status(HttpStatusCode.Ok).json({
-        ...auditLogs.toObject(),
-        entries: auditLogs?.entries.map((entry) => {
+        team_id: auditLogs._id,
+        entries: auditLogs.entries.map((entry) => {
             const executor = users.find(
                 (user) => user._id === entry.executor_id
             );

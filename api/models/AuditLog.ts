@@ -3,7 +3,7 @@ import type { AuditLogStructure } from "../typings/types";
 
 const rawAuditLogSchema = new Schema<AuditLogStructure>(
     {
-        team_id: String,
+        _id: String,
         entries: {
             type: [Object],
             default: [],

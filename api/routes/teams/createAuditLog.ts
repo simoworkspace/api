@@ -5,7 +5,7 @@ export const createAuditLogEntry = async (
     data: Omit<AuditLogEntryStructure, "id" | "created_at"> & { teamId: string }
 ) => {
     const { teamId } = data;
-    const auditLog = await auditLogModel.findOne({ team_id: teamId });
+    const auditLog = await auditLogModel.findById(teamId);
 
     const rawEntryData = {
         ...(data as { teamId?: string }),
@@ -17,7 +17,7 @@ export const createAuditLogEntry = async (
 
     if (!auditLog)
         return await auditLogModel.create({
-            team_id: teamId,
+            _id: teamId,
             entries: [rawEntryData],
         });
 

@@ -162,8 +162,11 @@ export enum NotificationType {
     Mixed,
 }
 
-export interface AuditLogStructure {
-    team_id: string;
+export interface BaseStructure<Id = Snowflake> {
+    _id: Id;
+}
+
+export interface AuditLogStructure extends BaseStructure {
     entries: AuditLogEntryStructure[];
 }
 
