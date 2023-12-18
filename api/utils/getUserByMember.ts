@@ -19,5 +19,6 @@ export const getUserByMember = (
         permission: member.permission,
         username: user.username,
         avatar: user.avatar,
+        joined_at: member.joined_at
     };
 };
