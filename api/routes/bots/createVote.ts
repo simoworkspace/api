@@ -43,6 +43,7 @@ export const createVote = async (
                 method: "POST",
                 body: JSON.stringify(data),
                 headers: {
+                    "Simo-Verificator": bot.api_key,
                     "Content-Type": "application/json",
                 },
             });
