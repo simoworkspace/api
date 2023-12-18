@@ -21,8 +21,20 @@ export const fetchTeamMembers = async (req: Request, res: Response) => {
         return res
             .status(HttpStatusCode.Forbidden)
             .json(TEAM.AUTHOR_IS_NOT_A_MEMBER);
-    if (req.params.targetId === "@me")
-        return res.status(HttpStatusCode.Ok).json(me);
+
+    const { targetId } = req.params;
+
+    if (targetId === "@me") return res.status(HttpStatusCode.Ok).json(me);
+    if (targetId) {
+        const member = members.find((member) => member.id === targetId);
+
+        if (!member)
+            return res
+                .status(HttpStatusCode.NotFound)
+                .json(TEAM.USER_IS_NOT_A_MEMBER);
+
+        return res.status(HttpStatusCode.Ok).json(member);
+    }
 
     return res.status(HttpStatusCode.Ok).json(members);
 };

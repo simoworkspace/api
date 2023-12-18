@@ -144,6 +144,13 @@ Busque por todos os membros de um time, retorna uma array de objeto de [membros]
 Busque pelo membro que corresponde ao Json Web Token ou api-key, retorna o objeto
 do [membro](#team-member-structure)
 
+## Get member
+
+### GET `/api/teams/{team.id}/members/{member.id}`
+
+Busque por um membro de um time, retorna o objeto do
+[membro](#team-member-structure) encontrado
+
 ## Change team owner
 
 ### PUT `/api/teams/{team.id}/change-owner/{member.id}`
