@@ -175,11 +175,11 @@ Remova um bot do time, retorna uma resposta `204: No Content` vazia
 
 Expulse um membro do time, retorna o objeto do [membro](#team-member-structure) removido
 
-## Kick me
+## Leave team
 
-### DELETE `/api/teams/{team.id}/members/@me`
+### DELETE `/api/teams/{team.id}/leave`
 
-Se auto expulse de um time, retorna uma resposta `204: No Content` vazia
+Saía de um time, retorna uma resposta `204: No Content` vazia
 
 ## Modify team
 

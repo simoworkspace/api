@@ -23,8 +23,8 @@ export const kickMember = async (req: Request, res: Response) => {
             .status(HttpStatusCode.NotFound)
             .json(TEAM.AUTHOR_IS_NOT_A_MEMBER);
 
-    const { targetId } = req.params;
-    const realTargetId = targetId === "@me" ? authorId : targetId;
+    const { targetId, inviteCode: method } = req.params;
+    const realTargetId = method === "leave" ? authorId : targetId;
 
     const memberToRemove = team.members.find(
         (member) => member.id === realTargetId

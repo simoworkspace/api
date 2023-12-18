@@ -13,7 +13,7 @@ export const deleteTeam = async (req: Request, res: Response) => {
     const { inviteCode: method } = req.params;
 
     if (method === "bots") return removeBot(req, res);
-    if (method === "members") return kickMember(req, res);
+    if (["members", "leave"].includes(method)) return kickMember(req, res);
 
     const userId = await getUserId(req.headers.authorization, res);
 
