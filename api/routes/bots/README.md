@@ -175,9 +175,10 @@ atualizado
 | tags              | string[]       | As tags do bot                                                              |
 | team_id           | string         | O ID do time que o bot pertence                                             |
 | vote_message      | ?string (5-30) | Uma mensagem para quando um usuário votar                                   |
-| webhook_url       | string         | O URL do webhook usado para requisições do bot                              |
+| webhook_url\*     | string         | O URL do webhook usado para requisições do bot                              |
 
 -   Todas as propriedades são opicionais
+-   \* `api_key` é necessária para editar essa propriedade
 
 ## Patch Feedback
 

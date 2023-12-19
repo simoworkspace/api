@@ -35,6 +35,10 @@ export const updateBotOrFeedback = async (req: Request, res: Response) => {
         return res
             .status(HttpStatusCode.BadRequest)
             .json({ errors: validation });
+    if ("webhook_url" in body && !bot.api_key)
+        return res
+            .status(HttpStatusCode.Forbidden)
+            .json(BOT.API_KEY_IS_REQUIRED_TO_USE_WEBHOOK);
 
     const updatedBot = await botModel.findByIdAndUpdate(
         botId,
