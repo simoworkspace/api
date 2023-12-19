@@ -21,7 +21,7 @@ export const createNotificationValidator = object({
     .strict()
     .required("Empty notification data received")
     .noUnknown("Unknown property found")
-    .test("valid-url-with-type", "", (notf) =>
+    .test("valid-url-with-type", "URL can only be used for comments", (notf) =>
         notf.url ? notf.type === NotificationType.Comment : true
     );
 
