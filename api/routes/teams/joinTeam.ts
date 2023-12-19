@@ -79,7 +79,7 @@ export const joinTeam = async (req: Request, res: Response) => {
     });
 
     if (team.vanity_url && inviteCode === team.vanity_url.code)
-        await team.updateOne({ "vanity_url.uses": { $inc: 1 } });
+        await team.updateOne({ $inc: { "vanity_url.uses": 1 } });
 
     return res.status(HttpStatusCode.NoContent).send();
 };
