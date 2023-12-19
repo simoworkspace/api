@@ -41,6 +41,7 @@ export const createVote = async (
         if (bot?.webhook_url)
             await axios.post(bot.webhook_url, data, {
                 headers: {
+                    "Simo-Verificator": bot.api_key,
                     "Content-Type": "application/json",
                     Authorization: bot.api_key,
                 },
