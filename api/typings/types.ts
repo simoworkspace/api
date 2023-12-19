@@ -271,10 +271,10 @@ export type BaseAuditLogChange<Key, Data> = {
 };
 
 export enum UserFlags {
-    BugHunter,
-    Contributor,
-    PremiumPartner,
-    Developer,
+    BugHunter = 1 << 0,
+    Contributor = 1 << 1,
+    PremiumPartner = 1 << 2,
+    Developer = 1 << 3,
 }
 
 export enum PremiumType {
