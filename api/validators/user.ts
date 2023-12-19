@@ -2,7 +2,9 @@ import { boolean, number, object, string } from "yup";
 import { NotificationType, TeamPermissions } from "../typings/types";
 
 export const createNotificationValidator = object({
-    content: string().required("\"content\" property is missing"),
+    content: string()
+        .required("\"content\" property is missing")
+        .min(1, "Feedback content can't be empty"),
     type: number()
         .oneOf(
             [
