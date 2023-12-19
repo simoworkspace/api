@@ -235,18 +235,19 @@ Crie um time, retorna um objeto de [time](#team-structure)
 
 ### JSON Params
 
-| NAME         | TYPE          | DESCRIPTION                               |
-| ------------ | ------------- | ----------------------------------------- |
-| name         | string (3-15) | O nome do time                            |
-| avatar_url   | string        | O URL do avatar do time                   |
-| description? | string        | A descrição do time                       |
+| NAME         | TYPE          | DESCRIPTION             |
+| ------------ | ------------- | ----------------------- |
+| name         | string (3-15) | O nome do time          |
+| avatar_url   | string        | O URL do avatar do time |
+| description? | string        | A descrição do time     |
 
 -   Ressalvas
-    -   Você só pode ter 2 times no máximo
-    -   Você deve ser proprietário do bot e o bot já deve estar adicionado em [Simo Botlist](bombadeagua.life)
+    -   Você só pode ter 2 times no máximo sem premium
 
 ## Add bot
 
 ### POST `/api/teams/{team.id}/bots/{bot._id}`
 
 Adicione um bot em um time, retorn um objeto de [time](#team-structure) desatualizado
+
+-   Você deve ser o proprietário do bot para adicionar ele em um time
