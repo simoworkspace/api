@@ -1,10 +1,9 @@
 import type { Request, Response } from "express";
 import { getUserId } from "../../utils/getUserId";
 import { HttpStatusCode } from "axios";
-import { TEAM, BOT } from "../../utils/errors.json";
+import { TEAM } from "../../utils/errors.json";
 import { teamModel } from "../../models/Team";
 import { TeamPermissions } from "../../typings/types";
-import { botModel } from "../../models/Bot";
 import { createTeamValidator } from "../../validators/user";
 import { addBot } from "./addBot";
 import { auditLogModel } from "../../models/AuditLog";
@@ -35,31 +34,6 @@ export const createTeam = async (req: Request, res: Response) => {
 
     const { body } = req;
 
-    if (!("bots_id" in body) || !Array.isArray(body.bots_id))
-        return res
-            .status(HttpStatusCode.BadRequest)
-            .json(TEAM.MISSING_BOTS_ID_ERROR);
-
-    const isSomeBotInATeam = await teamModel.exists({
-        bots_id: { $in: body.bots_id },
-    });
-
-    if (isSomeBotInATeam)
-        return res
-            .status(HttpStatusCode.BadRequest)
-            .json(TEAM.BOT_ALREADY_IN_A_TEAM);
-
-    for (const botId of body.bots_id) {
-        const bot = await botModel.findById(botId);
-
-        if (!bot)
-            return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_BOT);
-        if (bot.owner_id !== userId)
-            return res
-                .status(HttpStatusCode.BadRequest)
-                .json(TEAM.ONLY_BOT_OWNER_CAN_ADD_IT);
-    }
-
     const validation = await createTeamValidator
         .validate(body)
         .catch((error) => error.errors);
@@ -76,10 +50,6 @@ export const createTeam = async (req: Request, res: Response) => {
         members: [{ id: userId, permission: TeamPermissions.Owner }],
         id: teamId,
     });
-
-    for (const botId of body.bots_id) {
-        await botModel.findByIdAndUpdate(botId, { team_id: teamId });
-    }
 
     await auditLogModel.create({ _id: teamId });
 

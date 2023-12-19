@@ -1,7 +1,5 @@
-import { array, boolean, number, object, string } from "yup";
+import { boolean, number, object, string } from "yup";
 import { NotificationType, TeamPermissions } from "../typings/types";
-
-const idPattern = /^\d{16,21}$/;
 
 export const createNotificationValidator = object({
     content: string().required("\"content\" property is missing"),
@@ -34,10 +32,6 @@ export const createTeamValidator = object({
     description: string()
         .min(5, "Description must be greater than or equal to 5")
         .max(50, "Description must be less than or equal to 50"),
-    bots_id: array(string().matches(idPattern, "Invalid bot ID")).max(
-        3,
-        "A team can't have more than 3 bots"
-    ),
 })
     .required("Empty team data received")
     .noUnknown("Unknown property found");
