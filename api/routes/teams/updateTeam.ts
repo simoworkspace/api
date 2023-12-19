@@ -86,7 +86,7 @@ export const updateTeam = async (req: Request, res: Response) => {
                 .status(HttpStatusCode.Forbidden)
                 .json(TEAM.OWNER_MUST_HAVE_ADVANCED_PREMIUM);
 
-        body.vanity_url = { code: vanityCode };
+        body.vanity_url = { code: vanityCode, uses: 1 };
     }
 
     const updatedTeam = await teamModel.findOneAndUpdate(
