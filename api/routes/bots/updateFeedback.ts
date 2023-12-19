@@ -29,6 +29,10 @@ export const updateFeedback = async (
             .status(HttpStatusCode.BadRequest)
             .json({ errors: validation });
 
+    if ("reply_message" in body) {
+        if (feedback.reply_message) body.reply_message.edited = true;
+    }
+
     const updatedFeedback = await feedbackModel.findOneAndUpdate(
         {
             author_id: authorId,

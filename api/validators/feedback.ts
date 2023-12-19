@@ -27,10 +27,6 @@ export const patchFeedbackValidator = object({
             .min(2, "Reply message content must be at least 2 characters")
             .max(500, "Reply message content must be at most 500 characters")
             .required("\"reply_message.content\" property is missing"),
-        posted_at: string().required(
-            "\"reply_message.posted_at\" property is missing"
-        ),
-        edited: boolean(),
     }).noUnknown("Unknown property found in reply message data"),
 })
     .noUnknown("Unknown property found")
