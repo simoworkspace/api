@@ -18,7 +18,10 @@ export const createNotificationValidator = object({
 })
     .strict()
     .required("Empty notification data received")
-    .noUnknown("Unknown property found");
+    .noUnknown("Unknown property found")
+    .test("valid-url-with-type", "", (notf) =>
+        notf.url ? notf.type === NotificationType.Comment : true
+    );
 
 export const createTeamValidator = object({
     name: string()
