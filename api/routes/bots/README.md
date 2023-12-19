@@ -191,11 +191,11 @@ Este método é usado para editar um feedback em um bot, retorna o objeto do
 
 #### JSON Params
 
-| FIELD         | TYPE                                   | DESCRIPTION                        |
-| ------------- | -------------------------------------- | ---------------------------------- |
-| content       | string                                 | O conteúdo da mensagem do feedback |
-| stars         | number (0-5)                           | O número de estrelas do feedback   |
-| reply_message | [reply_message](/api/typings/types.ts) | A mensagem replicada               |
+| FIELD                 | TYPE         | DESCRIPTION                        |
+| --------------------- | ------------ | ---------------------------------- |
+| content               | string       | O conteúdo da mensagem do feedback |
+| stars                 | number (0-5) | O número de estrelas do feedback   |
+| reply_message_content | string       | O conteúdo da mensagem replicada   |
 
 ## Create Bot
 

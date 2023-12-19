@@ -20,7 +20,7 @@ export const updateFeedback = async (
             .status(HttpStatusCode.NotFound)
             .json(FEEDBACK.UNKNOWN_FEEDBACK);
 
-    const validation = patchFeedbackValidator
+    const validation = await patchFeedbackValidator
         .validate(body)
         .catch((error) => error.errors);
 
@@ -29,8 +29,15 @@ export const updateFeedback = async (
             .status(HttpStatusCode.BadRequest)
             .json({ errors: validation });
 
-    if ("reply_message" in body) {
+    if ("reply_message_content" in body) {
+        body.reply_message = {};
+
+        body.reply_message.content = body.reply_message_content;
+
         if (feedback.reply_message) body.reply_message.edited = true;
+
+        body.reply_message.posted_at =
+            feedback.reply_message?.posted_at ?? new Date().toISOString();
     }
 
     const updatedFeedback = await feedbackModel.findOneAndUpdate(

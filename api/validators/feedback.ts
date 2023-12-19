@@ -1,4 +1,4 @@
-import { boolean, number, object, string } from "yup";
+import { number, object, string } from "yup";
 
 const idPattern = /^\d{16,21}$/;
 
@@ -22,12 +22,10 @@ export const patchFeedbackValidator = object({
     content: string()
         .min(2, "Content must be at least 2 characters")
         .max(500, "Content must be at most 500 characters"),
-    reply_message: object({
-        content: string()
-            .min(2, "Reply message content must be at least 2 characters")
-            .max(500, "Reply message content must be at most 500 characters")
-            .required("\"reply_message.content\" property is missing"),
-    }).noUnknown("Unknown property found in reply message data"),
+
+    reply_message_content: string()
+        .min(2, "Reply message content must be at least 2 characters")
+        .max(500, "Reply message content must be at most 500 characters"),
 })
     .noUnknown("Unknown property found")
     .required("Empty patch feedback data received.")
@@ -35,4 +33,5 @@ export const patchFeedbackValidator = object({
         "at-least-one-key",
         "At least one property must be provided",
         (object) => Object.keys(object).length > 0
-    );
+    )
+    .strict();
