@@ -17,7 +17,7 @@ export const joinTeam = async (req: Request, res: Response) => {
     const { teamId, inviteCode } = req.params;
 
     if (teamId === "change-owner")
-        return changeOwner(res, {
+        return changeOwner(res, req, {
             userId: req.params.targetId,
             authorId: userId,
             teamId,

@@ -177,6 +177,7 @@ export interface AuditLogEntryStructure {
     action_type: AuditLogActionType;
     changes: AnyAuditLogChange[];
     target_id?: Snowflake;
+    reason?: string;
 }
 
 export enum AuditLogActionType {
@@ -290,4 +291,32 @@ export enum PremiumType {
      * User has advanced premium
      */
     Advanced,
+}
+
+export enum Events {
+    UserUpdate,
+    BulkDeleteNotifications,
+    NotificationDelete,
+    NotificationCreate,
+
+    TeamCreate = 10,
+    TeamDelete,
+    TeamUpdate,
+    TeamOwnershipTransfer,
+    MemberJoin,
+    TeamBotRemove,
+    MemberLeave,
+    TeamMemberUpdate,
+    InviteCodeUpdate,
+    TeamBotAdd,
+
+    BotCreate = 30,
+    BotDelete,
+    BotUpdate,
+    FeedbackDelete,
+    FeedbackUpdate,
+    VoteAdd,
+    FeedbackAdd,
+    WebhookTest,
+    VanityURLCreate,
 }

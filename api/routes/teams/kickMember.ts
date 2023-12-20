@@ -39,6 +39,13 @@ export const kickMember = async (req: Request, res: Response) => {
             .status(HttpStatusCode.BadRequest)
             .json(TEAM.CANT_REMOVE_THE_OWNER);
 
+    const reason = req.headers["x-audit-log-reason"];
+
+    if (reason && reason.length > 428)
+        return res
+            .status(HttpStatusCode.BadRequest)
+            .json(TEAM.AUDIT_LOG_REASON_LIMIT_EXCEEDED);
+
     if (realTargetId === authorId) {
         await team.updateOne({
             $set: {
@@ -52,6 +59,7 @@ export const kickMember = async (req: Request, res: Response) => {
             executor_id: authorId,
             action_type: AuditLogActionType.MemberAutoKick,
             changes: [],
+            reason,
         });
 
         return res.status(HttpStatusCode.NoContent).send();
@@ -80,6 +88,7 @@ export const kickMember = async (req: Request, res: Response) => {
         action_type: AuditLogActionType.MemberRemove,
         target_id: targetId,
         changes: [],
+        reason,
     });
 
     return res.status(HttpStatusCode.Ok).json(memberToRemove);

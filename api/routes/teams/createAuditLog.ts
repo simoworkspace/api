@@ -2,10 +2,15 @@ import { auditLogModel } from "../../models/AuditLog";
 import type { AuditLogEntryStructure } from "../../typings/types";
 
 export const createAuditLogEntry = async (
-    data: Omit<AuditLogEntryStructure, "id" | "created_at"> & { teamId: string }
+    data: Omit<AuditLogEntryStructure, "id" | "created_at" | "reason"> & {
+        teamId: string;
+        reason?: string | string[];
+    }
 ) => {
     const { teamId } = data;
     const auditLog = await auditLogModel.findById(teamId);
+
+    if (Array.isArray(data.reason)) delete data.reason;
 
     const rawEntryData = {
         ...(data as { teamId?: string }),

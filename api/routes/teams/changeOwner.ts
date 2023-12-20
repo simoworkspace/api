@@ -1,5 +1,5 @@
 import { HttpStatusCode } from "axios";
-import type { Response } from "express";
+import type { Request, Response } from "express";
 import { USER, TEAM } from "../../utils/errors.json";
 import { userModel } from "../../models/User";
 import { AuditLogActionType, TeamPermissions } from "../../typings/types";
@@ -8,6 +8,7 @@ import { createAuditLogEntry } from "./createAuditLog";
 
 export const changeOwner = async (
     res: Response,
+    req: Request,
     {
         userId,
         authorId,
@@ -53,6 +54,13 @@ export const changeOwner = async (
             .status(HttpStatusCode.BadRequest)
             .json(TEAM.USER_IS_NOT_A_MEMBER);
 
+    const reason = req.headers["x-audit-log-reason"];
+
+    if (reason && reason.length > 428)
+        return res
+            .status(HttpStatusCode.BadRequest)
+            .json(TEAM.AUDIT_LOG_REASON_LIMIT_EXCEEDED);
+
     const updatedTeam = await teamModel.findOneAndUpdate(
         { id: teamId },
         {
@@ -76,6 +84,7 @@ export const changeOwner = async (
             },
         ],
         action_type: AuditLogActionType.TeamOwnershipTransfer,
+        reason,
     });
 
     return res.status(HttpStatusCode.Ok).json(updatedTeam);

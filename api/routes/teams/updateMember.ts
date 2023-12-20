@@ -65,6 +65,13 @@ export const updateMember = async (
             .status(HttpStatusCode.BadRequest)
             .json(TEAM.NEW_PERMISSION_MUST_DIFFER_FROM_CURRENT);
 
+    const reason = req.headers["x-audit-log-reason"];
+
+    if (reason && reason.length > 428)
+        return res
+            .status(HttpStatusCode.BadRequest)
+            .json(TEAM.AUDIT_LOG_REASON_LIMIT_EXCEEDED);
+
     await teamModel.findOneAndUpdate(
         {
             id: team.id,
@@ -88,6 +95,7 @@ export const updateMember = async (
                 new_value: newPermission,
             },
         ],
+        reason,
     });
 
     return res
