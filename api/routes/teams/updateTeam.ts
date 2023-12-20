@@ -133,6 +133,6 @@ export const updateTeam = async (req: Request, res: Response) => {
         const botSocket = getSocket(bot.api_key);
 
         if (botSocket && botSocket.data?.events.includes(Events.TeamUpdate))
-            botSocket.socket.emit(APIEvents[Events.TeamUpdate], eventData);
+            botSocket.socket.emit("message",(APIEvents[Events.TeamUpdate], eventData);
     }
 };

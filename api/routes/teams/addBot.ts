@@ -70,7 +70,7 @@ export const addBot = async (req: Request, res: Response) => {
             const botSocket = getSocket(bot.api_key);
 
             if (botSocket && botSocket.data?.events.includes(Events.TeamBotAdd))
-                botSocket.socket.emit(APIEvents[Events.TeamBotAdd], eventData);
+                botSocket.socket.emit("message",(APIEvents[Events.TeamBotAdd], eventData);
         }
     }
 };
