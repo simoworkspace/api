@@ -104,7 +104,10 @@ export const joinTeam = async (req: Request, res: Response) => {
             const botSocket = getSocket(bot.api_key);
 
             if (botSocket && botSocket.data?.events.includes(Events.MemberJoin))
-                botSocket.socket.emit("message",(APIEvents[Events.MemberJoin], eventData);
+                botSocket.socket.emit(
+                    "message",
+                    (APIEvents[Events.MemberJoin], eventData)
+                );
         }
     }
 };

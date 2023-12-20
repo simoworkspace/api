@@ -88,12 +88,13 @@ export const createFeedback = async (
     delete (createdFeedback as any)._id;
 
     if (userSocket && userSocket.data?.events.includes(Events.FeedbackAdd))
-        userSocket.socket.emit("message",(
-            APIEvents[Events.FeedbackAdd],
+        userSocket.socket.emit(
+            "message",
+            (APIEvents[Events.FeedbackAdd],
             makeEventData({
                 event_type: Events.FeedbackAdd,
                 payload: createdFeedback,
-            })
+            }))
         );
 
     return res.status(HttpStatusCode.Created).json(createdFeedback);

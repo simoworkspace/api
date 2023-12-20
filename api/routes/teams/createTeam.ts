@@ -61,12 +61,13 @@ export const createTeam = async (req: Request, res: Response) => {
     const userSocket = getSocket(auth as string);
 
     if (userSocket && userSocket.data?.events.includes(Events.TeamCreate))
-        userSocket.socket.emit("message",(
-            APIEvents[Events.TeamCreate],
+        userSocket.socket.emit(
+            "message",
+            (APIEvents[Events.TeamCreate],
             makeEventData({
                 event_type: Events.TeamCreate,
                 payload: createdTeam,
-            })
+            }))
         );
 
     return res.status(HttpStatusCode.Created).json(createdTeam);

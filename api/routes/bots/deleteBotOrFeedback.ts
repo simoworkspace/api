@@ -38,12 +38,13 @@ export const deleteBotOrFeedback = async (req: Request, res: Response) => {
             userSocket &&
             userSocket.data?.events.includes(Events.FeedbackDelete)
         )
-            userSocket.socket.emit("message",(
-                APIEvents[Events.FeedbackDelete],
+            userSocket.socket.emit(
+                "message",
+                (APIEvents[Events.FeedbackDelete],
                 makeEventData({
                     event_type: Events.FeedbackDelete,
                     payload: feedback,
-                })
+                }))
             );
 
         return res.status(HttpStatusCode.Ok).json(GENERICS.SUCCESS);
@@ -66,9 +67,10 @@ export const deleteBotOrFeedback = async (req: Request, res: Response) => {
     await bot.deleteOne();
 
     if (userSocket && userSocket.data?.events.includes(Events.BotDelete))
-        userSocket.socket.emit("message",(
-            APIEvents[Events.BotDelete],
-            makeEventData({ event_type: Events.BotDelete, payload: bot })
+        userSocket.socket.emit(
+            "message",
+            (APIEvents[Events.BotDelete],
+            makeEventData({ event_type: Events.BotDelete, payload: bot }))
         );
 
     return res.status(HttpStatusCode.Ok).json(bot);

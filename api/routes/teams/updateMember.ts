@@ -130,9 +130,9 @@ export const updateMember = async (
                 botSocket &&
                 botSocket.data?.events.includes(Events.TeamMemberUpdate)
             )
-                botSocket.socket.emit("message",(
-                    APIEvents[Events.TeamMemberUpdate],
-                    eventData
+                botSocket.socket.emit(
+                    "message",
+                    (APIEvents[Events.TeamMemberUpdate], eventData)
                 );
         }
     }

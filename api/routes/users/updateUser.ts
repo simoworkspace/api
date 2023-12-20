@@ -46,12 +46,13 @@ export const updateUser = async (req: Request, res: Response) => {
     const userSocket = getSocket(auth as string);
 
     if (userSocket && userSocket.data?.events.includes(Events.UserUpdate))
-        userSocket.socket.emit("message",(
-            APIEvents[Events.UserUpdate],
+        userSocket.socket.emit(
+            "message",
+            (APIEvents[Events.UserUpdate],
             makeEventData({
                 event_type: Events.UserUpdate,
                 payload: updatedUser,
-            })
+            }))
         );
 
     return res.status(HttpStatusCode.Ok).json(updatedUser);

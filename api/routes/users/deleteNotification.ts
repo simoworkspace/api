@@ -44,12 +44,13 @@ export const deleteNotification = async (req: Request, res: Response) => {
             userSocket &&
             userSocket.data?.events.includes(Events.BulkDeleteNotifications)
         )
-            userSocket.socket.emit("message",(
-                APIEvents[Events.BulkDeleteNotifications],
+            userSocket.socket.emit(
+                "message",
+                (APIEvents[Events.BulkDeleteNotifications],
                 makeEventData({
                     payload: data,
                     event_type: Events.BulkDeleteNotifications,
-                })
+                }))
             );
 
         return res.status(HttpStatusCode.Ok).json(data);
@@ -74,12 +75,13 @@ export const deleteNotification = async (req: Request, res: Response) => {
         userSocket &&
         userSocket.data?.events.includes(Events.NotificationDelete)
     )
-        userSocket.socket.emit("message",(
-            APIEvents[Events.NotificationDelete],
+        userSocket.socket.emit(
+            "message",
+            (APIEvents[Events.NotificationDelete],
             makeEventData({
                 event_type: Events.NotificationDelete,
                 payload: { ...notification, user_id: userId },
-            })
+            }))
         );
 
     return res.status(HttpStatusCode.Ok).json(isNotificationDeleted);

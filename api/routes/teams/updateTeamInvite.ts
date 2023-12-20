@@ -61,8 +61,9 @@ export const updateTeamInvite = async (req: Request, res: Response) => {
                 botSocket &&
                 botSocket.data?.events.includes(Events.InviteCodeUpdate)
             )
-                botSocket.socket.emit("message",(
-                    APIEvents[Events.InviteCodeUpdate],
+                botSocket.socket.emit(
+                    "message",
+                    (APIEvents[Events.InviteCodeUpdate],
                     makeEventData({
                         event_type: Events.InviteCodeUpdate,
                         payload: {
@@ -70,7 +71,7 @@ export const updateTeamInvite = async (req: Request, res: Response) => {
                             team_id: team.id,
                             user_id: userId,
                         },
-                    })
+                    }))
                 );
         }
     }

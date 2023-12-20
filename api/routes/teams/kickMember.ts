@@ -118,7 +118,10 @@ export const kickMember = async (req: Request, res: Response) => {
                 botSocket &&
                 botSocket.data?.events.includes(Events.MemberLeave)
             )
-                botSocket.socket.emit("message",(APIEvents[Events.MemberLeave], eventData);
+                botSocket.socket.emit(
+                    "message",
+                    (APIEvents[Events.MemberLeave], eventData)
+                );
         }
     }
 };

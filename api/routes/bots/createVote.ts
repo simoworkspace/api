@@ -60,15 +60,16 @@ export const createVote = async (
 
     const emitEvent = (data: VoteStructure) => {
         if (botSocket && botSocket.data?.events.includes(Events.VoteAdd))
-            botSocket.socket.emit("message",(
-                APIEvents[Events.VoteAdd],
+            botSocket.socket.emit(
+                "message",
+                (APIEvents[Events.VoteAdd],
                 makeEventData({
                     event_type: Events.VoteAdd,
                     payload: {
                         ...data,
                         bot_id: botId,
                     },
-                })
+                }))
             );
     };
 

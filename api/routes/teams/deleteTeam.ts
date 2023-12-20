@@ -42,7 +42,10 @@ export const deleteTeam = async (req: Request, res: Response) => {
     await auditLogModel.deleteOne({ team_id: team.id });
 
     const teamBots = await botModel.find({ _id: { $in: team.bots_id } });
-    const eventData = makeEventData({ event_type: Events.TeamDelete, payload: team });
+    const eventData = makeEventData({
+        event_type: Events.TeamDelete,
+        payload: team,
+    });
 
     for (const bot of teamBots) {
         await bot.updateOne({ $unset: { team_id: 1 } });
@@ -51,7 +54,10 @@ export const deleteTeam = async (req: Request, res: Response) => {
             const botSocket = getSocket(bot.api_key);
 
             if (botSocket && botSocket.data?.events.includes(Events.TeamDelete))
-                botSocket.socket.emit("message",(APIEvents[Events.TeamDelete], eventData);
+                botSocket.socket.emit(
+                    "message",
+                    (APIEvents[Events.TeamDelete], eventData)
+                );
         }
     }
 
