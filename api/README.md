@@ -11,7 +11,10 @@ A autenticação pode ser feita de duas maneiras:
 -   2\. Usando uma api-key gerada no site [Simo botlist](https://bombadeagua.life)
 
 Todas as autenticações devem ser colocada no cabeçalho `Authorization` em uma
-requisição HTTP
+requisição HTTP.
+
+-   Caso use Json Web Token, use o prefixo `User` antes do Json Web Token
+-   Caso use api-key, use o prefixo `Bot` antes da api-key
 
 ### Exemplo
 
@@ -19,7 +22,7 @@ requisição HTTP
 
 ```json
 {
-    "Authorization": "0jija6272bfda-e4jb2bj6bje5c-2icdeg51ee0jb"
+    "Authorization": "Bot 0jija6272bfda-e4jb2bj6bje5c-2icdeg51ee0jb"
 }
 ```
 
@@ -27,7 +30,7 @@ requisição HTTP
 
 ```json
 {
-    "Authorization": "eyJhbGciOiJIUzI1NiJ9.UG9yIHF1ZSB2b2PDqiB0ZW50b3UgZGVjb2RpZmljYXIgaXNzbz8.cXaza7vgMrvJR0MXihfaSh7eJUXzsFdmK-b4c_8dEZg"
+    "Authorization": "User eyJhbGciOiJIUzI1NiJ9.UG9yIHF1ZSB2b2PDqiB0ZW50b3UgZGVjb2RpZmljYXIgaXNzbz8.cXaza7vgMrvJR0MXihfaSh7eJUXzsFdmK-b4c_8dEZg"
 }
 ```
 
