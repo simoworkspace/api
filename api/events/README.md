@@ -70,10 +70,6 @@ Todos os eventos usam a convenção [camel case](https://pt.wikipedia.org/wiki/C
 }
 ```
 
-### Receiving Events
-
-a
-
 #### User Update
 
 Enviado quando as propriedades do usuário atual é alterada. Carga útil é um objeto de [usuário](/api/routes/users/README.md#user-structure)
