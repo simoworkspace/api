@@ -3,7 +3,7 @@ import { NotificationType, TeamPermissions } from "../typings/types";
 
 export const createNotificationValidator = object({
     content: string()
-        .required("\"content\" property is missing")
+        .required('"content" property is missing')
         .min(1, "Feedback content can't be empty"),
     type: number()
         .oneOf(
@@ -15,7 +15,7 @@ export const createNotificationValidator = object({
             ],
             "Invalid feedback type"
         )
-        .required("\"type\" property is missing"),
+        .required('"type" property is missing'),
     url: string().url("Invalid feedback URL"),
 })
     .strict()
@@ -27,12 +27,12 @@ export const createNotificationValidator = object({
 
 export const createTeamValidator = object({
     name: string()
-        .required("\"name\" property is missing")
+        .required('"name" property is missing')
         .min(3, "Team name must be greater than or equal to 3")
         .max(15, "Team name must be less than or equal to 15")
-        .required("\"name\" property is missing"),
+        .required('"name" property is missing'),
     avatar_url: string()
-        .required("\"avatar_url\" property is missing")
+        .required('"avatar_url" property is missing')
         .url("Invalid avatar URL"),
     description: string()
         .min(5, "Description must be greater than or equal to 5")
@@ -87,5 +87,5 @@ export const updateTeamMemberValidator = object({
             [TeamPermissions.Administrator, TeamPermissions.ReadOnly],
             "Invalid permission type"
         )
-        .required("\"permission\" property is missing"),
+        .required('"permission" property is missing'),
 }).noUnknown("Unknown property found");

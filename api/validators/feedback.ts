@@ -6,10 +6,10 @@ export const feedbackValidator = object({
     stars: number()
         .min(1, "Stars must be greater than or equal to 1")
         .max(5, "Stars must be less than or equal to 5")
-        .required("\"stars\" property is missing"),
+        .required('"stars" property is missing'),
     content: string()
         .max(500, "Content must be at most 500 characters")
-        .required("\"content\" property is missing"),
+        .required('"content" property is missing'),
     target_bot_id: string().matches(idPattern, "Invalid target bot ID"),
 })
     .noUnknown("Unknown property found")
