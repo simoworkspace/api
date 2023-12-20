@@ -2,9 +2,17 @@ import type { Request, Response } from "express";
 import { teamModel } from "../../models/Team";
 import { HttpStatusCode } from "axios";
 import { TEAM } from "../../utils/errors.json";
-import { AuditLogActionType, TeamPermissions } from "../../typings/types";
+import {
+    APIEvents,
+    AuditLogActionType,
+    Events,
+    TeamPermissions,
+} from "../../typings/types";
 import { updateTeamMemberValidator } from "../../validators/user";
 import { createAuditLogEntry } from "./createAuditLog";
+import { botModel } from "../../models/Bot";
+import { getSocket } from "../../utils/getSocket";
+import { makeEventData } from "../../utils/makeEventData";
 
 export const updateMember = async (
     req: Request,
@@ -98,7 +106,34 @@ export const updateMember = async (
         reason,
     });
 
-    return res
-        .status(HttpStatusCode.Ok)
-        .json({ id: targetId, permission: newPermission });
+    res.status(HttpStatusCode.Ok).json({
+        id: targetId,
+        permission: newPermission,
+    });
+
+    const teamBots = await botModel.find({ team_id: team.id });
+    const eventData = makeEventData({
+        event_type: Events.TeamMemberUpdate,
+        payload: {
+            member_id: targetId,
+            new_permission: newPermission,
+            old_permission: userMember.permission,
+            team_id: team.id,
+        },
+    });
+
+    for (const bot of teamBots) {
+        if (bot.api_key) {
+            const botSocket = getSocket(bot.api_key);
+
+            if (
+                botSocket &&
+                botSocket.data?.events.includes(Events.TeamMemberUpdate)
+            )
+                botSocket.socket.emit(
+                    APIEvents[Events.TeamMemberUpdate],
+                    eventData
+                );
+        }
+    }
 };

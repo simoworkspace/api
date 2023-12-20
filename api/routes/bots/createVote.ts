@@ -5,13 +5,17 @@ import { BOT, USER } from "../../utils/errors.json";
 import { botModel } from "../../models/Bot";
 import { userModel } from "../../models/User";
 import { getUserId } from "../../utils/getUserId";
+import { getSocket } from "../../utils/getSocket";
+import { APIEvents, Events, VoteStructure } from "../../typings/types";
+import { makeEventData } from "../../utils/makeEventData";
 
 export const createVote = async (
     req: Request,
     res: Response,
     botId: string
 ) => {
-    const userId = await getUserId(req.headers.authorization, res);
+    const { authorization: auth } = req.headers;
+    const userId = await getUserId(auth, res);
 
     if (typeof userId !== "string") return;
 
@@ -52,6 +56,22 @@ export const createVote = async (
         "votes.user_id": user._id,
     });
 
+    const botSocket = getSocket(auth as string);
+
+    const emitEvent = (data: VoteStructure) => {
+        if (botSocket && botSocket.data?.events.includes(Events.VoteAdd))
+            botSocket.socket.emit(
+                APIEvents[Events.VoteAdd],
+                makeEventData({
+                    event_type: Events.VoteAdd,
+                    payload: {
+                        ...data,
+                        bot_id: botId,
+                    },
+                })
+            );
+    };
+
     if (!votes) {
         const voteBody = {
             user_id: user._id,
@@ -62,6 +82,8 @@ export const createVote = async (
         await bot?.updateOne({ $push: { votes: voteBody } }, { new: true });
 
         await sendRequest(voteBody);
+
+        emitEvent(voteBody);
 
         return res.status(HttpStatusCode.Ok).json(voteBody);
     }
@@ -94,9 +116,13 @@ export const createVote = async (
         { new: true }
     );
 
-    const rawVote = vote?.votes.find((vote) => vote.user_id === userId);
+    const rawVote = vote?.votes.find(
+        (vote) => vote.user_id === userId
+    ) as VoteStructure;
 
     await sendRequest(rawVote as unknown as Record<string, unknown>);
+
+    emitEvent(rawVote);
 
     return res.status(HttpStatusCode.Ok).json(rawVote);
 };

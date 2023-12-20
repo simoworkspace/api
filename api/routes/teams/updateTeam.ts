@@ -2,8 +2,10 @@ import type { Request, Response } from "express";
 import { HttpStatusCode } from "axios";
 import { TEAM, USER } from "../../utils/errors.json";
 import {
+    APIEvents,
     AnyAuditLogChange,
     AuditLogActionType,
+    Events,
     PremiumType,
     TeamPermissions,
 } from "../../typings/types";
@@ -14,6 +16,9 @@ import { updateMember } from "./updateMember";
 import { createAuditLogEntry } from "./createAuditLog";
 import { updateTeamInvite } from "./updateTeamInvite";
 import { userModel } from "../../models/User";
+import { botModel } from "../../models/Bot";
+import { getSocket } from "../../utils/getSocket";
+import { makeEventData } from "../../utils/makeEventData";
 
 export const updateTeam = async (req: Request, res: Response) => {
     const { teamId, inviteCode } = req.params;
@@ -114,5 +119,20 @@ export const updateTeam = async (req: Request, res: Response) => {
         changes,
     });
 
-    return res.status(HttpStatusCode.Ok).json(updatedTeam);
+    res.status(HttpStatusCode.Ok).json(updatedTeam);
+
+    const teamBots = await botModel.find({ team_id: teamId });
+    const eventData = makeEventData({
+        event_type: Events.TeamUpdate,
+        payload: updatedTeam,
+    });
+
+    for (const bot of teamBots) {
+        if (!bot.api_key) continue;
+
+        const botSocket = getSocket(bot.api_key);
+
+        if (botSocket && botSocket.data?.events.includes(Events.TeamUpdate))
+            botSocket.socket.emit(APIEvents[Events.TeamUpdate], eventData);
+    }
 };

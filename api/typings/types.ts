@@ -1,3 +1,6 @@
+import { Socket } from "socket.io";
+import { DefaultEventsMap } from "socket.io/dist/typed-events";
+
 /**
  * See https://discord.com/developers/docs/reference#snowflakes
  */
@@ -294,6 +297,8 @@ export enum PremiumType {
 }
 
 export enum Events {
+    Error,
+
     UserUpdate,
     BulkDeleteNotifications,
     NotificationDelete,
@@ -309,6 +314,7 @@ export enum Events {
     TeamMemberUpdate,
     InviteCodeUpdate,
     TeamBotAdd,
+    AuditLogEntryCreate,
 
     BotCreate = 30,
     BotDelete,
@@ -317,6 +323,55 @@ export enum Events {
     FeedbackUpdate,
     VoteAdd,
     FeedbackAdd,
-    WebhookTest,
-    VanityURLCreate,
+}
+
+export const APIEvents = {
+    [Events.UserUpdate]: "userUpdate",
+    [Events.BulkDeleteNotifications]: "bulkDeletNotifications",
+    [Events.NotificationDelete]: "notificationDelete",
+    [Events.NotificationCreate]: "notificationCreate",
+    [Events.TeamCreate]: "teamCreate",
+    [Events.TeamDelete]: "teamDelete",
+    [Events.TeamUpdate]: "teamUpdate",
+    [Events.TeamOwnershipTransfer]: "teamOwnershipTransfer",
+    [Events.MemberJoin]: "memberJoin",
+    [Events.TeamBotRemove]: "teamBotRemove",
+    [Events.MemberLeave]: "memberLeave",
+    [Events.TeamMemberUpdate]: "teamMemberUpdate",
+    [Events.InviteCodeUpdate]: "inviteCodeUpdate",
+    [Events.TeamBotAdd]: "teamBotAdd",
+    [Events.BotCreate]: "botCreate",
+    [Events.BotDelete]: "botDelete",
+    [Events.BotUpdate]: "botUpdate",
+    [Events.FeedbackDelete]: "feedbackDelete",
+    [Events.FeedbackUpdate]: "feedbackUpdate",
+    [Events.VoteAdd]: "voteAdd",
+    [Events.FeedbackAdd]: "feedbackAdd",
+    [Events.AuditLogEntryCreate]: "auditLogEntryCreate",
+    [Events.Error]: "error",
+};
+
+export interface SocketOptions {
+    auth: string;
+    events: Events[];
+}
+
+export interface SocketConnectionStructure {
+    id: string;
+    logged: boolean;
+    data: SocketOptions | null;
+    socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>;
+    connected: boolean;
+}
+
+export enum Opcodes {
+    Payload,
+    Hello,
+    InvalidConnection,
+}
+
+export interface AnyEventData {
+    type: Opcodes;
+    event_type: Events | null;
+    payload: object | null;
 }

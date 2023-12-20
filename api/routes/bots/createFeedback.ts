@@ -5,13 +5,27 @@ import { feedbackModel } from "../../models/Feedback";
 import { feedbackValidator } from "../../validators/feedback";
 import { userModel } from "../../models/User";
 import { createNotification } from "../users/createNotification";
-import { NotificationType } from "../../typings/types";
+import {
+    APIEvents,
+    Events,
+    NotificationType,
+    SocketConnectionStructure,
+} from "../../typings/types";
 import { botModel } from "../../models/Bot";
+import { makeEventData } from "../../utils/makeEventData";
 
 export const createFeedback = async (
     req: Request,
     res: Response,
-    { authorId, botId }: { authorId: string | undefined; botId: string }
+    {
+        authorId,
+        botId,
+        userSocket,
+    }: {
+        authorId: string | undefined;
+        botId: string;
+        userSocket: SocketConnectionStructure | undefined;
+    }
 ) => {
     if (!authorId)
         return res.status(HttpStatusCode.NotFound).json(FEEDBACK.UNKNOWN_USER);
@@ -72,6 +86,15 @@ export const createFeedback = async (
     });
 
     delete (createdFeedback as any)._id;
+
+    if (userSocket && userSocket.data?.events.includes(Events.FeedbackAdd))
+        userSocket.socket.emit(
+            APIEvents[Events.FeedbackAdd],
+            makeEventData({
+                event_type: Events.FeedbackAdd,
+                payload: createdFeedback,
+            })
+        );
 
     return res.status(HttpStatusCode.Created).json(createdFeedback);
 };

@@ -8,9 +8,11 @@ import { getUserId } from "../../utils/getUserId";
 import { createFeedback } from "./createFeedback";
 import { createVote } from "./createVote";
 import { userModel } from "../../models/User";
-import { UserFlags } from "../../typings/types";
+import { APIEvents, Events, UserFlags } from "../../typings/types";
 import { PremiumConfigurations } from "../../utils/PremiumConfigurations";
 import { testWebhook } from "./testWebhook";
+import { getSocket } from "../../utils/getSocket";
+import { makeEventData } from "../../utils/makeEventData";
 
 /**
  * Creates a bot, vote, or submit a feedback
@@ -20,17 +22,23 @@ export const createBot = async (req: Request, res: Response) => {
 
     if (req.params.wmethod === "test") return testWebhook(req, res);
 
-    const userId = await getUserId(req.headers.authorization, res);
+    const { authorization: auth } = req.headers;
+    const userId = await getUserId(auth, res);
 
     if (typeof userId !== "string") return;
 
     const exists = await botModel.exists({ _id: botId });
+    const userSocket = getSocket(auth as string);
 
     if (method === "feedbacks") {
         if (!exists)
             return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_BOT);
 
-        return createFeedback(req, res, { authorId: userId, botId });
+        return createFeedback(req, res, {
+            authorId: userId,
+            botId,
+            userSocket,
+        });
     }
 
     if (method === "votes") {
@@ -95,6 +103,12 @@ export const createBot = async (req: Request, res: Response) => {
     await user.updateOne({
         $set: { flags: user.flags | UserFlags.Developer },
     });
+
+    if (userSocket && userSocket.data?.events.includes(Events.BotCreate))
+        userSocket.socket.emit(
+            APIEvents[Events.BotCreate],
+            makeEventData({ event_type: Events.BotCreate, payload: createdBot })
+        );
 
     return res.status(HttpStatusCode.Ok).json(createdBot);
 };

@@ -4,9 +4,13 @@ import { USER, GENERICS } from "../../utils/errors.json";
 import { userModel } from "../../models/User";
 import { updateUserValidator } from "../../validators/user";
 import { getUserId } from "../../utils/getUserId";
+import { APIEvents, Events } from "../../typings/types";
+import { getSocket } from "../../utils/getSocket";
+import { makeEventData } from "../../utils/makeEventData";
 
 export const updateUser = async (req: Request, res: Response) => {
-    const userId = await getUserId(req.headers.authorization, res);
+    const { authorization: auth } = req.headers;
+    const userId = await getUserId(auth, res);
 
     if (typeof userId !== "string") return;
 
@@ -36,8 +40,19 @@ export const updateUser = async (req: Request, res: Response) => {
     const updatedUser = await userModel.findByIdAndUpdate(
         userId,
         { $set: body },
-        { new: true }
+        { new: true, projection: { __v: 0 } }
     );
+
+    const userSocket = getSocket(auth as string);
+
+    if (userSocket && userSocket.data?.events.includes(Events.UserUpdate))
+        userSocket.socket.emit(
+            APIEvents[Events.UserUpdate],
+            makeEventData({
+                event_type: Events.UserUpdate,
+                payload: updatedUser,
+            })
+        );
 
     return res.status(HttpStatusCode.Ok).json(updatedUser);
 };

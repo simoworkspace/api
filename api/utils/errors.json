@@ -39,6 +39,10 @@
         "WEBHOOK_URL_IS_NOT_DEFINED": {
             "message": "Webhook URL not found",
             "code": 1010
+        },
+        "API_KEY_IS_REQUIRED_TO_USE_WEBHOOK": {
+            "message": "Api key is required to use webhook URL",
+            "code": 1011
         }
     },
     "GENERICS": {
@@ -91,6 +95,10 @@
         "UPDATE_VALUE_ERROR": {
             "message": "The provided value for the key is identical to the current value",
             "code": 2011
+        },
+        "INVALID_AUTH_PREFIX": {
+            "message": "Invalid auth prefix",
+            "code": 2012
         }
     },
     "GUILD": {
@@ -294,6 +302,24 @@
         "TEAM_LIMIT_EXCEEDED": {
             "message": "Team limit exceeded. Go premium to increase limit",
             "code": 6035
+        },
+        "AUDIT_LOG_REASON_LIMIT_EXCEEDED": {
+            "message": "Audit log reason limit exceeded",
+            "code": 6036
+        },
+        "UNKNOWN_TEAM_VANITY_URL": {
+            "message": "Unknown vanity URL",
+            "code": 6037
+        }
+    },
+    "SOCKET": {
+        "INVALID_EVENTS": {
+            "message": "Invalid array of events",
+            "code": 7001
+        },
+        "UNKNOWN_CONNECTION": {
+            "message": "Unknown connection",
+            "code": 7002
         }
     }
 }

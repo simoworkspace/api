@@ -3,8 +3,16 @@ import { teamModel } from "../../models/Team";
 import { HttpStatusCode } from "axios";
 import { TEAM } from "../../utils/errors.json";
 import { getUserId } from "../../utils/getUserId";
-import { AuditLogActionType, TeamPermissions } from "../../typings/types";
+import {
+    APIEvents,
+    AuditLogActionType,
+    Events,
+    TeamPermissions,
+} from "../../typings/types";
 import { createAuditLogEntry } from "./createAuditLog";
+import { botModel } from "../../models/Bot";
+import { getSocket } from "../../utils/getSocket";
+import { makeEventData } from "../../utils/makeEventData";
 
 export const updateTeamInvite = async (req: Request, res: Response) => {
     const team = await teamModel.findOne({ id: req.params.teamId });
@@ -41,5 +49,29 @@ export const updateTeamInvite = async (req: Request, res: Response) => {
         ],
     });
 
-    return res.status(HttpStatusCode.Ok).json({ invite_code: inviteCode });
+    res.status(HttpStatusCode.Ok).json({ invite_code: inviteCode });
+
+    const teamBots = await botModel.find({ team_id: team.id });
+
+    for (const bot of teamBots) {
+        if (bot.api_key) {
+            const botSocket = getSocket(bot.api_key);
+
+            if (
+                botSocket &&
+                botSocket.data?.events.includes(Events.InviteCodeUpdate)
+            )
+                botSocket.socket.emit(
+                    APIEvents[Events.InviteCodeUpdate],
+                    makeEventData({
+                        event_type: Events.InviteCodeUpdate,
+                        payload: {
+                            invite_code: inviteCode,
+                            team_id: team.id,
+                            user_id: userId,
+                        },
+                    })
+                );
+        }
+    }
 };

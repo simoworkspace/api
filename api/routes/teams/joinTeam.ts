@@ -3,11 +3,19 @@ import { getUserId } from "../../utils/getUserId";
 import { teamModel } from "../../models/Team";
 import { HttpStatusCode } from "axios";
 import { TEAM } from "../../utils/errors.json";
-import { AuditLogActionType, TeamPermissions } from "../../typings/types";
+import {
+    APIEvents,
+    AuditLogActionType,
+    Events,
+    TeamPermissions,
+} from "../../typings/types";
 import { changeOwner } from "./changeOwner";
 import { createAuditLogEntry } from "./createAuditLog";
 import { userModel } from "../../models/User";
 import { PremiumConfigurations } from "../../utils/PremiumConfigurations";
+import { botModel } from "../../models/Bot";
+import { getSocket } from "../../utils/getSocket";
+import { makeEventData } from "../../utils/makeEventData";
 
 export const joinTeam = async (req: Request, res: Response) => {
     const userId = await getUserId(req.headers.authorization, res);
@@ -65,9 +73,11 @@ export const joinTeam = async (req: Request, res: Response) => {
             .status(HttpStatusCode.BadRequest)
             .json(TEAM.ALREADY_A_MEMBER);
 
+    const memberData = { id: userId, permission: TeamPermissions.ReadOnly };
+
     await team.updateOne({
         $push: {
-            members: { id: userId, permission: TeamPermissions.ReadOnly },
+            members: memberData,
         },
     });
     await createAuditLogEntry({
@@ -81,5 +91,20 @@ export const joinTeam = async (req: Request, res: Response) => {
     if (team.vanity_url && inviteCode === team.vanity_url.code)
         await team.updateOne({ $inc: { "vanity_url.uses": 1 } });
 
-    return res.status(HttpStatusCode.NoContent).send();
+    res.status(HttpStatusCode.NoContent).send();
+
+    const teamBots = await botModel.find({ team_id: teamId });
+    const eventData = makeEventData({
+        event_type: Events.MemberJoin,
+        payload: { ...memberData, team_id: teamId },
+    });
+
+    for (const bot of teamBots) {
+        if (bot.api_key) {
+            const botSocket = getSocket(bot.api_key);
+
+            if (botSocket && botSocket.data?.events.includes(Events.MemberJoin))
+                botSocket.socket.emit(APIEvents[Events.MemberJoin], eventData);
+        }
+    }
 };

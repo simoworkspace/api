@@ -3,17 +3,20 @@ import { getUserId } from "../../utils/getUserId";
 import { HttpStatusCode } from "axios";
 import { TEAM } from "../../utils/errors.json";
 import { teamModel } from "../../models/Team";
-import { TeamPermissions } from "../../typings/types";
+import { APIEvents, Events, TeamPermissions } from "../../typings/types";
 import { createTeamValidator } from "../../validators/user";
 import { addBot } from "./addBot";
 import { auditLogModel } from "../../models/AuditLog";
 import { PremiumConfigurations } from "../../utils/PremiumConfigurations";
 import { userModel } from "../../models/User";
+import { getSocket } from "../../utils/getSocket";
+import { makeEventData } from "../../utils/makeEventData";
 
 export const createTeam = async (req: Request, res: Response) => {
     if (req.params.inviteCode === "bots") return addBot(req, res);
 
-    const userId = await getUserId(req.headers.authorization, res);
+    const { authorization: auth } = req.headers;
+    const userId = await getUserId(auth, res);
 
     if (typeof userId !== "string") return;
 
@@ -54,6 +57,17 @@ export const createTeam = async (req: Request, res: Response) => {
     await auditLogModel.create({ _id: teamId });
 
     delete (createdTeam as any)._id;
+
+    const userSocket = getSocket(auth as string);
+
+    if (userSocket && userSocket.data?.events.includes(Events.TeamCreate))
+        userSocket.socket.emit(
+            APIEvents[Events.TeamCreate],
+            makeEventData({
+                event_type: Events.TeamCreate,
+                payload: createdTeam,
+            })
+        );
 
     return res.status(HttpStatusCode.Created).json(createdTeam);
 };

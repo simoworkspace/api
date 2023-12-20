@@ -77,3 +77,74 @@ app.listen(80, async () => {
 
 process.on("uncaughtException", console.error);
 process.on("unhandledRejection", console.error);
+
+import { Server } from "socket.io";
+import { createServer } from "http";
+import {
+    APIEvents,
+    Events,
+    Opcodes,
+    SocketConnectionStructure,
+} from "./typings/types";
+import { botModel } from "./models/Bot";
+import { GENERICS, SOCKET } from "./utils/errors.json";
+import { makeEventData } from "./utils/makeEventData";
+
+const server = createServer(app);
+const io = new Server(server);
+
+export const sockets = [] as SocketConnectionStructure[];
+
+io.on("connect", (socket) => {
+    sockets.push({
+        id: socket.id,
+        logged: false,
+        data: null,
+        socket,
+        connected: true,
+    });
+
+    socket.on("login", async ({ auth, events }) => {
+        const authExists = await botModel.exists({ api_key: auth });
+
+        if (!authExists)
+            return socket.emit(
+                APIEvents[Events.Error],
+                makeEventData({
+                    type: Opcodes.InvalidConnection,
+                    payload: GENERICS.INVALID_AUTH,
+                })
+            );
+        if (
+            !Array.isArray(events) ||
+            !events.every((event) => Number.isInteger(event))
+        )
+            return socket.emit(
+                APIEvents[Events.Error],
+                makeEventData({
+                    type: Opcodes.InvalidConnection,
+                    payload: SOCKET.INVALID_EVENTS,
+                })
+            );
+
+        const skt = sockets.find((skt) => skt.id === socket.id);
+
+        if (!skt)
+            return socket.emit(
+                APIEvents[Events.Error],
+                makeEventData({
+                    type: Opcodes.InvalidConnection,
+                    payload: SOCKET.UNKNOWN_CONNECTION,
+                })
+            );
+
+        skt.logged = true;
+        skt.data = { auth, events };
+    });
+
+    socket.on("disconnect", () => {
+        const skt = sockets.find((skt) => skt.id === socket.id);
+
+        if (skt) skt.connected = false;
+    });
+});

@@ -5,18 +5,28 @@ import { patchBotValidator } from "../../validators/bots";
 import { BOT } from "../../utils/errors.json";
 import { updateFeedback } from "./updateFeedback";
 import { getUserId } from "../../utils/getUserId";
+import { getSocket } from "../../utils/getSocket";
+import { APIEvents, Events } from "../../typings/types";
+import { makeEventData } from "../../utils/makeEventData";
 
 /**
  * Updates a bot or feedback
  */
 export const updateBotOrFeedback = async (req: Request, res: Response) => {
     const { id: botId, method } = req.params;
-    const userId = await getUserId(req.headers.authorization, res);
+    const { authorization: auth } = req.headers;
+    const userId = await getUserId(auth, res);
 
     if (typeof userId !== "string") return;
 
+    const userSocket = getSocket(auth as string);
+
     if (method === "feedbacks")
-        return updateFeedback(req, res, { botId, authorId: userId });
+        return updateFeedback(req, res, {
+            botId,
+            authorId: userId,
+            userSocket,
+        });
 
     const bot = await botModel.findById({
         _id: botId,
@@ -47,6 +57,12 @@ export const updateBotOrFeedback = async (req: Request, res: Response) => {
             new: true,
         }
     );
+
+    if (userSocket && userSocket.data?.events.includes(Events.BotUpdate))
+        userSocket.socket.emit(
+            APIEvents[Events.BotUpdate],
+            makeEventData({ event_type: Events.BotUpdate, payload: updatedBot })
+        );
 
     return res.status(HttpStatusCode.Ok).json(updatedBot);
 };

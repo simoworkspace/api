@@ -2,9 +2,17 @@ import { HttpStatusCode } from "axios";
 import type { Request, Response } from "express";
 import { USER, TEAM } from "../../utils/errors.json";
 import { userModel } from "../../models/User";
-import { AuditLogActionType, TeamPermissions } from "../../typings/types";
+import {
+    APIEvents,
+    AuditLogActionType,
+    Events,
+    TeamPermissions,
+} from "../../typings/types";
 import { teamModel } from "../../models/Team";
 import { createAuditLogEntry } from "./createAuditLog";
+import { botModel } from "../../models/Bot";
+import { getSocket } from "../../utils/getSocket";
+import { makeEventData } from "../../utils/makeEventData";
 
 export const changeOwner = async (
     res: Response,
@@ -87,5 +95,26 @@ export const changeOwner = async (
         reason,
     });
 
-    return res.status(HttpStatusCode.Ok).json(updatedTeam);
+    res.status(HttpStatusCode.Ok).json(updatedTeam);
+
+    const teamBots = await botModel.find({ team_id: teamId });
+    const eventData = makeEventData({
+        event_type: Events.TeamOwnershipTransfer,
+        payload: { ...team, old_owner_id: userId },
+    });
+
+    for (const bot of teamBots) {
+        if (bot.api_key) {
+            const botSocket = getSocket(bot.api_key);
+
+            if (
+                botSocket &&
+                botSocket.data?.events.includes(Events.TeamOwnershipTransfer)
+            )
+                botSocket.socket.emit(
+                    APIEvents[Events.TeamOwnershipTransfer],
+                    eventData
+                );
+        }
+    }
 };

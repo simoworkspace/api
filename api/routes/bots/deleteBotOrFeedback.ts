@@ -5,15 +5,21 @@ import { feedbackModel } from "../../models/Feedback";
 import { BOT, FEEDBACK, GENERICS } from "../../utils/errors.json";
 import { getUserId } from "../../utils/getUserId";
 import { teamModel } from "../../models/Team";
+import { APIEvents, Events } from "../../typings/types";
+import { getSocket } from "../../utils/getSocket";
+import { makeEventData } from "../../utils/makeEventData";
 
 /**
  * Deletes a bot or feedback
  */
 export const deleteBotOrFeedback = async (req: Request, res: Response) => {
     const { id: botId, method } = req.params;
-    const userId = await getUserId(req.headers.authorization, res);
+    const { authorization: auth } = req.headers;
+    const userId = await getUserId(auth, res);
 
     if (typeof userId !== "string") return;
+
+    const userSocket = getSocket(auth as string);
 
     if (method === "feedbacks") {
         const feedback = await feedbackModel.findOne({
@@ -27,6 +33,18 @@ export const deleteBotOrFeedback = async (req: Request, res: Response) => {
                 .json(FEEDBACK.UNKNOWN_FEEDBACK);
 
         await feedback.deleteOne();
+
+        if (
+            userSocket &&
+            userSocket.data?.events.includes(Events.FeedbackDelete)
+        )
+            userSocket.socket.emit(
+                APIEvents[Events.FeedbackDelete],
+                makeEventData({
+                    event_type: Events.FeedbackDelete,
+                    payload: feedback,
+                })
+            );
 
         return res.status(HttpStatusCode.Ok).json(GENERICS.SUCCESS);
     }
@@ -46,6 +64,12 @@ export const deleteBotOrFeedback = async (req: Request, res: Response) => {
     }
 
     await bot.deleteOne();
+
+    if (userSocket && userSocket.data?.events.includes(Events.BotDelete))
+        userSocket.socket.emit(
+            APIEvents[Events.BotDelete],
+            makeEventData({ event_type: Events.BotDelete, payload: bot })
+        );
 
     return res.status(HttpStatusCode.Ok).json(bot);
 };

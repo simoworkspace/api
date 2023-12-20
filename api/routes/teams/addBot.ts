@@ -3,15 +3,16 @@ import { teamModel } from "../../models/Team";
 import { HttpStatusCode } from "axios";
 import { TEAM, BOT } from "../../utils/errors.json";
 import { getUserId } from "../../utils/getUserId";
-import { TeamPermissions } from "../../typings/types";
+import { APIEvents, Events, TeamPermissions } from "../../typings/types";
 import { botModel } from "../../models/Bot";
+import { getSocket } from "../../utils/getSocket";
+import { makeEventData } from "../../utils/makeEventData";
 
 export const addBot = async (req: Request, res: Response) => {
     const team = await teamModel.findOne({ id: req.params.teamId }, { _id: 0 });
 
     if (!team)
         return res.status(HttpStatusCode.NotFound).json(TEAM.UNKNOWN_TEAM);
-    req.headers;
 
     const userId = await getUserId(req.headers.authorization, res);
 
@@ -56,5 +57,20 @@ export const addBot = async (req: Request, res: Response) => {
     await bot.updateOne({ team_id: team.id });
     await team.updateOne({ $push: { bots_id: botId } });
 
-    return res.status(HttpStatusCode.Ok).json(team);
+    res.status(HttpStatusCode.Ok).json(team);
+
+    const teamBots = await botModel.find({ team_id: team.id });
+    const eventData = makeEventData({
+        event_type: Events.TeamBotAdd,
+        payload: { ...team, bot_id: botId },
+    });
+
+    for (const bot of teamBots) {
+        if (bot.api_key) {
+            const botSocket = getSocket(bot.api_key);
+
+            if (botSocket && botSocket.data?.events.includes(Events.TeamBotAdd))
+                botSocket.socket.emit(APIEvents[Events.TeamBotAdd], eventData);
+        }
+    }
 };

@@ -3,11 +3,25 @@ import { feedbackModel } from "../../models/Feedback";
 import { FEEDBACK } from "../../utils/errors.json";
 import type { Request, Response } from "express";
 import { patchFeedbackValidator } from "../../validators/feedback";
+import {
+    APIEvents,
+    Events,
+    SocketConnectionStructure,
+} from "../../typings/types";
+import { makeEventData } from "../../utils/makeEventData";
 
 export const updateFeedback = async (
     req: Request,
     res: Response,
-    { botId, authorId }: { botId: string; authorId: string }
+    {
+        botId,
+        authorId,
+        userSocket,
+    }: {
+        botId: string;
+        authorId: string;
+        userSocket: SocketConnectionStructure | undefined;
+    }
 ) => {
     const { body } = req;
     const feedback = await feedbackModel.findOne({
@@ -48,6 +62,15 @@ export const updateFeedback = async (
         { $set: { ...body, edited: true } },
         { new: true, projection: { _id: 0 } }
     );
+
+    if (userSocket && userSocket.data?.events.includes(Events.FeedbackUpdate))
+        userSocket.socket.emit(
+            APIEvents[Events.FeedbackUpdate],
+            makeEventData({
+                event_type: Events.FeedbackUpdate,
+                payload: updatedFeedback,
+            })
+        );
 
     return res.status(HttpStatusCode.Ok).json(updatedFeedback);
 };
