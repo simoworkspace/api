@@ -61,7 +61,7 @@ export const updateTeamInvite = async (req: Request, res: Response) => {
                 botSocket &&
                 botSocket.data?.events.includes(Events.InviteCodeUpdate)
             )
-                botSocket.socket.emit(
+                botSocket.socket.emit("event",
                     APIEvents[Events.InviteCodeUpdate],
                     makeEventData({
                         event_type: Events.InviteCodeUpdate,

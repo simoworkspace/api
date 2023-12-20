@@ -59,7 +59,7 @@ export const removeBot = async (req: Request, res: Response) => {
                 botSocket &&
                 botSocket.data?.events.includes(Events.TeamBotRemove)
             )
-                botSocket.socket.emit(
+                botSocket.socket.emit("event",
                     APIEvents[Events.TeamBotRemove],
                     eventData
                 );

@@ -64,7 +64,7 @@ export const updateFeedback = async (
     );
 
     if (userSocket && userSocket.data?.events.includes(Events.FeedbackUpdate))
-        userSocket.socket.emit(
+        userSocket.socket.emit("event",
             APIEvents[Events.FeedbackUpdate],
             makeEventData({
                 event_type: Events.FeedbackUpdate,

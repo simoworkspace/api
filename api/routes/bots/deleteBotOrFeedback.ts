@@ -38,7 +38,7 @@ export const deleteBotOrFeedback = async (req: Request, res: Response) => {
             userSocket &&
             userSocket.data?.events.includes(Events.FeedbackDelete)
         )
-            userSocket.socket.emit(
+            userSocket.socket.emit("event",
                 APIEvents[Events.FeedbackDelete],
                 makeEventData({
                     event_type: Events.FeedbackDelete,
@@ -66,7 +66,7 @@ export const deleteBotOrFeedback = async (req: Request, res: Response) => {
     await bot.deleteOne();
 
     if (userSocket && userSocket.data?.events.includes(Events.BotDelete))
-        userSocket.socket.emit(
+        userSocket.socket.emit("event",
             APIEvents[Events.BotDelete],
             makeEventData({ event_type: Events.BotDelete, payload: bot })
         );

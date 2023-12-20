@@ -88,7 +88,7 @@ export const createFeedback = async (
     delete (createdFeedback as any)._id;
 
     if (userSocket && userSocket.data?.events.includes(Events.FeedbackAdd))
-        userSocket.socket.emit(
+        userSocket.socket.emit("event",
             APIEvents[Events.FeedbackAdd],
             makeEventData({
                 event_type: Events.FeedbackAdd,

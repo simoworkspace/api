@@ -51,7 +51,7 @@ export const deleteTeam = async (req: Request, res: Response) => {
             const botSocket = getSocket(bot.api_key);
 
             if (botSocket && botSocket.data?.events.includes(Events.TeamDelete))
-                botSocket.socket.emit(APIEvents[Events.TeamDelete], eventData);
+                botSocket.socket.emit("event",APIEvents[Events.TeamDelete], eventData);
         }
     }
 

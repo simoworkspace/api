@@ -108,7 +108,7 @@ io.on("connect", (socket) => {
         const authExists = await botModel.exists({ api_key: auth });
 
         if (!authExists)
-            return socket.emit(
+            return socket.emit("event",
                 APIEvents[Events.Error],
                 makeEventData({
                     type: Opcodes.InvalidConnection,
@@ -119,7 +119,7 @@ io.on("connect", (socket) => {
             !Array.isArray(events) ||
             !events.every((event) => Number.isInteger(event))
         )
-            return socket.emit(
+            return socket.emit("event",
                 APIEvents[Events.Error],
                 makeEventData({
                     type: Opcodes.InvalidConnection,
@@ -130,7 +130,7 @@ io.on("connect", (socket) => {
         const skt = sockets.find((skt) => skt.id === socket.id);
 
         if (!skt)
-            return socket.emit(
+            return socket.emit("event",
                 APIEvents[Events.Error],
                 makeEventData({
                     type: Opcodes.InvalidConnection,

@@ -61,7 +61,7 @@ export const createTeam = async (req: Request, res: Response) => {
     const userSocket = getSocket(auth as string);
 
     if (userSocket && userSocket.data?.events.includes(Events.TeamCreate))
-        userSocket.socket.emit(
+        userSocket.socket.emit("event",
             APIEvents[Events.TeamCreate],
             makeEventData({
                 event_type: Events.TeamCreate,

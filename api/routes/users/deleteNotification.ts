@@ -44,7 +44,7 @@ export const deleteNotification = async (req: Request, res: Response) => {
             userSocket &&
             userSocket.data?.events.includes(Events.BulkDeleteNotifications)
         )
-            userSocket.socket.emit(
+            userSocket.socket.emit("event",
                 APIEvents[Events.BulkDeleteNotifications],
                 makeEventData({
                     payload: data,
@@ -74,7 +74,7 @@ export const deleteNotification = async (req: Request, res: Response) => {
         userSocket &&
         userSocket.data?.events.includes(Events.NotificationDelete)
     )
-        userSocket.socket.emit(
+        userSocket.socket.emit("event",
             APIEvents[Events.NotificationDelete],
             makeEventData({
                 event_type: Events.NotificationDelete,

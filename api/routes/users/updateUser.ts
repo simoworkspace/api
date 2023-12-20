@@ -46,7 +46,7 @@ export const updateUser = async (req: Request, res: Response) => {
     const userSocket = getSocket(auth as string);
 
     if (userSocket && userSocket.data?.events.includes(Events.UserUpdate))
-        userSocket.socket.emit(
+        userSocket.socket.emit("event",
             APIEvents[Events.UserUpdate],
             makeEventData({
                 event_type: Events.UserUpdate,
