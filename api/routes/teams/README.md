@@ -54,6 +54,7 @@
 | action_type | number                                                     | O [tipo da ação](#audit-log-entry-action-types) da entrada |
 | changes     | [AuditLogEntryChange](#audit-log-entry-change-structure)[] | As alterações feita na entrada                             |
 | target_id   | Snowflake?                                                 | O ID do alvo da entrada                                    |
+| reason?     | string (1-428)                                             | A razão da ação                                            |
 
 ## Audit-Log Entry Action Types
 
@@ -162,6 +163,8 @@ Retorna um objeto de [vanity url](#vanity-url-structure). Retorna um
 Transfira a posse de um time para outro usuário, retorna o objeto do
 [time](#team-structure) atualizado
 
+> Está rota suporta o cabeçalho `X-Audit-Log-Reason`
+
 ## Join team
 
 ### PUT `/api/teams/{team.id}/{team.invite_code}`
@@ -185,6 +188,8 @@ Remova um bot do time, retorna uma resposta `204: No Content` vazia
 ### DELETE `/api/teams/{team.id}/members/{member.id}`
 
 Expulse um membro do time, retorna o objeto do [membro](#team-member-structure) removido
+
+> Está rota suporta o cabeçalho `X-Audit-Log-Reason`
 
 ## Leave team
 
@@ -220,6 +225,8 @@ Modifique um membro de um time, retorn um objeto de [membro](#team-member-struct
 | NAME       | TYPE         | DESCRIPTION                |
 | ---------- | ------------ | -------------------------- |
 | permission | number (0-1) | A nova permissão do membro |
+
+> Está rota suporta o cabeçalho `X-Audit-Log-Reason`
 
 -   Ressalvas
     -   Você não pode atualizar um membro que tem a mesma permissão que você
