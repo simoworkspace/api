@@ -111,7 +111,7 @@ export const changeOwner = async (
                 botSocket &&
                 botSocket.data?.events.includes(Events.TeamOwnershipTransfer)
             )
-                botSocket.socket.emit(
+                botSocket.socket.emit("message",(
                     APIEvents[Events.TeamOwnershipTransfer],
                     eventData
                 );

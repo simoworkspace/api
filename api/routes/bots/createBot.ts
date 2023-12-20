@@ -105,7 +105,7 @@ export const createBot = async (req: Request, res: Response) => {
     });
 
     if (userSocket && userSocket.data?.events.includes(Events.BotCreate))
-        userSocket.socket.emit(
+        userSocket.socket.emit("message",(
             APIEvents[Events.BotCreate],
             makeEventData({ event_type: Events.BotCreate, payload: createdBot })
         );

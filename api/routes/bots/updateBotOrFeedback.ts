@@ -59,7 +59,7 @@ export const updateBotOrFeedback = async (req: Request, res: Response) => {
     );
 
     if (userSocket && userSocket.data?.events.includes(Events.BotUpdate))
-        userSocket.socket.emit(
+        userSocket.socket.emit("message",(
             APIEvents[Events.BotUpdate],
             makeEventData({ event_type: Events.BotUpdate, payload: updatedBot })
         );
