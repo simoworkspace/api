@@ -10,6 +10,7 @@ import { fetchUserTeams } from "./fetchUserTeams";
 import { fetchAuditLogs } from "./fetchAuditLogs";
 import { fetchTeamBots } from "./fetchTeamBots";
 import { fetchTeamMembers } from "./fetchTeamMembers";
+import { getTeamVanityURL } from "./getTeamVanityURL";
 
 export const getTeam = async (req: Request, res: Response) => {
     const { teamId, inviteCode } = req.params;
@@ -20,6 +21,7 @@ export const getTeam = async (req: Request, res: Response) => {
     if (inviteCode === "audit-logs") return fetchAuditLogs(res, teamId, userId);
     if (inviteCode === "bots") return fetchTeamBots(req, res);
     if (inviteCode === "members") return fetchTeamMembers(req, res);
+    if (inviteCode === "vanity-url") return getTeamVanityURL(req, res);
 
     const users = await userModel.find({}, { avatar: 1, username: 1 });
 

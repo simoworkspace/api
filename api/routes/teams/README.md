@@ -151,6 +151,10 @@ do [membro](#team-member-structure)
 Busque por um membro de um time, retorna o objeto do
 [membro](#team-member-structure) encontrado
 
+## Get team vanity URL
+
+Retorna um objeto de [vanity url](#vanity-url-structure). Retorna um
+
 ## Change team owner
 
 ### PUT `/api/teams/{team.id}/change-owner/{member.id}`
