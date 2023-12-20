@@ -105,6 +105,11 @@ io.on("connect", (socket) => {
     });
 
     socket.on("login", async ({ auth, events }) => {
+        socket.emit(
+            APIEvents[Events.Hello],
+            makeEventData({ type: Opcodes.Hello, payload: { auth } })
+        );
+
         const authExists = await botModel.exists({ api_key: auth });
 
         if (!authExists)
