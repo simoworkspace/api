@@ -53,7 +53,7 @@
 | id          | string                                                     | O ID da entrada                                            |
 | action_type | number                                                     | O [tipo da ação](#audit-log-entry-action-types) da entrada |
 | changes     | [AuditLogEntryChange](#audit-log-entry-change-structure)[] | As alterações feita na entrada                             |
-| target_id   | Snowflake?                                                 | O ID do alvo da entrada                                    |
+| target_id?  | Snowflake                                                  | O ID do alvo da entrada                                    |
 | reason?     | string (1-428)                                             | A razão da ação                                            |
 
 ## Audit-Log Entry Action Types
