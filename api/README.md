@@ -40,6 +40,10 @@ requisição HTTP.
 }
 ```
 
+## Eventos
+
+A Simo API suporta uma variedade de eventos usando socket, visite a [documentação](/api/events/README.md) para saber mais.
+
 ## Tipos
 
 Comos os tipos são documentados? Os tipos seguem o padrão do TypeScript. Alguns
