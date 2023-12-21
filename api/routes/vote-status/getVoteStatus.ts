@@ -6,12 +6,14 @@ import { isUsingJWT } from "../../utils/isUsingJWT";
 import { JwtPayload, decode } from "jsonwebtoken";
 import { userModel } from "../../models/User";
 import { PremiumConfigurations } from "../../utils/PremiumConfigurations";
+import { sanitizeAuth } from "../../utils/sanitizeAuth";
 
 export const getVoteStatus = async (req: Request, res: Response) => {
-    const isUsingJwt = isUsingJWT(req.headers.authorization as string);
+    const { authorization: auth } = req.headers;
+    const isUsingJwt = isUsingJWT(auth as string);
 
     const userId = isUsingJwt
-        ? (decode(req.headers.authorization as string) as JwtPayload).id
+        ? (decode(auth as string) as JwtPayload).id
         : req.params.userId;
 
     if (!userId)
@@ -24,7 +26,8 @@ export const getVoteStatus = async (req: Request, res: Response) => {
 
     const botId = isUsingJwt
         ? req.params.userId
-        : (await botModel.findOne({ api_key: req.headers.authorization }))?._id;
+        : (await botModel.findOne({ api_key: sanitizeAuth(auth as string) }))
+            ?._id;
 
     const bot = await botModel.findById(botId);
 
