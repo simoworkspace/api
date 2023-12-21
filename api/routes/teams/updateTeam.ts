@@ -9,7 +9,7 @@ import {
     PremiumType,
     TeamPermissions,
 } from "../../typings/types";
-import { updateTeamValidator } from "../../validators/user";
+import { updateTeamValidator } from "../../validators/team";
 import { getUserId } from "../../utils/getUserId";
 import { teamModel } from "../../models/Team";
 import { updateMember } from "./updateMember";

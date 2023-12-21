@@ -4,7 +4,7 @@ import { HttpStatusCode } from "axios";
 import { TEAM } from "../../utils/errors.json";
 import { teamModel } from "../../models/Team";
 import { APIEvents, Events, TeamPermissions } from "../../typings/types";
-import { createTeamValidator } from "../../validators/user";
+import { createTeamValidator } from "../../validators/team";
 import { addBot } from "./addBot";
 import { auditLogModel } from "../../models/AuditLog";
 import { PremiumConfigurations } from "../../utils/PremiumConfigurations";

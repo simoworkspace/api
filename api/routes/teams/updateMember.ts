@@ -8,7 +8,7 @@ import {
     Events,
     TeamPermissions,
 } from "../../typings/types";
-import { updateTeamMemberValidator } from "../../validators/user";
+import { updateTeamMemberValidator } from "../../validators/team";
 import { createAuditLogEntry } from "./createAuditLog";
 import { botModel } from "../../models/Bot";
 import { getSocket } from "../../utils/getSocket";
