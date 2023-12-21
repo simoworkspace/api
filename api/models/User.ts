@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { PremiumType, type UserStructure } from "../typings/types";
+import { PremiumType, UserFlags, type UserStructure } from "../typings/types";
 
 const rawUserSchema = new Schema<UserStructure>(
     {
@@ -29,7 +29,7 @@ const rawUserSchema = new Schema<UserStructure>(
         flags: {
             type: Number,
             required: true,
-            default: 0,
+            default: UserFlags.None,
         },
         premium_type: {
             type: Number,
