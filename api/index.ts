@@ -22,24 +22,31 @@ import { updateTeam } from "./routes/teams/updateTeam";
 import { joinTeam } from "./routes/teams/joinTeam";
 import { fetchDiscordUser } from "./routes/discord/fetchDiscordUser";
 import { Routes } from "./utils/Routes";
+import { rateLimit } from "express-rate-limit";
 
 load();
 
 const app = express();
+
+const limiter = rateLimit({
+    windowMs: 120000,
+    limit: 100
+});
 
 app.set("trust proxy", 1);
 app.use(
     express.json({ strict: true }),
     cors({
         credentials: true,
-        origin: ["https://simo-botlist.vercel.app", "http://localhost:5173"],
+        origin: ["https://simo-botlist.vercel.app", "https://bombadeagua.life"],
     }),
     cookieParser(),
     (_req, _res, next) => {
         requestCount++;
 
         next();
-    }
+    },
+    limiter
 );
 
 app.route(Routes.Users)
