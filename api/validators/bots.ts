@@ -41,7 +41,7 @@ export const botSchemaValidator = object({
         )
         .test(
             "valid-tag",
-            "Invalid tag name found, the tag must match \"/^[\\w\\-À-ÿ]+$/u\"",
+            "Invalid tag name, the tag must match \"/^[\\w\\-À-ÿ]+$/u\"",
             (tags) => tags.every((tag) => tag && /^[\w\-À-ÿ]+$/u.test(tag))
         )
         .test("no-promoted", "Promoted tag can't be used", (tags) =>
