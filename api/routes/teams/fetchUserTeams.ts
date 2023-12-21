@@ -17,11 +17,11 @@ export const fetchUserTeams = async (res: Response, userId: string) => {
         teams.map(
             (team) =>
                 ({
-                    ...team,
+                    ...team.toObject(),
                     members: team.members.map((member) =>
                         getUserByMember(member, users)
                     ),
-                })._doc
+                })
         )
     );
 };
