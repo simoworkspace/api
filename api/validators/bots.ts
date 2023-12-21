@@ -3,7 +3,7 @@ import { object, string, array, boolean } from "yup";
 export const botSchemaValidator = object({
     invite_url: string()
         .url("Invalid invite URL")
-        .required('"invite_url" property is missing'),
+        .required("\"invite_url\" property is missing"),
     website_url: string().url("Invalid website URL"),
     support_server: string().matches(
         /^https:\/\/discord\.(gg|invite)\/[a-z0-9]+$/i,
@@ -13,27 +13,27 @@ export const botSchemaValidator = object({
     short_description: string()
         .min(50, "Short description must be greater than or equal to 50")
         .max(80, "Short description must be less than or equal to 80")
-        .required('"short_description" property is missing'),
+        .required("\"short_description\" property is missing"),
     long_description: string()
         .min(200, "Long description must be greater than or equal to 200")
         .max(2048, "Long description must be less than or equal to 2048")
-        .required('"long_description" property is missing'),
+        .required("\"long_description\" property is missing"),
     prefixes: array(
         string().max(6, "Prefix name must be less than or equal to 6")
     )
         .max(5, "Prefix limit excedded")
-        .required('"prefixes" property is missing')
+        .required("\"prefixes\" property is missing")
         .test(
             "no-equal-prefix",
             "Cannot have 2 same prefixes",
             (prefixes) => prefixes && new Set(prefixes).size === prefixes.length
         ),
-    verified: boolean().required('"verified" property is missing'),
+    verified: boolean().required("\"verified\" property is missing"),
     tags: array(
         string().max(24, "Invalid tag name, must be maximum 24 characters long")
     )
         .max(5, "Tags limit excedded")
-        .required('"tags" property is missing')
+        .required("\"tags\" property is missing")
         .test(
             "no-equal-tag",
             "Cannot have 2 same tags",
@@ -41,8 +41,11 @@ export const botSchemaValidator = object({
         )
         .test(
             "valid-tag",
-            'Invalid tag name found, the tag must match "/^[\\w\\-À-ÿ]+$/u"',
+            "Invalid tag name, the tag must match \"/^[\\w\\-À-ÿ]+$/u\"",
             (tags) => tags.every((tag) => tag && /^[\w\-À-ÿ]+$/u.test(tag))
+        )
+        .test("no-promoted", "Promoted tag can't be used", (tags) =>
+            tags ? tags.every((tag) => tag !== "promoted") : true
         ),
     vote_message: string()
         .min(5, "Vote message must be greater than or equal to 5")
@@ -87,11 +90,14 @@ export const patchBotValidator = object({
         )
         .test(
             "valid-tag",
-            'Invalid tag name found, the tag must match "/^[\\w\\-À-ÿ]+$/u"',
+            "Invalid tag name found, the tag must match \"/^[\\w\\-À-ÿ]+$/u\"",
             (tags) =>
                 tags
                     ? tags.every((tag) => tag && /^[\w\-À-ÿ]+$/u.test(tag))
                     : true
+        )
+        .test("no-promoted", "Promoted tag can't be used", (tags) =>
+            tags ? tags.every((tag) => tag !== "promoted") : true
         ),
     vote_message: string()
         .min(5, "Vote message must be greater than or equal to 5")
