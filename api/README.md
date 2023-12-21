@@ -76,3 +76,11 @@ Erros com `errors`:
     ]
 }
 ```
+
+## Query String Params
+
+Algumas rotas da API usam
+[parâmetros de string de consulta](https://en.wikipedia.org/wiki/Query_string)
+que aceitam números e booleanos. Como não exista nenhum padrão para eles, a Simo
+API usa `true` e `1` para representar valores verdadeiros, `false` e `0` para
+valores falsos e qualquer número inteiro para números.
