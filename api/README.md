@@ -3,6 +3,12 @@
 Simo API é uma API baseada em HTTP/REST para serviços em geral. Geralmente usada
 no front-end com alguma biblioteca wrapper
 
+## Base URL
+
+```bash
+https://bombadeagua.life
+```
+
 ## Autenticação
 
 A autenticação pode ser feita de duas maneiras:
