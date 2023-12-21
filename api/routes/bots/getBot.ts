@@ -5,8 +5,8 @@ import { BOT } from "../../utils/errors.json";
 import { fetchBotFeedbacks } from "./fetchBotFeedbacks";
 import { getUserId } from "../../utils/getUserId";
 import { fetchAPIKey } from "./fetchAPIKey";
-import queryString from "query-string";
 import { fetchWebhookURL } from "./fetchWebhookURL";
+import { parseQuery } from "../../utils/parseQuery";
 
 /**
  * Gets a bot from Discord API or from the database
@@ -15,10 +15,9 @@ export const getBot = async (req: Request, res: Response) => {
     const query = req.query;
 
     if (Object.keys(query).length > 0) {
-        const parsedQuery = queryString.parse(queryString.stringify(query), {
-            parseNumbers: true,
-            parseBooleans: true,
-        });
+        const parsedQuery = parseQuery(
+            new URLSearchParams(query as Record<string, string>).toString()
+        );
 
         const { start_at, end_at } = parsedQuery;
 
