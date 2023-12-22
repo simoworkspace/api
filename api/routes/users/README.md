@@ -30,12 +30,13 @@
 
 ## User Flags
 
-| KEY            | VALUE  | DESCRIPTION                    |
-| -------------- | ------ | ------------------------------ |
-| BugHunter      | 1 << 0 | O usuário é um Bug Hunter      |
-| Contributor    | 1 << 1 | O usuário é um contribuidor    |
-| PremiumPartner | 1 << 2 | O usuário é um usuário premium |
-| Developer      | 1 << 3 | O usuário é um desenvolvedor   |
+| KEY            | VALUE  | DESCRIPTION                     |
+| -------------- | ------ | ------------------------------- |
+| None           | 0 << 0 | O usuário não tem nenhuma badge |
+| BugHunter      | 1 << 0 | O usuário é um Bug Hunter       |
+| Contributor    | 1 << 1 | O usuário é um contribuidor     |
+| PremiumPartner | 1 << 2 | O usuário é um usuário premium  |
+| Developer      | 1 << 3 | O usuário é um desenvolvedor    |
 
 ## Premium Types
 
