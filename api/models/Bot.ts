@@ -17,7 +17,9 @@ const rawBotSchema = new Schema<BotStructure>(
         },
         invite_url: {
             type: String,
-            required: true,
+            default(this) {
+                return `https://discord.com/oauth2/authorize?client_id=${this._id}&scope=bot&permissions=448894721600`;
+            },
         },
         website_url: String,
         support_server: String,
