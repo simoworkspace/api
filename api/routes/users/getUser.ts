@@ -19,20 +19,30 @@ export const getUser = async (req: Request, res: Response) => {
 
         if (typeof authorId !== "string") return;
 
-        if (method === "@me")
-            return res
-                .status(HttpStatusCode.Ok)
-                .json(await userModel.findById(authorId));
+        if (method === "@me") {
+            const me = await userModel.findById(authorId, { __v: 0 });
+
+            if (!me)
+                return res
+                    .status(HttpStatusCode.NotFound)
+                    .json(USER.UNKNOWN_USER);
+
+            const { _id: id, ...data } = me.toObject();
+
+            return res.status(HttpStatusCode.Ok).json({ id, ...data });
+        }
 
         return fetchUserNotifications(res, authorId);
     }
     if (!method)
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
 
-    const user = await userModel.findById(method);
+    const user = await userModel.findById(method, { __v: 0 });
 
     if (!user)
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
 
-    return res.status(HttpStatusCode.Ok).json(user);
+    const { _id: id, ...data } = user.toObject();
+
+    return res.status(HttpStatusCode.Ok).json({ id, ...data });
 };

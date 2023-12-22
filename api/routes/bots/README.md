@@ -4,7 +4,7 @@
 
 | KEY               | TYPE                      | DESCRIPTION                                    |
 | ----------------- | ------------------------- | ---------------------------------------------- |
-| \_id              | Snowflake                 | O ID do bot                                    |
+| id                | Snowflake                 | O ID do bot                                    |
 | name              | string                    | O nome do bot                                  |
 | avatar            | ?string                   | O hash do avatar do bot                        |
 | invite_url        | string                    | O URL do convite do bot                        |
@@ -56,7 +56,7 @@
 
 ## Get Bot
 
-### GET `/api/bots/{bot._id}`
+### GET `/api/bots/{bot.id}`
 
 Este método é usado para buscar um bot no banco de dado, retorna o objeto do
 [bot](#bot-structure) encontrado
@@ -97,7 +97,7 @@ requisição é o proprietário, retorna uma array de objeto de [bot](#bot-struc
 
 ## Get Bot Votes
 
-### GET `/api/bots/{bot._id}/votes`
+### GET `/api/bots/{bot.id}/votes`
 
 Este método é usado para pegar todos os votos de um bot, retorna uma array de
 objeto de [votos](#vote-structure)
@@ -121,7 +121,7 @@ objeto de [votos](#vote-structure)
 
 ## Get Bot Feedbacks
 
-### GET `/api/bots/{bot._id}/feedbacks`
+### GET `/api/bots/{bot.id}/feedbacks`
 
 Este método é usada para pegar todos os feedbacks já feitos em um bot, retorna
 uma array de [feedbacks](#feedback-structure) com `author.username`,
@@ -129,7 +129,7 @@ uma array de [feedbacks](#feedback-structure) com `author.username`,
 
 ## Get Bot Api-key
 
-### GET `/api/bots/{bot._id}/api-key`
+### GET `/api/bots/{bot.id}/api-key`
 
 Pegue a api-key de um bot, retorna um objeto com `api-key`
 
@@ -145,14 +145,14 @@ Busque pelo webhook URL de um bot, retorna o webhook URL
 
 ## Delete Bot
 
-### DELETE `/api/bots/{bot._id}`
+### DELETE `/api/bots/{bot.id}`
 
 Este método é usado para deletar um bot no banco de dados, retorna o objeto do
 [bot](#bot-structure) deletado
 
 ## Delete Feedback
 
-### DELETE `/api/bots/{bot._id}/feedbacks`
+### DELETE `/api/bots/{bot.id}/feedbacks`
 
 Este método é usado para deletar um feedback de um bot, retorna uma estrutura JSON com `code`
 
@@ -160,7 +160,7 @@ Este método é usado para deletar um feedback de um bot, retorna uma estrutura 
 
 ## Patch Bot
 
-### PATCH `/api/bots/{bot._id}`
+### PATCH `/api/bots/{bot.id}`
 
 Este método é usado para editar um bot, retorna o objeto do [bot](#bot-structure)
 atualizado
@@ -189,7 +189,7 @@ atualizado
 
 ## Patch Feedback
 
-### PATCH `/api/bots/{bot._id}/feedbacks`
+### PATCH `/api/bots/{bot.id}/feedbacks`
 
 Este método é usado para editar um feedback em um bot, retorna o objeto do
 [feedback](#feedback-structure) atualizado
@@ -206,7 +206,7 @@ Este método é usado para editar um feedback em um bot, retorna o objeto do
 
 ## Create Bot
 
-### POST `/api/bots/{bot._id}`
+### POST `/api/bots/{bot.id}`
 
 Este método é usado para adicionar um bot no banco de dados, retorna o objeto do
 [bot](#bot-structure) criado
@@ -229,7 +229,7 @@ Este método é usado para adicionar um bot no banco de dados, retorna o objeto 
 
 ## Add Vote
 
-### POST `/api/bots/{bot._id}/votes`
+### POST `/api/bots/{bot.id}/votes`
 
 Este método é usado para adicionar um voto no bot, retorna o objeto do [voto](#vote-structure)
 
@@ -248,7 +248,7 @@ fetch(url, {
 
 ## Add Feedback
 
-### POST `/api/bots/{bot._id}/feedbacks`
+### POST `/api/bots/{bot.id}/feedbacks`
 
 Este método é usado para postar um feedback em um bot, retorna o objeto do [feedback](#feedback-structure)
 
@@ -273,7 +273,7 @@ fetch(url, {
 
 ## Test Vote Webhook
 
-### POST `/api/bots/{bot._id}/webhook/test`
+### POST `/api/bots/{bot.id}/webhook/test`
 
 Essa rota ira mandar uma requisição para o `webhook_url` definido no objeto do bot.
 O corpo da requisição será um objeto de [voto](#vote-structure)

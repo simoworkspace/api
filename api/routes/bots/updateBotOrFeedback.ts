@@ -60,8 +60,14 @@ export const updateBotOrFeedback = async (req: Request, res: Response) => {
         { $set: body },
         {
             new: true,
+            projection: { __v: 0 },
         }
     );
+
+    if (!updatedBot) return;
+
+    const { _id: id, ...data } = updatedBot.toObject();
+    const botData = { id, ...data };
 
     if (userSocket && userSocket.data?.events.includes(Events.BotUpdate))
         userSocket.socket.emit(
@@ -69,9 +75,9 @@ export const updateBotOrFeedback = async (req: Request, res: Response) => {
             (APIEvents[Events.BotUpdate],
             makeEventData({
                 event_type: Events.BotUpdate,
-                payload: updatedBot,
+                payload: botData,
             }))
         );
 
-    return res.status(HttpStatusCode.Ok).json(updatedBot);
+    return res.status(HttpStatusCode.Ok).json(botData);
 };

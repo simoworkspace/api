@@ -4,7 +4,7 @@
 
 | KEY                  | TYPE      | DESCRIPTION                                                                |
 | -------------------- | --------- | -------------------------------------------------------------------------- |
-| \_id                 | Snowflake | O ID do usuário                                                            |
+| id                   | Snowflake | O ID do usuário                                                            |
 | username             | string    | O nome de usuário do usuário                                               |
 | avatar               | ?string   | O hash do avatar do usuário                                                |
 | bio                  | ?string   | A biografia do usuário                                                     |
@@ -66,7 +66,7 @@
 
 ## Get user
 
-### GET `/api/users/{user._id}`
+### GET `/api/users/{user.id}`
 
 Busque por um usuário na database, retorna um objeto de [usuário](#user-structure)
 
