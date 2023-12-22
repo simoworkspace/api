@@ -94,3 +94,14 @@ Algumas rotas da API usam
 que aceitam números e booleanos. Como não exista nenhum padrão para eles, a Simo
 API usa `true` e `1` para representar valores verdadeiros, `false` e `0` para
 valores falsos e qualquer número inteiro para números.
+
+## Locales
+
+Todas as linguagens disponíveis que um
+[usuário](/api/routes/users/README.md#user-structure) pode escolher
+
+| NAME  | LANGUAGE NAME         |
+| ----- | --------------------- |
+| pt-BR | Portuguese, Brazilian |
+| en-US | English, US           |
+| es-ES | Spanish, ES           |
