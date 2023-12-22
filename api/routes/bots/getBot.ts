@@ -1,23 +1,27 @@
 import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
 import { botModel } from "../../models/Bot";
+import { feedbackModel } from "../../models/Feedback";
 import { BOT } from "../../utils/errors.json";
-import { fetchBotFeedbacks } from "./fetchBotFeedbacks";
 import { getUserId } from "../../utils/getUserId";
-import { fetchAPIKey } from "./fetchAPIKey";
-import { fetchWebhookURL } from "./fetchWebhookURL";
 import { parseQuery } from "../../utils/parseQuery";
+import { fetchAPIKey } from "./fetchAPIKey";
+import { fetchBotFeedbacks } from "./fetchBotFeedbacks";
+import { fetchWebhookURL } from "./fetchWebhookURL";
 
 /**
  * Gets a bot from Discord API or from the database
  */
 export const getBot = async (req: Request, res: Response) => {
     const query = req.query;
+    const stringifiedQuery = new URLSearchParams(
+        query as Record<string, string>
+    ).toString();
 
-    if (Object.keys(query).length > 0) {
-        const parsedQuery = parseQuery(
-            new URLSearchParams(query as Record<string, string>).toString()
-        );
+    const { id: botId } = req.params;
+
+    if (Object.keys(query).length > 0 && !botId) {
+        const parsedQuery = parseQuery(stringifiedQuery);
 
         const { start_at, end_at } = parsedQuery;
 
@@ -45,7 +49,7 @@ export const getBot = async (req: Request, res: Response) => {
             );
     }
 
-    const { id: botId, method } = req.params;
+    const { method } = req.params;
 
     if (method === "webhook") return fetchWebhookURL(req, res);
     if (method === "api-key") return fetchAPIKey(req, res);
@@ -100,5 +104,25 @@ export const getBot = async (req: Request, res: Response) => {
         return res.status(HttpStatusCode.Ok).json(targetBot.votes);
     }
 
-    return res.status(HttpStatusCode.Ok).json(targetBot);
+    const options = parseQuery(stringifiedQuery);
+
+    const data = targetBot.toObject();
+
+    if (options.with_feedbacks === true) {
+        const botFeedbacks = await feedbackModel.find(
+            {
+                target_bot_id: targetBot._id,
+            },
+            { _id: 0 }
+        );
+
+        Object.defineProperty(data, "fedbacks", {
+            value: botFeedbacks,
+            enumerable: true,
+        });
+    }
+
+    if (options.with_votes === false) delete (data as any).votes;
+
+    return res.status(HttpStatusCode.Ok).json(data);
 };

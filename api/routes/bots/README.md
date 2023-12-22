@@ -61,6 +61,13 @@
 Este método é usado para buscar um bot no banco de dado, retorna o objeto do
 [bot](#bot-structure) encontrado
 
+#### Query String Params
+
+| FIELD          | TYPE    | DEFAULT | DESCRIPTION                                        |
+| -------------- | ------- | ------- | -------------------------------------------------- |
+| with_feedbacks | boolean | false   | Se os feedbacks feitos no bot devem ser retornados |
+| with_votes     | boolean | true    | Se os votos do bot devem ser retornados            |
+
 -   O cabeçalho `Authorization` não é necessário para essa rota
 
 ## Get Bots By Query
