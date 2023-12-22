@@ -43,6 +43,10 @@
         "API_KEY_IS_REQUIRED_TO_USE_WEBHOOK": {
             "message": "Api key is required to use webhook URL",
             "code": 1011
+        },
+        "UNNAPROVED_BOT_ACTION_ERROR": {
+            "message": "No actions can be performed with an unapproved bot",
+            "code": 1012
         }
     },
     "GENERICS": {

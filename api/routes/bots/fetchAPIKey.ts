@@ -11,6 +11,10 @@ export const fetchAPIKey = async (req: Request, res: Response) => {
     });
 
     if (!bot) return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_BOT);
+    if (!bot.approved)
+        return res
+            .status(HttpStatusCode.Forbidden)
+            .json(BOT.UNNAPROVED_BOT_ACTION_ERROR);
 
     const userId = await getUserId(req.headers.authorization, res);
 

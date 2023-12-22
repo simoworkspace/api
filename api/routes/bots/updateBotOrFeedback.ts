@@ -21,20 +21,25 @@ export const updateBotOrFeedback = async (req: Request, res: Response) => {
 
     const userSocket = getSocket(auth as string);
 
-    if (method === "feedbacks")
-        return updateFeedback(req, res, {
-            botId,
-            authorId: userId,
-            userSocket,
-        });
-
     const bot = await botModel.findById({
         _id: botId,
     });
 
     if (!bot) return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_BOT);
+    if (method === "feedbacks")
+        return updateFeedback(req, res, {
+            botId,
+            authorId: userId,
+            userSocket,
+            botApproved: bot.approved,
+        });
+
     if (bot.owner_id !== userId)
         return res.status(HttpStatusCode.BadRequest).json(BOT.NOT_BOT_OWNER);
+    if (!bot.approved)
+        return res
+            .status(HttpStatusCode.Forbidden)
+            .json(BOT.UNNAPROVED_BOT_ACTION_ERROR);
 
     const { body } = req;
     const validation = await patchBotValidator

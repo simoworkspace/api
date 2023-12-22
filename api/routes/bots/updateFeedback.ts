@@ -1,6 +1,6 @@
 import { HttpStatusCode } from "axios";
 import { feedbackModel } from "../../models/Feedback";
-import { FEEDBACK } from "../../utils/errors.json";
+import { FEEDBACK, BOT } from "../../utils/errors.json";
 import type { Request, Response } from "express";
 import { patchFeedbackValidator } from "../../validators/feedback";
 import {
@@ -17,12 +17,19 @@ export const updateFeedback = async (
         botId,
         authorId,
         userSocket,
+        botApproved,
     }: {
         botId: string;
         authorId: string;
         userSocket: SocketConnectionStructure | undefined;
+        botApproved: boolean;
     }
 ) => {
+    if (!botApproved)
+        return res
+            .status(HttpStatusCode.Forbidden)
+            .json(BOT.UNNAPROVED_BOT_ACTION_ERROR);
+
     const { body } = req;
     const feedback = await feedbackModel.findOne({
         author_id: authorId,

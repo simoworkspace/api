@@ -41,6 +41,12 @@ export const createVote = async (
 
     const bot = await botModel.findById(botId);
 
+    if (!bot) return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_BOT);
+    if (!bot.approved)
+        return res
+            .status(HttpStatusCode.Forbidden)
+            .json(BOT.UNNAPROVED_BOT_ACTION_ERROR);
+
     const sendRequest = async (data: Record<string, unknown>) => {
         if (bot?.webhook_url)
             await axios.post(bot.webhook_url, data, {

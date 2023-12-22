@@ -8,6 +8,7 @@ export const fetchWebhookURL = async (req: Request, res: Response) => {
     const bot = await botModel.findById(req.params.id, {
         owner_id: 1,
         webhook_url: 1,
+        approved: 1,
     });
 
     if (!bot) return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_BOT);
@@ -17,6 +18,10 @@ export const fetchWebhookURL = async (req: Request, res: Response) => {
     if (typeof userId !== "string") return;
     if (userId !== bot.owner_id)
         return res.status(HttpStatusCode.Forbidden).json(BOT.NOT_BOT_OWNER);
+    if (!bot.approved)
+        return res
+            .status(HttpStatusCode.Forbidden)
+            .json(BOT.UNNAPROVED_BOT_ACTION_ERROR);
     if (!bot.webhook_url)
         return res
             .status(HttpStatusCode.BadRequest)

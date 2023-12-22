@@ -41,6 +41,10 @@ export const addBot = async (req: Request, res: Response) => {
     const bot = await botModel.findById(botId);
 
     if (!bot) return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_BOT);
+    if (!bot.approved)
+        return res
+            .status(HttpStatusCode.Forbidden)
+            .json(BOT.UNNAPROVED_BOT_ACTION_ERROR);
     if (team.bots_id.includes(botId))
         return res
             .status(HttpStatusCode.BadRequest)

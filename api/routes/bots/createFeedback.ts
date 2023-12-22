@@ -68,6 +68,10 @@ export const createFeedback = async (
         return res
             .status(HttpStatusCode.Forbidden)
             .json(FEEDBACK.BOT_OWNER_CANNOT_SEND_FEEDBACK);
+    if (!bot.approved)
+        return res
+            .status(HttpStatusCode.Forbidden)
+            .json(BOT.UNNAPROVED_BOT_ACTION_ERROR);
 
     const createdFeedback = (
         await feedbackModel.create({

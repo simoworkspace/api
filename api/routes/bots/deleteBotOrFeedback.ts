@@ -55,6 +55,10 @@ export const deleteBotOrFeedback = async (req: Request, res: Response) => {
     if (!bot) return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_BOT);
     if (bot.owner_id !== userId)
         return res.status(HttpStatusCode.BadRequest).json(BOT.NOT_BOT_OWNER);
+    if (!bot.approved)
+        return res
+            .status(HttpStatusCode.Forbidden)
+            .json(BOT.UNNAPROVED_BOT_ACTION_ERROR);
 
     if (bot.team_id) {
         const team = await teamModel.findOne({ id: bot.team_id });
