@@ -8,7 +8,7 @@ const ID_PATTERN = /^\d{16,21}$/;
 const BOOLEAN_PATTERN = /^(0|1|true|false)$/;
 
 export const parseQuery = (
-    query: string,
+    query: string | Record<string, string>,
     options: ParseStringQueryOptions = {}
 ) => {
     const params = new URLSearchParams(query);
