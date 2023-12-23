@@ -29,6 +29,7 @@ export const updateTeamValidator = object({
     vanity_url_code: string()
         .min(1, "Invite code can't be empty")
         .max(16, "Vanity URL maximum length is 16 characters"),
+    banner_url: string().url("Banner URL not well formed"),
 })
     .test(
         "at-least-one-key",

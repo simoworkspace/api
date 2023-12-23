@@ -31,6 +31,7 @@ const rawTeamSchema = new Schema<Team>(
             type: String,
             default: new Date().toISOString(),
         },
+        banner_url: String,
     },
     { versionKey: false }
 );

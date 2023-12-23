@@ -90,7 +90,11 @@ export interface Team {
      * The vanity URL of the team
      */
     vanity_url?: VanityURLStructure;
+    /**
+     * Date when the team was created
+     */
     created_at: string;
+    banner_url?: string;
 }
 
 export interface VanityURLStructure {

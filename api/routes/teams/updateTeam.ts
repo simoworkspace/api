@@ -55,6 +55,23 @@ export const updateTeam = async (req: Request, res: Response) => {
         return res
             .status(HttpStatusCode.BadRequest)
             .json({ errors: validation });
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const ownerId = team.members.find(
+        (member) => member.permission === TeamPermissions.Owner
+    )!.id;
+    const owner = await userModel.findById(ownerId);
+
+    if (!owner)
+        return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
+    if (
+        ("banner_url" in body || "vanity_url_code" in body) &&
+        owner.premium_type !== PremiumType.Advanced
+    )
+        return res
+            .status(HttpStatusCode.Forbidden)
+            .json(TEAM.OWNER_MUST_HAVE_ADVANCED_PREMIUM);
+
     if ("vanity_url_code" in body) {
         const { vanity_url_code: vanityCode } = body;
 
@@ -72,24 +89,10 @@ export const updateTeam = async (req: Request, res: Response) => {
                 .status(HttpStatusCode.Conflict)
                 .json(TEAM.VANITY_URL_IS_ALREADY_BEING_USED);
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const ownerId = team.members.find(
-            (member) => member.permission === TeamPermissions.Owner
-        )!.id;
-
         if (ownerId !== userId)
             return res
                 .status(HttpStatusCode.Forbidden)
                 .json(TEAM.ONLY_OWNER_CAN_UPDATE_VANITY_URL);
-
-        const owner = await userModel.findById(ownerId);
-
-        if (!owner)
-            return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
-        if (owner.premium_type !== PremiumType.Advanced)
-            return res
-                .status(HttpStatusCode.Forbidden)
-                .json(TEAM.OWNER_MUST_HAVE_ADVANCED_PREMIUM);
 
         body.vanity_url = { code: vanityCode, uses: 1 };
     }

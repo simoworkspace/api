@@ -13,6 +13,7 @@
 | bots_id     | Snowflake[]                            | Os IDs dos bots que estão no time                                  |
 | vanity_url? | object                                 | O objeto do [convite personalizado](#vanity-url-structure) do time |
 | created_at  | string                                 | Uma data ISO string de quando o time foi criado                    |
+| banner_url? | string                                 | O URL do banner do time                                            |
 
 ## Team Member Structure
 
