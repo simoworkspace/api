@@ -311,6 +311,7 @@ export enum PremiumType {
 export enum Events {
     Error,
     Hello,
+    Ready,
 
     UserUpdate,
     BulkDeleteNotifications,
@@ -363,6 +364,7 @@ export const APIEvents = {
     [Events.AuditLogEntryCreate]: "auditLogEntryCreate",
     [Events.Error]: "error",
     [Events.Hello]: "hello",
+    [Events.Ready]: "ready",
 };
 
 export interface SocketOptions {

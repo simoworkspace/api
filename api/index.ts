@@ -30,7 +30,7 @@ const app = express();
 
 const limiter = rateLimit({
     windowMs: 120000,
-    limit: 100
+    limit: 100,
 });
 
 app.set("trust proxy", 1);
@@ -43,7 +43,7 @@ app.use(
     cookieParser(),
     (_req, _res, next) => {
         requestCount++;
-         
+
         next();
     },
     limiter
@@ -117,9 +117,9 @@ io.on("connect", (socket) => {
             makeEventData({ type: Opcodes.Hello, payload: { auth } })
         );
 
-        const authExists = await botModel.exists({ api_key: auth });
+        const bot = await botModel.findOne({ api_key: auth }, { __v: 0 });
 
-        if (!authExists)
+        if (!bot)
             return socket.emit(
                 "error",
                 makeEventData({
@@ -152,6 +152,18 @@ io.on("connect", (socket) => {
 
         skt.logged = true;
         skt.data = { auth, events };
+
+        const { _id: id, ...data } = bot;
+
+        skt.socket.emit(
+            "event",
+            APIEvents[Events.Ready],
+            makeEventData({
+                type: Opcodes.Payload,
+                event_type: Events.Ready,
+                payload: { events, bot: { id, ...data } },
+            })
+        );
     });
 
     socket.on("disconnect", () => {

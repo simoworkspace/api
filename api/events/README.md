@@ -70,6 +70,17 @@ Todos os eventos usam a convenção [camel case](https://pt.wikipedia.org/wiki/C
 }
 ```
 
+#### Ready
+
+Enviado sempre quando o cliente é conectado com o socket.
+
+##### Ready Fields
+
+| FIELD  | TYPE     | DESCRIPTION                                                            |
+| ------ | -------- | ---------------------------------------------------------------------- |
+| events | number[] | Os eventos usados pelo bot                                             |
+| bot    | object   | O objeto do [bot](/api/routes/bots/README.md#bot-structure) do cliente |
+
 #### User Update
 
 Enviado quando as propriedades do usuário atual é alterada. Carga útil é um objeto de [usuário](/api/routes/users/README.md#user-structure)
