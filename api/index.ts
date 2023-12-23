@@ -23,7 +23,6 @@ import { joinTeam } from "./routes/teams/joinTeam";
 import { fetchDiscordUser } from "./routes/discord/fetchDiscordUser";
 import { Routes } from "./utils/Routes";
 import { rateLimit } from "express-rate-limit";
-import helmet from "helmet";
 
 load();
 
@@ -47,8 +46,7 @@ app.use(
          
         next();
     },
-    limiter,
-    helmet()
+    limiter
 );
 
 app.route(Routes.Users)
