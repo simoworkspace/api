@@ -21,7 +21,11 @@ export const getBot = async (req: Request, res: Response) => {
     const { id: botId } = req.params;
 
     if (Object.keys(query).length > 0 && !botId) {
-        const parsedQuery = parseQuery(stringifiedQuery);
+        const parsedQuery = parseQuery(stringifiedQuery, {
+            ignoreIds: true,
+            parseNumbers: true,
+            parseBooleans: true,
+        });
 
         const { start_at, end_at } = parsedQuery;
 

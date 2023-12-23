@@ -1,17 +1,39 @@
-export const parseQuery = (query: string) => {
+interface ParseStringQueryOptions {
+    parseBooleans?: boolean;
+    parseNumbers?: boolean;
+    ignoreIds?: boolean;
+}
+
+const ID_PATTERN = /^\d{16,21}$/;
+const BOOLEAN_PATTERN = /^(0|1|true|false)$/;
+
+export const parseQuery = (
+    query: string,
+    options: ParseStringQueryOptions = {}
+) => {
     const params = new URLSearchParams(query);
-    const result = {} as Record<string, string | number | boolean>;
+    const result: Record<string, string | number | boolean> = {};
 
-    for (const [key, value] of params.entries()) {
-        const realValue = ["1", "true"].includes(value)
-            ? true
-            : ["0", "false"].includes(value)
-                ? false
-                : /^\d+$/.test(value)
-                    ? parseInt(value)
-                    : value;
+    for (const [key, value] of params) {
+        if (options.ignoreIds && ID_PATTERN.test(value)) {
+            result[key] = value;
 
-        result[key] = realValue;
+            continue;
+        }
+
+        if (options.parseBooleans && BOOLEAN_PATTERN.test(value)) {
+            result[key] = ["1", "true"].includes(value);
+
+            continue;
+        }
+
+        if (options.parseNumbers && /^\d+$/.test(value)) {
+            result[key] = parseInt(value, 10);
+
+            continue;
+        }
+
+        result[key] = value;
     }
 
     return result;
