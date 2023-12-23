@@ -28,7 +28,7 @@ export interface BotStructure {
     api_key?: string;
     votes: VoteStructure[];
     team_id?: string;
-    vote_message?: string | null;
+    vote_message?: string;
     webhook_url?: string;
 }
 
