@@ -103,6 +103,10 @@
         "INVALID_AUTH_PREFIX": {
             "message": "Invalid auth prefix",
             "code": 2012
+        },
+        "INVALID_JSON_BODY": {
+            "message": "Invalid JSON body",
+            "code": 2013
         }
     },
     "GUILD": {

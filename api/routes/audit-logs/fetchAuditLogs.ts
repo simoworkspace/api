@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import { teamModel } from "../../models/Team";
 import { HttpStatusCode } from "axios";
-import { TEAM } from "../../utils/errors.json";
+import { TEAM, GENERICS } from "../../utils/errors.json";
 import { TeamPermissions } from "../../typings/types";
 import { auditLogModel } from "../../models/AuditLog";
 import { userModel } from "../../models/User";
@@ -42,10 +42,17 @@ export const fetchAuditLogs = async (
         executor_id: executorId,
         target_id: targetId,
         action_type: actionType,
+        start_at: startAt,
+        end_at: endAt,
     } = parseQuery(req.query as Record<string, string>, {
         ignoreIds: true,
         parseNumbers: true,
     });
+
+    if ((startAt as number) < 0 || (endAt as number) > 50)
+        return res
+            .status(HttpStatusCode.BadRequest)
+            .json(GENERICS.INVALID_JSON_BODY);
 
     const userMap = new Map();
 
@@ -53,14 +60,22 @@ export const fetchAuditLogs = async (
         userMap.set(user._id, user);
     });
 
-    const filteredEntries = auditLogs.entries.filter((entry) => {
-        if (executorId && executorId !== entry.executor_id) return false;
-        if (targetId && targetId !== entry.target_id) return false;
-        if (typeof actionType === "number" && actionType !== entry.action_type)
-            return false;
+    const filteredEntries = auditLogs.entries
+        .filter((entry) => {
+            if (executorId && executorId !== entry.executor_id) return false;
+            if (targetId && targetId !== entry.target_id) return false;
+            if (
+                typeof actionType === "number" &&
+                actionType !== entry.action_type
+            )
+                return false;
 
-        return true;
-    });
+            return true;
+        })
+        .slice(
+            (startAt as number | undefined) ?? 0,
+            (endAt as number | undefined) ?? 50
+        );
 
     const entries = filteredEntries.map((entry) => {
         const { executor_id, target_id, ...rest } = entry;

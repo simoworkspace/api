@@ -60,3 +60,5 @@ Busque por todos os registros de auditoria de um time, retorna o objeto de [regi
 | executor_id? | snowflake | Entradas feitas por esse usuário                          |
 | action_type? | number    | Entras pelo [tipo de ação](#audit-log-entry-action-types) |
 | target_id?   | snowflake | Entradas pelo ID do alvo da ação                          |
+| start_at?    | number    | Entradas depois de certo índice                           |
+| end_at?      | number    | Entras até certo índice                                   |
