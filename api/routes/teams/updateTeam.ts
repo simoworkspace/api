@@ -13,7 +13,7 @@ import { updateTeamValidator } from "../../validators/team";
 import { getUserId } from "../../utils/getUserId";
 import { teamModel } from "../../models/Team";
 import { updateMember } from "./updateMember";
-import { createAuditLogEntry } from "./createAuditLog";
+import { createAuditLogEntry } from "../audit-logs/createAuditLogEntry";
 import { updateTeamInvite } from "./updateTeamInvite";
 import { userModel } from "../../models/User";
 import { botModel } from "../../models/Bot";

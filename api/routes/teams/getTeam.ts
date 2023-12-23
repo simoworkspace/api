@@ -7,7 +7,7 @@ import { getUserByMember } from "../../utils/getUserByMember";
 import { userModel } from "../../models/User";
 import { TEAM } from "../../utils/errors.json";
 import { fetchUserTeams } from "./fetchUserTeams";
-import { fetchAuditLogs } from "./fetchAuditLogs";
+import { fetchAuditLogs } from "../audit-logs/fetchAuditLogs";
 import { fetchTeamBots } from "./fetchTeamBots";
 import { fetchTeamMembers } from "./fetchTeamMembers";
 import { getTeamVanityURL } from "./getTeamVanityURL";

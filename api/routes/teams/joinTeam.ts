@@ -10,7 +10,7 @@ import {
     TeamPermissions,
 } from "../../typings/types";
 import { changeOwner } from "./changeOwner";
-import { createAuditLogEntry } from "./createAuditLog";
+import { createAuditLogEntry } from "../audit-logs/createAuditLogEntry";
 import { userModel } from "../../models/User";
 import { PremiumConfigurations } from "../../utils/PremiumConfigurations";
 import { botModel } from "../../models/Bot";

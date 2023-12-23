@@ -9,7 +9,7 @@ import {
     TeamPermissions,
 } from "../../typings/types";
 import { updateTeamMemberValidator } from "../../validators/team";
-import { createAuditLogEntry } from "./createAuditLog";
+import { createAuditLogEntry } from "../audit-logs/createAuditLogEntry";
 import { botModel } from "../../models/Bot";
 import { getSocket } from "../../utils/getSocket";
 import { makeEventData } from "../../utils/makeEventData";
