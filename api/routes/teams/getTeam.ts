@@ -18,7 +18,8 @@ export const getTeam = async (req: Request, res: Response) => {
 
     if (typeof userId !== "string") return;
     if (teamId === "@all") return fetchUserTeams(res, userId);
-    if (inviteCode === "audit-logs") return fetchAuditLogs(res, teamId, userId);
+    if (inviteCode === "audit-logs")
+        return fetchAuditLogs(res, req, teamId, userId);
     if (inviteCode === "bots") return fetchTeamBots(req, res);
     if (inviteCode === "members") return fetchTeamMembers(req, res);
     if (inviteCode === "vanity-url") return getTeamVanityURL(req, res);

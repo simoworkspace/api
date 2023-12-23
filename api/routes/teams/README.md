@@ -104,6 +104,14 @@ Busque por um time, retorna o objeto do [time](#team-structure)
 
 Busque por todos os registros de auditoria de um time, retorna o objeto de [registro de auditoria](#audit-log-structure) do time com `_id`, `avatar` e `username` do `target` e `executor`
 
+#### Query String Params
+
+| FILED        | TYPE      | DESCRIPTION                                               |
+| ------------ | --------- | --------------------------------------------------------- |
+| executor_id? | snowflake | Entradas feitas por esse usuário                          |
+| action_type? | number    | Entras pelo [tipo de ação](#audit-log-entry-action-types) |
+| target_id?   | snowflake | Entradas pelo ID do alvo da ação                          |
+
 ## Get team bots
 
 ### GET `/api/teams/{team.id}/bots`
