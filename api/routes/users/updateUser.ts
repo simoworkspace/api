@@ -43,6 +43,9 @@ export const updateUser = async (req: Request, res: Response) => {
         { new: true, projection: { __v: 0 } }
     );
 
+    if (!updatedUser) return;
+
+    const { _id: id, ...data } = updatedUser.toObject();
     const userSocket = getSocket(auth as string);
 
     if (userSocket && userSocket.data?.events.includes(Events.UserUpdate))
@@ -51,9 +54,9 @@ export const updateUser = async (req: Request, res: Response) => {
             (APIEvents[Events.UserUpdate],
             makeEventData({
                 event_type: Events.UserUpdate,
-                payload: updatedUser,
+                payload: { id, ...data },
             }))
         );
 
-    return res.status(HttpStatusCode.Ok).json(updatedUser);
+    return res.status(HttpStatusCode.Ok).json({ id, ...data });
 };

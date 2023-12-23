@@ -45,6 +45,13 @@ export interface UserStructure {
     banner_url?: string;
     flags: UserFlags;
     premium_type: PremiumType;
+    locale?: Locales;
+}
+
+export enum Locales {
+    PortugueseBr = "pt-BR",
+    EnglishUS = "en-US",
+    Spanish = "es-ES",
 }
 
 /**

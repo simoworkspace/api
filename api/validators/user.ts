@@ -1,5 +1,5 @@
 import { boolean, number, object, string } from "yup";
-import { NotificationType } from "../typings/types";
+import { Locales, NotificationType } from "../typings/types";
 
 export const createNotificationValidator = object({
     content: string()
@@ -31,6 +31,11 @@ export const updateUserValidator = object({
         .min(1, "Biography must be greater than or equal to 1"),
     notifications_viewed: boolean(),
     banner_url: string().url("Invalid banner URL"),
+    locale: string().oneOf([
+        Locales.EnglishUS,
+        Locales.PortugueseBr,
+        Locales.Spanish,
+    ], "Invalid language name"),
 })
     .noUnknown("Unknown property found")
     .strict()

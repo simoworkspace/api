@@ -1,9 +1,6 @@
 import { object, string, array, boolean } from "yup";
 
 export const botSchemaValidator = object({
-    invite_url: string()
-        .url("Invalid invite URL")
-        .required("\"invite_url\" property is missing"),
     website_url: string().url("Invalid website URL"),
     support_server: string().matches(
         /^https:\/\/discord\.(gg|invite)\/[a-z0-9]+$/i,
@@ -59,7 +56,6 @@ export const botSchemaValidator = object({
 export const patchBotValidator = object({
     name: string(),
     avatar: string(),
-    invite_url: string().url("Invalid invite URL"),
     website_url: string().url("Invalid website URL"),
     support_server: string().matches(
         /^https:\/\/discord\.(gg|invite)\/[a-z0-9]+$/i,

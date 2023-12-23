@@ -35,6 +35,7 @@ const rawUserSchema = new Schema<UserStructure>(
             type: Number,
             default: PremiumType.None,
         },
+        locale: String,
     },
     { versionKey: false }
 );

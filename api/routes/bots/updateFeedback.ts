@@ -67,7 +67,7 @@ export const updateFeedback = async (
             target_bot_id: botId,
         },
         { $set: { ...body, edited: true } },
-        { new: true, projection: { _id: 0 } }
+        { new: true, projection: { _id: 0, __v: 0 } }
     );
 
     if (userSocket && userSocket.data?.events.includes(Events.FeedbackUpdate))

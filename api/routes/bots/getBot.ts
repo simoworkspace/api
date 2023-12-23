@@ -30,7 +30,7 @@ export const getBot = async (req: Request, res: Response) => {
 
         const botsFound = await botModel.find(
             parsedQuery,
-            { webhook_url: 0, api_key: 0 },
+            { webhook_url: 0, api_key: 0, __v: 0 },
             {
                 limit:
                     typeof parsedQuery.limit === "number"
@@ -39,14 +39,18 @@ export const getBot = async (req: Request, res: Response) => {
             }
         );
 
-        return res
-            .status(HttpStatusCode.Ok)
-            .json(
-                botsFound.slice(
+        return res.status(HttpStatusCode.Ok).json(
+            botsFound
+                .map((bot) => {
+                    const { _id: id, ...data } = bot.toObject();
+
+                    return { id, ...data };
+                })
+                .slice(
                     typeof start_at === "number" ? start_at : 0,
                     typeof end_at === "number" ? end_at : botsFound.length
                 )
-            );
+        );
     }
 
     const { method } = req.params;
@@ -59,21 +63,29 @@ export const getBot = async (req: Request, res: Response) => {
 
         if (typeof userId !== "string") return;
 
-        const bots = await botModel.find({ owner_id: userId });
+        const bots = await botModel.find({ owner_id: userId }, { __v: 0 });
 
-        return res.status(HttpStatusCode.Ok).json(bots);
+        return res.status(HttpStatusCode.Ok).json(
+            bots.map((bot) => {
+                const { _id: id, ...data } = bot.toObject();
+
+                return { id, ...data };
+            })
+        );
     }
 
     const targetBot = await botModel.findById(botId, {
         api_key: 0,
         webhook_url: 0,
+        __v: 0,
+        _id: 0,
     });
 
     if (!targetBot)
         return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_BOT);
 
     const botImage = await fetch(
-        `https://cdn.discordapp.com/avatars/${targetBot?._id}/${targetBot?.avatar}.png`
+        `https://cdn.discordapp.com/avatars/${botId}/${targetBot.avatar}.png`
     );
 
     if (botImage.status === HttpStatusCode.NotFound) {
@@ -89,9 +101,11 @@ export const getBot = async (req: Request, res: Response) => {
 
         const botData = await request.json();
 
-        await botModel.findByIdAndUpdate(botId, {
-            name: botData.username,
-            avatar: botData.avatar,
+        await targetBot.updateOne({
+            $set: {
+                name: botData.username,
+                avatar: botData.avatar,
+            },
         });
     }
 
@@ -111,7 +125,7 @@ export const getBot = async (req: Request, res: Response) => {
     if (options.with_feedbacks === true) {
         const botFeedbacks = await feedbackModel.find(
             {
-                target_bot_id: targetBot._id,
+                target_bot_id: botId,
             },
             { _id: 0 }
         );
@@ -124,5 +138,5 @@ export const getBot = async (req: Request, res: Response) => {
 
     if (options.with_votes === false) delete (data as any).votes;
 
-    return res.status(HttpStatusCode.Ok).json(data);
+    return res.status(HttpStatusCode.Ok).json({ id: botId, ...data });
 };

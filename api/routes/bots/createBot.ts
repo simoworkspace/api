@@ -104,15 +104,18 @@ export const createBot = async (req: Request, res: Response) => {
         $set: { flags: user.flags | UserFlags.Developer },
     });
 
+    const { _id: id, ..._data } = createdBot.toObject();
+    const botData = { id, ..._data };
+
     if (userSocket && userSocket.data?.events.includes(Events.BotCreate))
         userSocket.socket.emit(
             "message",
             (APIEvents[Events.BotCreate],
             makeEventData({
                 event_type: Events.BotCreate,
-                payload: createdBot,
+                payload: botData,
             }))
         );
 
-    return res.status(HttpStatusCode.Ok).json(createdBot);
+    return res.status(HttpStatusCode.Ok).json(botData);
 };

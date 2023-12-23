@@ -22,10 +22,13 @@ export const deleteBotOrFeedback = async (req: Request, res: Response) => {
     const userSocket = getSocket(auth as string);
 
     if (method === "feedbacks") {
-        const feedback = await feedbackModel.findOne({
-            target_bot_id: botId,
-            author_id: userId,
-        });
+        const feedback = await feedbackModel.findOne(
+            {
+                target_bot_id: botId,
+                author_id: userId,
+            },
+            { _id: 0, __v: 0 }
+        );
 
         if (!feedback)
             return res
@@ -50,7 +53,11 @@ export const deleteBotOrFeedback = async (req: Request, res: Response) => {
         return res.status(HttpStatusCode.Ok).json(GENERICS.SUCCESS);
     }
 
-    const bot = await botModel.findById(botId);
+    const bot = await botModel.findById(botId, {
+        __v: 0,
+        api_key: 0,
+        webhook_url: 0,
+    });
 
     if (!bot) return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_BOT);
     if (bot.owner_id !== userId)
@@ -70,12 +77,15 @@ export const deleteBotOrFeedback = async (req: Request, res: Response) => {
 
     await bot.deleteOne();
 
+    const { _id: id, ...data } = bot.toObject();
+    const botData = { id, ...data };
+
     if (userSocket && userSocket.data?.events.includes(Events.BotDelete))
         userSocket.socket.emit(
             "message",
             (APIEvents[Events.BotDelete],
-            makeEventData({ event_type: Events.BotDelete, payload: bot }))
+            makeEventData({ event_type: Events.BotDelete, payload: botData }))
         );
 
-    return res.status(HttpStatusCode.Ok).json(bot);
+    return res.status(HttpStatusCode.Ok).json(botData);
 };

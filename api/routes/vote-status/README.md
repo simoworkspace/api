@@ -18,10 +18,10 @@
 
 ## Get user vote status
 
-### GET `/api/vote-status/{user._id}`
+### GET `/api/vote-status/{user.id}`
 
 Busque pelo status do voto de algum usuário, retorna um objeto de [vote status](#vote-status-structure)
 
 -   O ID do bot é baseado se você estiver usando JWT ou api-key. Caso use JWT, o
-    ID do bot será o `userId`, caso api-key, o ID do bot sera o `_id` do bot que
+    ID do bot será o `userId`, caso api-key, o ID do bot sera o `id` do bot que
     a api-key pertence

@@ -179,7 +179,7 @@ Delete um time, retorna uma resposta `204: No Content` vazia
 
 ## Remove bot
 
-### DELETE `/api/teams/{team.id}/bots/{bot._id}`
+### DELETE `/api/teams/{team.id}/bots/{bot.id}`
 
 Remova um bot do time, retorna uma resposta `204: No Content` vazia
 
@@ -257,7 +257,7 @@ Crie um time, retorna um objeto de [time](#team-structure)
 
 ## Add bot
 
-### POST `/api/teams/{team.id}/bots/{bot._id}`
+### POST `/api/teams/{team.id}/bots/{bot.id}`
 
 Adicione um bot em um time, retorn um objeto de [time](#team-structure) desatualizado
 
