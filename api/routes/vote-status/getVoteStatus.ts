@@ -2,15 +2,15 @@ import { HttpStatusCode } from "axios";
 import { botModel } from "../../models/Bot";
 import { BOT, USER } from "../../utils/errors.json";
 import type { Request, Response } from "express";
-import { isUsingJWT } from "../../utils/isUsingJWT";
 import { JwtPayload, decode } from "jsonwebtoken";
 import { userModel } from "../../models/User";
 import { PremiumConfigurations } from "../../utils/PremiumConfigurations";
 import { sanitizeAuth } from "../../utils/sanitizeAuth";
 
 export const getVoteStatus = async (req: Request, res: Response) => {
-    const { authorization: auth } = req.headers;
-    const isUsingJwt = isUsingJWT(auth as string);
+    const auth = sanitizeAuth(req.headers.authorization as string);
+
+    const isUsingJwt = req.headers.authorization?.startsWith("User");
 
     const userId = isUsingJwt
         ? (decode(auth as string) as JwtPayload).id
@@ -26,8 +26,7 @@ export const getVoteStatus = async (req: Request, res: Response) => {
 
     const botId = isUsingJwt
         ? req.params.userId
-        : (await botModel.findOne({ api_key: sanitizeAuth(auth as string) }))
-            ?._id;
+        : (await botModel.findOne({ api_key: auth }))?._id;
 
     const bot = await botModel.findById(botId);
 
