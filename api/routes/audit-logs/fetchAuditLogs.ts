@@ -82,10 +82,18 @@ export const fetchAuditLogs = async (
         const executor = userMap.get(executor_id);
         const target = target_id && userMap.get(target_id);
 
+        const rawUser = ({
+            _id: id,
+            username,
+            avatar,
+        }: Record<string, unknown>) => {
+            return { id, username, avatar };
+        };
+
         return {
             ...rest,
-            executor,
-            target,
+            executor: executor && rawUser(executor),
+            target: target && rawUser(executor),
         };
     });
 

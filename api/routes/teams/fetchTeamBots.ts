@@ -6,7 +6,9 @@ import { getUserId } from "../../utils/getUserId";
 import { botModel } from "../../models/Bot";
 
 export const fetchTeamBots = async (req: Request, res: Response) => {
-    const team = await teamModel.findOne({ id: req.params.teamId });
+    const { teamId } = req.params;
+
+    const team = await teamModel.findOne({ id: teamId });
 
     if (!team)
         return res.status(HttpStatusCode.NotFound).json(TEAM.UNKNOWN_TEAM);
@@ -25,11 +27,11 @@ export const fetchTeamBots = async (req: Request, res: Response) => {
             .json(TEAM.NO_BOTS_IN_TEAM_ERROR);
 
     const bots = await botModel.find(
-        { _id: { $in: team.bots_id } },
+        { team_id: teamId },
         {
             tags: 1,
             short_description: 1,
-            id: 1,
+            _id: 1,
             avatar: 1,
             name: 1,
             votes: 1,
@@ -37,5 +39,11 @@ export const fetchTeamBots = async (req: Request, res: Response) => {
         }
     );
 
-    return res.status(HttpStatusCode.Ok).json(bots);
+    return res.status(HttpStatusCode.Ok).json(
+        bots.map((bot) => {
+            const { _id: id, ...data } = bot.toObject();
+
+            return { id, ...data };
+        })
+    );
 };
