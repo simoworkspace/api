@@ -30,7 +30,7 @@ const app = express();
 
 const limiter = rateLimit({
     windowMs: 120000,
-    limit: 100,
+    limit: 200,
 });
 
 app.set("trust proxy", 1);
