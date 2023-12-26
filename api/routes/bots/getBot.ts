@@ -8,6 +8,14 @@ import { parseQuery } from "../../utils/parseQuery";
 import { fetchAPIKey } from "./fetchAPIKey";
 import { fetchBotFeedbacks } from "./fetchBotFeedbacks";
 import { fetchWebhookURL } from "./fetchWebhookURL";
+import { Cache } from "../../utils/Cache";
+import { BotStructure, Snowflake } from "../../typings/types";
+
+const MINUTE_IN_MILLISECONDS = 60000;
+
+const cache = new Cache<Snowflake, Omit<BotStructure, "_id"> & { id: string }>(
+    MINUTE_IN_MILLISECONDS
+);
 
 /**
  * Gets a bot from Discord API or from the database
@@ -78,12 +86,14 @@ export const getBot = async (req: Request, res: Response) => {
         );
     }
 
-    const targetBot = await botModel.findById(botId, {
-        api_key: 0,
-        webhook_url: 0,
-        __v: 0,
-        _id: 0,
-    });
+    const targetBot =
+        cache.get(botId) ??
+        (await botModel.findById(botId, {
+            api_key: 0,
+            webhook_url: 0,
+            __v: 0,
+            _id: 0,
+        }));
 
     if (!targetBot)
         return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_BOT);
@@ -103,14 +113,9 @@ export const getBot = async (req: Request, res: Response) => {
             }
         );
 
-        const botData = await request.json();
+        const { username: name, avatar } = await request.json();
 
-        await targetBot.updateOne({
-            $set: {
-                name: botData.username,
-                avatar: botData.avatar,
-            },
-        });
+        await botModel.findByIdAndUpdate(botId, { $set: { name, avatar } });
     }
 
     if (method === "votes") {
@@ -122,9 +127,11 @@ export const getBot = async (req: Request, res: Response) => {
         return res.status(HttpStatusCode.Ok).json(targetBot.votes);
     }
 
-    const options = parseQuery(stringifiedQuery);
+    const options = parseQuery(stringifiedQuery, { parseBooleans: true });
 
-    const data = targetBot.toObject();
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const botData = "toObject" in targetBot ? targetBot.toObject() : targetBot;
 
     if (options.with_feedbacks === true) {
         const botFeedbacks = await feedbackModel.find(
@@ -134,13 +141,17 @@ export const getBot = async (req: Request, res: Response) => {
             { _id: 0 }
         );
 
-        Object.defineProperty(data, "fedbacks", {
+        Object.defineProperty(botData, "feedbacks", {
             value: botFeedbacks,
             enumerable: true,
         });
     }
 
+    const data = { id: botId, ...botData };
+
     if (options.with_votes === false) delete (data as any).votes;
 
-    return res.status(HttpStatusCode.Ok).json({ id: botId, ...data });
+    if (!cache.has(botId)) cache.set(botId, data);
+
+    return res.status(HttpStatusCode.Ok).json(data);
 };
