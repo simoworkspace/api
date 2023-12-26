@@ -1,5 +1,6 @@
 import { boolean, number, object, string } from "yup";
 import { Locales, NotificationType } from "../typings/types";
+import { isImage } from "../utils/isImage";
 
 export const createNotificationValidator = object({
     content: string()
@@ -30,12 +31,15 @@ export const updateUserValidator = object({
         .max(200, "Biography must be less than or equal to 200")
         .min(1, "Biography must be greater than or equal to 1"),
     notifications_viewed: boolean(),
-    banner_url: string().url("Invalid banner URL"),
-    locale: string().oneOf([
-        Locales.EnglishUS,
-        Locales.PortugueseBr,
-        Locales.Spanish,
-    ], "Invalid language name"),
+    banner_url: string()
+        .url("Invalid banner URL")
+        .test("valid-image-url", "Not a well-formed image URL", async (url) => {
+            return url ? await isImage(url) : true;
+        }),
+    locale: string().oneOf(
+        [Locales.EnglishUS, Locales.PortugueseBr, Locales.Spanish],
+        "Invalid language name"
+    ),
 })
     .noUnknown("Unknown property found")
     .strict()
