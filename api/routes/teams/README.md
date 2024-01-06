@@ -108,7 +108,9 @@ Busque por um membro de um time, retorna o objeto do
 
 ## Get team vanity URL
 
-Retorna um objeto de [vanity url](#vanity-url-structure). Retorna um
+### GET `/api/teams/{team.id}/vanity-url`
+
+Busque pelo convite interativo de um time, retorna o objeto do [convite interativo](#vanity-url-structure)
 
 ## Change team owner
 
