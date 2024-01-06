@@ -24,5 +24,10 @@ export const fetchAPIKey = async (req: Request, res: Response) => {
             .status(HttpStatusCode.Forbidden)
             .json(BOT.ONLY_BOT_OWNER_CAN_VIEW_API_KEY_ERROR);
 
-    return res.status(HttpStatusCode.Ok).json({ api_key: bot.api_key });
+    const { api_key } = bot;
+
+    if (!api_key)
+        return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_API_KEY);
+
+    return res.status(HttpStatusCode.Ok).json({ api_key: api_key });
 };

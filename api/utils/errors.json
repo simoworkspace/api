@@ -47,6 +47,10 @@
         "UNNAPROVED_BOT_ACTION_ERROR": {
             "message": "No actions can be performed with an unapproved bot",
             "code": 1012
+        },
+        "UNKNOWN_API_KEY": {
+            "message": "Unknwon API key",
+            "code": 1013
         }
     },
     "GENERICS": {
