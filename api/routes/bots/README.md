@@ -131,7 +131,7 @@ uma array de [feedbacks](#feedback-structure) com `author.username`,
 
 ### GET `/api/bots/{bot.id}/api-key`
 
-Pegue a api-key de um bot, retorna um objeto com `api-key`
+Pegue a api-key de um bot, retorna um objeto com `api_key`
 
 -   Você deve ser o dono do bot para pegar essa propriedade
 
