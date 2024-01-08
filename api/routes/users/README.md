@@ -107,8 +107,8 @@ Retorne todas as notificações do usuário que corresponde ao JWT ou api-key
 
 ### DELETE `/api/users/notifications/{notificationId}`
 
-Delete uma notificação do usuário que corresponde ao JWT ou api-key, retorna um
-booleano se a notificação foi deletada
+Delete uma notificação do usuário que corresponde ao JWT ou api-key, retorna uma
+resposta `204: No Content` vazia
 
 ## Bulk delete all notifications
 

@@ -16,13 +16,15 @@ export const deleteNotification = async (req: Request, res: Response) => {
     const { authorization: auth } = req.headers;
 
     const userId = await getUserId(auth, res);
+
+    if (typeof userId !== "string") return;
+
     const user = await userModel.findById(userId);
 
     if (!user)
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
 
     const { notificationId } = req.params;
-
     const userSocket = getSocket(auth as string);
 
     if (notificationId === "bulk-delete") {
@@ -55,6 +57,7 @@ export const deleteNotification = async (req: Request, res: Response) => {
 
         return res.status(HttpStatusCode.Ok).json(data);
     }
+
     if (!notificationId)
         return res
             .status(HttpStatusCode.BadRequest)
@@ -67,7 +70,7 @@ export const deleteNotification = async (req: Request, res: Response) => {
             .status(HttpStatusCode.NotFound)
             .json(USER.UNKNOWN_NOTIFICATION);
 
-    const isNotificationDeleted = user.notifications.delete(notificationId);
+    user.notifications.delete(notificationId);
 
     await user.save();
 
@@ -84,5 +87,5 @@ export const deleteNotification = async (req: Request, res: Response) => {
             }))
         );
 
-    return res.status(HttpStatusCode.Ok).json(isNotificationDeleted);
+    return res.status(HttpStatusCode.NoContent).send();
 };
