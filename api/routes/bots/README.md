@@ -154,7 +154,8 @@ Este método é usado para deletar um bot no banco de dados, retorna o objeto do
 
 ### DELETE `/api/bots/{bot.id}/feedbacks`
 
-Este método é usado para deletar um feedback de um bot, retorna uma estrutura JSON com `code`
+Este método é usado para deletar um feedback de um bot, retorna uma resposta
+`204: No Content` vazia
 
 -   O ID do usuário será pego do JWT ou api_key usado
 
@@ -276,7 +277,8 @@ fetch(url, {
 ### POST `/api/bots/{bot.id}/webhook/test`
 
 Essa rota ira mandar uma requisição para o `webhook_url` definido no objeto do bot.
-O corpo da requisição será um objeto de [voto](#vote-structure)
+O corpo da requisição será um objeto de [voto](#vote-structure). Retorna uma
+resposta `204: No Content` vazia
 
 -   A [api key](#bot-structure) do bot será mandada no cabeçalho `Authorization`
     da requisição

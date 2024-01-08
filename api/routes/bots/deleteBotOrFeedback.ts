@@ -50,7 +50,7 @@ export const deleteBotOrFeedback = async (req: Request, res: Response) => {
                 }))
             );
 
-        return res.status(HttpStatusCode.Ok).json(GENERICS.SUCCESS);
+        return res.status(HttpStatusCode.NoContent).send();
     }
 
     const bot = await botModel.findById(botId, {
