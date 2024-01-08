@@ -127,6 +127,8 @@ Transfira a posse de um time para outro usuário, retorna o objeto do
 
 Entre em um time, retorna uma resposta `204: No Content` vazia
 
+-   Nota: Você pode entrar pelo convite personalizado do time (Exemplo: `/api/teams/5d6lftca7nf/abc`)
+
 ## Delete team
 
 ### DELETE `/api/teams/{team.id}`
