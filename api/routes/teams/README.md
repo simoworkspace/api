@@ -127,7 +127,7 @@ Transfira a posse de um time para outro usuário, retorna o objeto do
 
 Entre em um time, retorna uma resposta `204: No Content` vazia
 
--   Nota: Você pode entrar pelo convite personalizado do time (Exemplo: `/api/teams/5d6lftca7nf/abc`)
+-   Nota: Você pode entrar pelo convite interativo do time (Exemplo: `/api/teams/5d6lftca7nf/abc`)
 
 ## Delete team
 
@@ -217,6 +217,6 @@ Crie um time, retorna um objeto de [time](#team-structure)
 
 ### POST `/api/teams/{team.id}/bots/{bot.id}`
 
-Adicione um bot em um time, retorn um objeto de [time](#team-structure) desatualizado
+Adicione um bot em um time, retorna um objeto de [time](#team-structure) desatualizado
 
 -   Você deve ser o proprietário do bot para adicionar ele em um time
