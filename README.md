@@ -48,7 +48,7 @@ A Simo API suporta uma variedade de eventos usando socket, visite a [documentaç
 ## Tipos
 
 Comos os tipos são documentados? Os tipos seguem o padrão do TypeScript. Alguns
-campos podem ser conter o valor `null` e alguns campos podem ser opicionais
+campos podem ser conter o valor `null` e alguns campos podem ser opicionais.
 
 ### Exemplos De Campos anuláveis e opcionais
 
@@ -61,7 +61,7 @@ campos podem ser conter o valor `null` e alguns campos podem ser opicionais
 ## Datas
 
 Sempre quando necessário salvar a data de criação/atualização de algo, é utilizado
-datas `ISO8601`
+datas `ISO8601`.
 
 ## Erros
 
@@ -97,7 +97,7 @@ valores falsos e qualquer número inteiro para números.
 ## Locales
 
 Todas as linguagens disponíveis que um
-[usuário](/api/routes/users/README.md#user-structure) pode escolher
+[usuário](/api/routes/users/README.md#user-structure) pode escolher.
 
 | NAME  | LANGUAGE NAME         |
 | ----- | --------------------- |
