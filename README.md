@@ -1,8 +1,7 @@
 # API
 
 [Simo API](https://discord.gg/nstq6wDec4) é uma API baseada em HTTP/REST para
-serviços em geral. Geralmente usada
-no front-end com alguma biblioteca wrapper.
+serviços em geral relacionada com Simo.
 
 ## Base URL
 
@@ -48,7 +47,7 @@ A Simo API suporta uma variedade de eventos usando socket, visite a [documentaç
 ## Tipos
 
 Comos os tipos são documentados? Os tipos seguem o padrão do TypeScript. Alguns
-campos podem ser conter o valor `null` e alguns campos podem ser opicionais.
+campos podem conter o valor `null`, e alguns campos podem ser opicionais.
 
 ### Exemplos De Campos anuláveis e opcionais
 
@@ -90,9 +89,9 @@ Erros com `errors`:
 
 Algumas rotas da API usam
 [parâmetros de string de consulta](https://en.wikipedia.org/wiki/Query_string)
-que aceitam números e booleanos. Como não exista nenhum padrão para eles, a Simo
-API usa `true` e `1` para representar valores verdadeiros, `false` e `0` para
-valores falsos e qualquer número inteiro para números.
+que aceitam números e booleanos. Como não existe nenhum padrão para eles, a Simo
+API usa `true` e `1` para representar valores verdadeiros, e `false` (e `0`) para
+valores falsos e qualquer número **inteiro** para números.
 
 ## Locales
 
