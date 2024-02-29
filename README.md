@@ -15,7 +15,7 @@ https://simobotlist.online
 A autenticação pode ser feita de duas maneiras:
 
 -   1\. Usando Json Web Token (método menos comum, geralmente usada no front-end)
--   2\. Usando uma api-key gerada no site [Simo botlist](https://bombadeagua.life)
+-   2\. Usando uma api-key gerada no site [Simo botlist](https://simobotlist.online)
 
 Todas as autenticações devem ser colocada no cabeçalho `Authorization` em uma
 requisição HTTP.
