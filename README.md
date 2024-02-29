@@ -7,7 +7,7 @@ no front-end com alguma biblioteca wrapper.
 ## Base URL
 
 ```bash
-https://bombadeagua.life
+https://simobotlist.online
 ```
 
 ## Autenticação
