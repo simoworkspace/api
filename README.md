@@ -33,7 +33,7 @@ requisição HTTP.
 }
 ```
 
--   Usando JSON Web Token
+-   Usando JSON Web Token (JWT)
 
 ```json
 {
