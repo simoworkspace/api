@@ -1,5 +1,5 @@
 import cors from "cors";
-import { load } from "env-smart";
+import { load as loadEnv } from "env-smart";
 import { connect } from "mongoose";
 import cookieParser from "cookie-parser";
 import express from "express";
@@ -24,7 +24,7 @@ import { fetchDiscordUser } from "./routes/discord/fetchDiscordUser";
 import { Routes } from "./utils/Routes";
 import { rateLimit } from "express-rate-limit";
 
-load();
+loadEnv();
 
 const app = express();
 
